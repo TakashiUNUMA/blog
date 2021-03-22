@@ -1,0 +1,104 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Signal Processing Methods | Takashi Unuma's Blog</title><link rel="stylesheet" href="/blog/css/index.css"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css"><script src="/blog/js/third-party/jquery.min.js">           </script><script src="/blog/js/third-party/velocity.min.js">           </script><script src="/blog/js/third-party/velocity.ui.min.js">           </script><link rel="icon" href="/blog/img/favicon.ico"><meta name="generator" content="Hexo 5.4.0"></head><body><nav id="nav-bar"><nav class="clear-fix" id="nav-container"><div class="pull-left" id="page-home"><a href="/blog/">Takashi Unuma's Blog</a></div><i class="fa fa-bars pull-right" id="toggle-nav" aria-hidden="true"></i><ul class="pull-right" id="navs"><li><a class="nav" href="/blog/">Home</a></li><li><a class="nav" href="/blog/tags">Tags</a></li><li><a class="nav" href="/blog/about">About</a></li></ul></nav></nav><header id="header-info"><div id="header-container"><div id="site-info"><div id="terminal-pl"><div id="top-bar"><ul id="control"><li class="btn"></li><li class="btn"></li><li class="btn"></li></ul><div id="file-path"><i class="fa fa-folder folder-ic" aria-hidden="true"></i> @GitHub</div></div><div id="code-pl">@github:~/blog$
+<span class="code-pl-input">source &quot;Signal Processing Methods.sh&quot;</span><br><br>@github:~/blog$
+<span class="code-pl-input">printenv</span><br><span class="code-pl-output">CREATED_DATE = 2021-03-22</span><br><span class="code-pl-output">UPDATED_DATE = 2021-03-22</span><br><span class="code-pl-output">TAGS =</span><span class="code-pl-output"> </span><a class="code-pl-output-url" href="/tags/Miscellaneous"><span class="code-pl-output">Miscellaneous</span></a><span class="code-pl-output"> </span><span class="code-pl-output"></span><br><br>@github:~/blog$
+<span class="code-pl-input">grep -lr $TAGS post</span><br><span class="code-pl-output">2021-03-21</span><span class="code-pl-output"> </span><a class="code-pl-output-url" href="/blog/2021/03/21/" target="_blank"><span class="code-pl-output">SONDE monitor</span></a><br><span class="code-pl-output">2021-03-20</span><span class="code-pl-output"> </span><a class="code-pl-output-url" href="/blog/2021/03/20/" target="_blank"><span class="code-pl-output">The first page of my blog</span></a><br><span class="code-pl-output">2021-03-22</span><span class="code-pl-output"> </span><a class="code-pl-output-url" href="/blog/2021/03/22/" target="_blank"><span class="code-pl-output">Signal Processing Methods</span></a><br><!--if page.next| > .prev
+br
+a(href=url_for(page.next.path))
+  span.answer= page.next.title
+br
+br--><!--if page.prev| > .next
+br
+a(href=url_for(page.prev.path))
+  span.answer= page.prev.title--></div></div></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><a class="article-title">Signal Processing Methods</a><time class="article-date"><i class="fa fa-calendar" aria-hidden="true"></i> 2021-03-22</time><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>気象レーダーで観測されるエコーには、降水エコーと非降水エコーとがある。これらを適切にこれらを判別することは重要である。仮に降水・非降水エコーを判別出来たとしても、大気・降水によって減衰するため、これらの減衰量を適切に推定・補正する必要がある。以上は、適切な降水強度推定や気象エコー内の降水粒子判別に有益となりうる。この文章では、降水・非降水エコーの判別や大気・降水等の減衰量補正といった処理の総称を信号処理と言うことにする。ここでは、レーダーサイトで得られる一次データ (文献や資料によっては RAW データと称する場合もある) を用いた信号処理について少しずつ勉強しながらまとめてみる (随時追記予定)。</p>
+<hr>
+<h1 id="用語"><a href="#用語" class="headerlink" title="用語"></a>用語</h1><ul>
+<li>azimuth 方向: レーダーサイトを中心にアンテナが回転する方向</li>
+<li>range 方向: レーダーサイト中心からビームを放射する方向</li>
+<li>水平偏波反射強度 (Reflectivity factor: Zhh)</li>
+<li>垂直偏波反射強度 (Reflectivity factor: Zvv)</li>
+<li>反射因子差 (Differential reflectivity: Zdr)</li>
+<li>偏波間相関係数 (Cross-correlation coefficient: ρhv)</li>
+<li>偏波間位相差 (Differential phase: Φdp)</li>
+<li>偏波間位相差変化率 (Specific differential phase: Kdp)</li>
+</ul>
+<hr>
+<h1 id="レーダー変数推定時のバイアス要素"><a href="#レーダー変数推定時のバイアス要素" class="headerlink" title="レーダー変数推定時のバイアス要素"></a>レーダー変数推定時のバイアス要素</h1><ul>
+<li>radar miscalibration (レーダーサイトでのキャリブレーションミス)</li>
+<li>impact of wet antenna radome (アンテナレドームが濡れている場合)</li>
+<li>attenuation in atmospheric gases and precipitation (大気減衰・降雨減衰)</li>
+<li>partial beam blockage</li>
+<li>low signal-to-noise ratio</li>
+<li>nonuniform beam filling</li>
+<li>depolarization from propagation in oriented ice crystals</li>
+<li>multipath propagation</li>
+</ul>
+<hr>
+<h1 id="信号処理"><a href="#信号処理" class="headerlink" title="信号処理"></a>信号処理</h1><h2 id="Z-の降雨減衰補正"><a href="#Z-の降雨減衰補正" class="headerlink" title="Z の降雨減衰補正"></a>Z の降雨減衰補正</h2><ul>
+<li>Kdp を用い、降雨減衰した量を range 方向に算出する方法 (See Bringi and Chandrasekar, 2001)。</li>
+</ul>
+<h2 id="ρhv-の-SNR-補正"><a href="#ρhv-の-SNR-補正" class="headerlink" title="ρhv の SNR 補正"></a>ρhv の SNR 補正</h2><ul>
+<li>ノイズ電力値を用い、ρhv を補正する方法 (See “Section 6.7 Noise Correction” on Ryzhkov and Zrnic, 2019)。</li>
+</ul>
+<h2 id="Texture-パラメータ"><a href="#Texture-パラメータ" class="headerlink" title="Texture パラメータ"></a>Texture パラメータ</h2><ul>
+<li>range・azimuth 方向にそれぞれ root-mean-square を算出する方法 (See Gourley et al. 2007)。Gourley et al. (2007) では、texture(Zdr) と texture(Φdp) とが紹介されている。</li>
+</ul>
+<h2 id="Depolarization-Ratio"><a href="#Depolarization-Ratio" class="headerlink" title="Depolarization Ratio"></a>Depolarization Ratio</h2><ul>
+<li>Zdr と ρhv とを組み合わせたパラメータ Depolarization Ratio により、降水・非降水エコーを判別する方法 (See Kilambi et al. 2018)。</li>
+</ul>
+<hr>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li>Bringi, V. N. and V. Chandrasekar, 2001: Polarimetric Doppler Weather Radar: Principles and Applications. Cambridge University Press, 636 pp.</li>
+<li>Gourley et al., 2007: A Fuzzy Logic Algorithm for the Separation of Precipitating from Nonprecipitating Echoes Using Polarimetric Radar Observations. Journal of Atmospheric and Oceanic Technology, 24, 1439-1451. doi:10.1175/JTECH2035.1</li>
+<li>Kilambi et al., 2018: A Simple and Effective Method for Separating Meteorological from Nonmeteorological Targets Using Dual-Polarization Data. Journal of Atmospheric and Oceanic Technology, 35, 1415-1424. doi:10.1175/JTECH-D-17-0175.1</li>
+<li>Ryzhkov, A. V. and D. S. Zrnic, 2019: Radar Polarimetry for Weather Observations. Springer, 742 pp.</li>
+</ul>
+<hr>
+<h1 id="更新履歴"><a href="#更新履歴" class="headerlink" title="更新履歴"></a>更新履歴</h1><ul>
+<li>2021-03-22: 初稿</li>
+</ul>
+</article><article id="post"><!-- Author: maupassant-hexo (https://github.com/tufu9441/maupassant-hexo/blob/master/layout/_partial/comments.pug)--><div id="disqus_thread"><div class="btn_click_load"><div class="disqus_click_btn"> <a class="article-comment">Read the comments (please make sure that Disqus can be loaded normally)</a></div></div><script type="text/javascript">var disqus_config = function () {
+    this.page.url = 'https://takashiunuma.github.io/blog/2021/03/22/';
+    this.page.identifier = '2021/03/22/';
+    this.page.title = 'Signal Processing Methods';
+  };</script><script type="text/javascript" id="disqus-lazy-load-script">$.ajax({
+url: 'https://disqus.com/next/config.json',
+timeout: 2500,
+type: 'GET',
+success: function(){
+  var d = document;
+  var s = d.createElement('script');
+  s.src = '//unusblog.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', + new Date());
+  (d.head || d.body).appendChild(s);
+  $('.disqus_click_btn').css('display', 'none');
+},
+error: function() {
+  $('.disqus_click_btn').css('display', 'block');
+}
+});</script><script type="text/javascript" id="disqus-click-load">$('.btn_click_load').click(() => {  //click to load comments
+    (() => { // DON'T EDIT BELOW THIS LINE
+        var d = document;
+        var s = d.createElement('script');
+        s.src = '//unusblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', + new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    $('.disqus_click_btn').css('display','none');
+});</script><script type="text/javascript" id="disqus-count-script">$(function() {
+     var xhr = new XMLHttpRequest();
+     xhr.open('GET', '//disqus.com/next/config.json', true);
+     xhr.timeout = 2500;
+     xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4 && xhr.status === 200) {
+         $('.post-meta .post-comments-count').show();
+         var s = document.createElement('script');
+         s.id = 'dsq-count-scr';
+         s.src = 'https://unusblog.disqus.com/count.js';
+         s.async = true;
+         (document.head || document.body).appendChild(s);
+       }
+     };
+     xhr.ontimeout = function () { xhr.abort(); };
+     xhr.send(null);
+   });</script></div></article><nav id="pagination"><div class="pagination clear-fix"><div class="page-next pull-right"><a href="/blog/2021/03/21/"><span>SONDE monitor</span><i class="fa fa-chevron-right"></i></a></div></div></nav></div></div><footer><div id="footer-inner"><div class="social-icons"><a class="social-icon" href="https://github.com/TakashiUNUMA" target="_blank"><i class="fa fa-github"></i></a><a class="social-icon" href="https://www.linkedin.com/in/takashiunuma/" target="_blank"><i class="fa fa-linkedin"></i></a><a class="social-icon" href="https://twitter.com/UNUSB" target="_blank"><i class="fa fa-twitter"></i></a><a class="social-icon" href="https://www.instagram.com/unusb/" target="_blank"><i class="fa fa-instagram"></i></a></div><p class="design-info">Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://github.com/lazysheep666/terminal_theme" target="_blank">Teminal</a> (<a href="https://github.com/Tonny-Gu/terminal_theme" target="_blank">NekoDaemon Remix</a>)</p><p class="design-info"><a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC-BY-SA 4.0</a> 
+Licensed | Copyright © 2021 Takashi Unuma</p></div></footer><script src="/blog/js/nav.js"></script><script src="/blog/js/scroll.js"></script><script src="/blog/js/index.js"></script></body></html>

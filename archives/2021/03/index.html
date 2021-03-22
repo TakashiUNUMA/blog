@@ -1,9 +1,56 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Takashi Unuma's Blog</title><link rel="stylesheet" href="/blog/css/index.css"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css"><script src="/blog/js/third-party/jquery.min.js">           </script><script src="/blog/js/third-party/velocity.min.js">           </script><script src="/blog/js/third-party/velocity.ui.min.js">           </script><link rel="icon" href="/blog/img/favicon.ico"><meta name="generator" content="Hexo 5.4.0"></head><body><nav id="nav-bar"><nav class="clear-fix" id="nav-container"><div class="pull-left" id="page-home"><a href="/blog/">Takashi Unuma's Blog</a></div><i class="fa fa-bars pull-right" id="toggle-nav" aria-hidden="true"></i><ul class="pull-right" id="navs"><li><a class="nav" href="/blog/">Home</a></li><li><a class="nav" href="/blog/tags">Tags</a></li><li><a class="nav" href="/blog/about">About</a></li></ul></nav></nav><header id="header-info"><div id="header-container"><div id="site-info"><div id="terminal-pl"><div id="top-bar"><ul id="control"><li class="btn"></li><li class="btn"></li><li class="btn"></li></ul><div id="file-path"><i class="fa fa-folder folder-ic" aria-hidden="true"></i> @GitHub</div></div><div id="code-pl"></div></div></div></div></header><div id="content-outer"><div id="content-inner"><div class="recent-post-item"><a class="article-title" href="/blog/2021/03/21/">SONDE monitor</a><time class="article-date"><i class="fa fa-calendar" aria-hidden="true"></i> 2021-03-21</time><div class="article-inner"><p>高層気象観測の内、ラジオゾンデ観測データを定期的に取得し、それを自動で解析している (<a href="https://mvp.nomaki.jp/sonde/" title="" target="">SONDE monitor</a>)。2013年頃から始め、今のサーバーには (確か) 2019 年頃に移設した。大気状態が顕著な場合は、下記のように記録したりしている。</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Takashi Unuma's Blog</title><link rel="stylesheet" href="/blog/css/index.css"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css"><script src="/blog/js/third-party/jquery.min.js">           </script><script src="/blog/js/third-party/velocity.min.js">           </script><script src="/blog/js/third-party/velocity.ui.min.js">           </script><link rel="icon" href="/blog/img/favicon.ico"><meta name="generator" content="Hexo 5.4.0"></head><body><nav id="nav-bar"><nav class="clear-fix" id="nav-container"><div class="pull-left" id="page-home"><a href="/blog/">Takashi Unuma's Blog</a></div><i class="fa fa-bars pull-right" id="toggle-nav" aria-hidden="true"></i><ul class="pull-right" id="navs"><li><a class="nav" href="/blog/">Home</a></li><li><a class="nav" href="/blog/tags">Tags</a></li><li><a class="nav" href="/blog/about">About</a></li></ul></nav></nav><header id="header-info"><div id="header-container"><div id="site-info"><div id="terminal-pl"><div id="top-bar"><ul id="control"><li class="btn"></li><li class="btn"></li><li class="btn"></li></ul><div id="file-path"><i class="fa fa-folder folder-ic" aria-hidden="true"></i> @GitHub</div></div><div id="code-pl"></div></div></div></div></header><div id="content-outer"><div id="content-inner"><div class="recent-post-item"><a class="article-title" href="/blog/2021/03/22/">Signal Processing Methods</a><time class="article-date"><i class="fa fa-calendar" aria-hidden="true"></i> 2021-03-22</time><div class="article-inner"><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>気象レーダーで観測されるエコーには、降水エコーと非降水エコーとがある。これらを適切にこれらを判別することは重要である。仮に降水・非降水エコーを判別出来たとしても、大気・降水によって減衰するため、これらの減衰量を適切に推定・補正する必要がある。以上は、適切な降水強度推定や気象エコー内の降水粒子判別に有益となりうる。この文章では、降水・非降水エコーの判別や大気・降水等の減衰量補正といった処理の総称を信号処理と言うことにする。ここでは、レーダーサイトで得られる一次データ (文献や資料によっては RAW データと称する場合もある) を用いた信号処理について少しずつ勉強しながらまとめてみる (随時追記予定)。</p>
+<hr>
+<h1 id="用語"><a href="#用語" class="headerlink" title="用語"></a>用語</h1><ul>
+<li>azimuth 方向: レーダーサイトを中心にアンテナが回転する方向</li>
+<li>range 方向: レーダーサイト中心からビームを放射する方向</li>
+<li>水平偏波反射強度 (Reflectivity factor: Zhh)</li>
+<li>垂直偏波反射強度 (Reflectivity factor: Zvv)</li>
+<li>反射因子差 (Differential reflectivity: Zdr)</li>
+<li>偏波間相関係数 (Cross-correlation coefficient: ρhv)</li>
+<li>偏波間位相差 (Differential phase: Φdp)</li>
+<li>偏波間位相差変化率 (Specific differential phase: Kdp)</li>
+</ul>
+<hr>
+<h1 id="レーダー変数推定時のバイアス要素"><a href="#レーダー変数推定時のバイアス要素" class="headerlink" title="レーダー変数推定時のバイアス要素"></a>レーダー変数推定時のバイアス要素</h1><ul>
+<li>radar miscalibration (レーダーサイトでのキャリブレーションミス)</li>
+<li>impact of wet antenna radome (アンテナレドームが濡れている場合)</li>
+<li>attenuation in atmospheric gases and precipitation (大気減衰・降雨減衰)</li>
+<li>partial beam blockage</li>
+<li>low signal-to-noise ratio</li>
+<li>nonuniform beam filling</li>
+<li>depolarization from propagation in oriented ice crystals</li>
+<li>multipath propagation</li>
+</ul>
+<hr>
+<h1 id="信号処理"><a href="#信号処理" class="headerlink" title="信号処理"></a>信号処理</h1><h2 id="Z-の降雨減衰補正"><a href="#Z-の降雨減衰補正" class="headerlink" title="Z の降雨減衰補正"></a>Z の降雨減衰補正</h2><ul>
+<li>Kdp を用い、降雨減衰した量を range 方向に算出する方法 (See Bringi and Chandrasekar, 2001)。</li>
+</ul>
+<h2 id="ρhv-の-SNR-補正"><a href="#ρhv-の-SNR-補正" class="headerlink" title="ρhv の SNR 補正"></a>ρhv の SNR 補正</h2><ul>
+<li>ノイズ電力値を用い、ρhv を補正する方法 (See “Section 6.7 Noise Correction” on Ryzhkov and Zrnic, 2019)。</li>
+</ul>
+<h2 id="Texture-パラメータ"><a href="#Texture-パラメータ" class="headerlink" title="Texture パラメータ"></a>Texture パラメータ</h2><ul>
+<li>range・azimuth 方向にそれぞれ root-mean-square を算出する方法 (See Gourley et al. 2007)。Gourley et al. (2007) では、texture(Zdr) と texture(Φdp) とが紹介されている。</li>
+</ul>
+<h2 id="Depolarization-Ratio"><a href="#Depolarization-Ratio" class="headerlink" title="Depolarization Ratio"></a>Depolarization Ratio</h2><ul>
+<li>Zdr と ρhv とを組み合わせたパラメータ Depolarization Ratio により、降水・非降水エコーを判別する方法 (See Kilambi et al. 2018)。</li>
+</ul>
+<hr>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li>Bringi, V. N. and V. Chandrasekar, 2001: Polarimetric Doppler Weather Radar: Principles and Applications. Cambridge University Press, 636 pp.</li>
+<li>Gourley et al., 2007: A Fuzzy Logic Algorithm for the Separation of Precipitating from Nonprecipitating Echoes Using Polarimetric Radar Observations. Journal of Atmospheric and Oceanic Technology, 24, 1439-1451. doi:10.1175/JTECH2035.1</li>
+<li>Kilambi et al., 2018: A Simple and Effective Method for Separating Meteorological from Nonmeteorological Targets Using Dual-Polarization Data. Journal of Atmospheric and Oceanic Technology, 35, 1415-1424. doi:10.1175/JTECH-D-17-0175.1</li>
+<li>Ryzhkov, A. V. and D. S. Zrnic, 2019: Radar Polarimetry for Weather Observations. Springer, 742 pp.</li>
+</ul>
+<hr>
+<h1 id="更新履歴"><a href="#更新履歴" class="headerlink" title="更新履歴"></a>更新履歴</h1><ul>
+<li>2021-03-22: 初稿</li>
+</ul>
+</div><div class="article-footer"><a class="article-more" href="/blog/2021/03/22/#more">more>></a><div class="article-tags"><i class="fa fa-tag" aria-hidden="true"></i><a class="article-tag" href="/blog/tags/#Miscellaneous">Miscellaneous</a></div></div></div><div class="recent-post-item"><a class="article-title" href="/blog/2021/03/21/">SONDE monitor</a><time class="article-date"><i class="fa fa-calendar" aria-hidden="true"></i> 2021-03-21</time><div class="article-inner"><p>高層気象観測の内、ラジオゾンデ観測データを定期的に取得し、それを自動で解析している (<a href="https://mvp.nomaki.jp/sonde/" title="" target="">SONDE monitor</a>)。2013年頃から始め、今のサーバーには (確か) 2019 年頃に移設した。大気状態が顕著な場合は、下記のように記録したりしている。</p>
 <blockquote><p>It has already exceeded 60 mm of precipitable water at Tateno point and water vapor flux at lower troposphere is larger than at least 250 g/m^2/s. These are one of the favorable conditions for a development of organized deep convections…</p>
-<footer><strong>@UNUSB</strong><cite><a target="_blank" rel="noopener" href="https://twitter.com/UNUSB/status/1182907278883602432">twitter.com/UNUSB/status/1182907278883602432</a></cite></footer></blockquote>
+<footer><strong>@UNUSB</strong><cite><a target="_blank" rel="noopener" href="https://twitter.com/UNUSB/status/1182907278883602432">Link</a></cite></footer></blockquote>
 
 <p>ただ、これだけでは値の高低は分かっても、何が言いたいのかちょっと分かりにくいなぁと思うようになった。そこで、2019年11月25日に下記の変更を加えた。</p>
-<p>I have updated SONDE monitor page by adding two kinds of figures at November 25, 2020. One is precipitable water (PW), the other is convective available potential energy (CAPE). These figures are special; for example, a value of a location will turn to be highlighted (thick red color) if the value is higher than the climatological values obtained <a href="http://doi.org/10.1002/qj.2726" title="" target="">Unuma and Takemi (2016, QJ)</a>. The figures make us to easily understand the observed diagnostic value is higher or lower than the QSCC climatological value. </p>
+<p>I have updated SONDE monitor page by adding two figures. One is precipitable water (PW), the other is convective available potential energy (CAPE). These figures are special; for example, a value of a location will turn to be highlighted (thick red color) if the value is higher than the climatological values obtained <a href="http://doi.org/10.1002/qj.2726" title="" target="">Unuma and Takemi (2016, QJ)</a>. The figures make us to easily understand the observed diagnostic value is higher or lower than the QSCC climatological value. </p>
 <p>要は、Unuma and Takemi (2016, QJ) で調べた、移動速度の遅い或いは停滞性の降水系発生時の環境条件よりも大きいかどうか、という観点を加えたことになる。単純には年平均値や気候値との比較なのだろうけれど、それだと雨が降っているか降っていないかの違いもあるので意外と単純ではない。引き続き、どのような観点であれば有益な情報となるか模索してゆく。</p>
 </div><div class="article-footer"><a class="article-more" href="/blog/2021/03/21/#more">more>></a><div class="article-tags"><i class="fa fa-tag" aria-hidden="true"></i><a class="article-tag" href="/blog/tags/#Miscellaneous">Miscellaneous</a></div></div></div><div class="recent-post-item"><a class="article-title" href="/blog/2021/03/20/">The first page of my blog</a><time class="article-date"><i class="fa fa-calendar" aria-hidden="true"></i> 2021-03-20</time><div class="article-inner"><p>I have started to write a blog mainly about my thinking.</p>
 <p>主に私の考えについてブログを書こうと思います。</p>
