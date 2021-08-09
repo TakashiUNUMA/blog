@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Takashi Unuma&#39;s Blog</title>
+  <icon>https://takashiunuma.github.io/blog/icon.png</icon>
+  <subtitle>私の頭の中</subtitle>
+  <link href="https://takashiunuma.github.io/blog/atom.xml" rel="self"/>
+  
+  <link href="https://takashiunuma.github.io/blog/"/>
+  <updated>2021-08-07T14:03:41.780Z</updated>
+  <id>https://takashiunuma.github.io/blog/</id>
+  
+  <author>
+    <name>Takashi Unuma</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>降水強度のKDP推定アルゴリズムについて</title>
+    <link href="https://takashiunuma.github.io/blog/2021/07/28/"/>
+    <id>https://takashiunuma.github.io/blog/2021/07/28/</id>
+    <published>2021-07-27T21:47:39.000Z</published>
+    <updated>2021-08-07T14:03:41.780Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;はじめに&quot;&gt;&lt;a href=&quot;#はじめに&quot; class=&quot;headerlink&quot; title=&quot;はじめに&quot;&gt;&lt;/a&gt;はじめに&lt;/h1&gt;&lt;p&gt;　気象レーダーが単偏波の場合は Z-R 関係と呼ばれる関係式が用いられ、反射強度から降水強度が推定される。ところが、&lt;a</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Miscellaneous" scheme="https://takashiunuma.github.io/blog/tags/Miscellaneous/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>二重偏波要素の特徴</title>
+    <link href="https://takashiunuma.github.io/blog/2021/04/28/"/>
+    <id>https://takashiunuma.github.io/blog/2021/04/28/</id>
+    <published>2021-04-28T13:47:04.000Z</published>
+    <updated>2021-04-29T13:38:15.783Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;はじめに&quot;&gt;&lt;a href=&quot;#はじめに&quot; class=&quot;headerlink&quot; title=&quot;はじめに&quot;&gt;&lt;/a&gt;はじめに&lt;/h1&gt;&lt;p&gt;以前、&lt;a href=&quot;/blog/2021/03/22/&quot; title=&quot;Signal Processing</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Miscellaneous" scheme="https://takashiunuma.github.io/blog/tags/Miscellaneous/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Dew Point Temperature</title>
+    <link href="https://takashiunuma.github.io/blog/2021/03/23/"/>
+    <id>https://takashiunuma.github.io/blog/2021/03/23/</id>
+    <published>2021-03-23T07:20:21.000Z</published>
+    <updated>2021-03-31T07:09:22.007Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;はじめに&quot;&gt;&lt;a href=&quot;#はじめに&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Miscellaneous" scheme="https://takashiunuma.github.io/blog/tags/Miscellaneous/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Signal Processing Methods</title>
+    <link href="https://takashiunuma.github.io/blog/2021/03/22/"/>
+    <id>https://takashiunuma.github.io/blog/2021/03/22/</id>
+    <published>2021-03-22T05:07:16.000Z</published>
+    <updated>2021-04-07T20:00:48.200Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;はじめに&quot;&gt;&lt;a href=&quot;#はじめに&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Miscellaneous" scheme="https://takashiunuma.github.io/blog/tags/Miscellaneous/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SONDE monitor</title>
+    <link href="https://takashiunuma.github.io/blog/2021/03/21/"/>
+    <id>https://takashiunuma.github.io/blog/2021/03/21/</id>
+    <published>2021-03-21T12:30:41.000Z</published>
+    <updated>2021-03-22T13:14:43.138Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;高層気象観測の内、ラジオゾンデ観測データを定期的に取得し、それを自動で解析している (&lt;a href=&quot;https://mvp.nomaki.jp/sonde/&quot; title=&quot;&quot; target=&quot;&quot;&gt;SONDE</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Miscellaneous" scheme="https://takashiunuma.github.io/blog/tags/Miscellaneous/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>The first page of my blog</title>
+    <link href="https://takashiunuma.github.io/blog/2021/03/20/"/>
+    <id>https://takashiunuma.github.io/blog/2021/03/20/</id>
+    <published>2021-03-20T12:19:50.000Z</published>
+    <updated>2021-03-22T00:27:23.235Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;I have started to write a blog mainly about my</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Miscellaneous" scheme="https://takashiunuma.github.io/blog/tags/Miscellaneous/"/>
+    
+  </entry>
+  
+</feed>

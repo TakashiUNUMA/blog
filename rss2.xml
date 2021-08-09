@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Takashi Unuma&#39;s Blog</title>
+    <link>https://takashiunuma.github.io/blog/</link>
+    
+    <image>
+      <url>https://takashiunuma.github.io/blog/icon.png</url>
+      <title>Takashi Unuma&#39;s Blog</title>
+      <link>https://takashiunuma.github.io/blog/</link>
+    </image>
+    
+    <atom:link href="https://takashiunuma.github.io/blog/rss2.xml" rel="self" type="application/rss+xml"/>
+    
+    <description></description>
+    <pubDate>Sat, 07 Aug 2021 14:03:41 GMT</pubDate>
+    <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>降水強度のKDP推定アルゴリズムについて</title>
+      <link>https://takashiunuma.github.io/blog/2021/07/28/</link>
+      <guid>https://takashiunuma.github.io/blog/2021/07/28/</guid>
+      <pubDate>Tue, 27 Jul 2021 21:47:39 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;h1 id=&quot;はじめに&quot;&gt;&lt;a href=&quot;#はじめに&quot; class=&quot;headerlink&quot; title=&quot;はじめに&quot;&gt;&lt;/a&gt;はじめに&lt;/h1&gt;&lt;p&gt;　気象レーダーが単偏波の場合は Z-R 関係と呼ばれる関係式が用いられ、反射強度から降水強度が推定される。ところが、&lt;a</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://takashiunuma.github.io/blog/tags/Miscellaneous/">Miscellaneous</category>
+      
+      
+      <comments>https://takashiunuma.github.io/blog/2021/07/28/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>二重偏波要素の特徴</title>
+      <link>https://takashiunuma.github.io/blog/2021/04/28/</link>
+      <guid>https://takashiunuma.github.io/blog/2021/04/28/</guid>
+      <pubDate>Wed, 28 Apr 2021 13:47:04 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;h1 id=&quot;はじめに&quot;&gt;&lt;a href=&quot;#はじめに&quot; class=&quot;headerlink&quot; title=&quot;はじめに&quot;&gt;&lt;/a&gt;はじめに&lt;/h1&gt;&lt;p&gt;以前、&lt;a href=&quot;/blog/2021/03/22/&quot; title=&quot;Signal Processing</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://takashiunuma.github.io/blog/tags/Miscellaneous/">Miscellaneous</category>
+      
+      
+      <comments>https://takashiunuma.github.io/blog/2021/04/28/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>Dew Point Temperature</title>
+      <link>https://takashiunuma.github.io/blog/2021/03/23/</link>
+      <guid>https://takashiunuma.github.io/blog/2021/03/23/</guid>
+      <pubDate>Tue, 23 Mar 2021 07:20:21 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;h1 id=&quot;はじめに&quot;&gt;&lt;a href=&quot;#はじめに&quot; class=&quot;headerlink&quot;</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://takashiunuma.github.io/blog/tags/Miscellaneous/">Miscellaneous</category>
+      
+      
+      <comments>https://takashiunuma.github.io/blog/2021/03/23/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>Signal Processing Methods</title>
+      <link>https://takashiunuma.github.io/blog/2021/03/22/</link>
+      <guid>https://takashiunuma.github.io/blog/2021/03/22/</guid>
+      <pubDate>Mon, 22 Mar 2021 05:07:16 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;h1 id=&quot;はじめに&quot;&gt;&lt;a href=&quot;#はじめに&quot; class=&quot;headerlink&quot;</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://takashiunuma.github.io/blog/tags/Miscellaneous/">Miscellaneous</category>
+      
+      
+      <comments>https://takashiunuma.github.io/blog/2021/03/22/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>SONDE monitor</title>
+      <link>https://takashiunuma.github.io/blog/2021/03/21/</link>
+      <guid>https://takashiunuma.github.io/blog/2021/03/21/</guid>
+      <pubDate>Sun, 21 Mar 2021 12:30:41 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;p&gt;高層気象観測の内、ラジオゾンデ観測データを定期的に取得し、それを自動で解析している (&lt;a href=&quot;https://mvp.nomaki.jp/sonde/&quot; title=&quot;&quot; target=&quot;&quot;&gt;SONDE</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://takashiunuma.github.io/blog/tags/Miscellaneous/">Miscellaneous</category>
+      
+      
+      <comments>https://takashiunuma.github.io/blog/2021/03/21/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>The first page of my blog</title>
+      <link>https://takashiunuma.github.io/blog/2021/03/20/</link>
+      <guid>https://takashiunuma.github.io/blog/2021/03/20/</guid>
+      <pubDate>Sat, 20 Mar 2021 12:19:50 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;p&gt;I have started to write a blog mainly about my</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://takashiunuma.github.io/blog/tags/Miscellaneous/">Miscellaneous</category>
+      
+      
+      <comments>https://takashiunuma.github.io/blog/2021/03/20/#disqus_thread</comments>
+      
+    </item>
+    
+  </channel>
+</rss>
