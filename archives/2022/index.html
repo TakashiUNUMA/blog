@@ -4,7 +4,73 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
 <!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/blog/atom.xml" title="Takashi Unuma's Blog" type="application/atom+xml">
 <link rel="alternate" href="/blog/rss2.xml" title="Takashi Unuma's Blog" type="application/rss+xml">
-</head><body><nav id="nav-bar"><nav class="clear-fix" id="nav-container"><div class="pull-left" id="page-home"><a href="/blog/">Takashi Unuma's Blog</a></div><i class="fa fa-bars pull-right" id="toggle-nav" aria-hidden="true"></i><ul class="pull-right" id="navs"><li><a class="nav" href="/blog/">Home</a></li><li><a class="nav" href="/blog/about">About</a></li><li><a class="nav" href="/blog/tags">Tags</a></li></ul></nav></nav><header id="header-info"><div id="header-container"><div id="site-info"><div id="terminal-pl"><div id="top-bar"><ul id="control"><li class="btn"></li><li class="btn"></li><li class="btn"></li></ul><div id="file-path"><i class="fa fa-folder folder-ic" aria-hidden="true"></i> @GitHub</div></div><div id="code-pl"></div></div></div></div></header><div id="content-outer"><div id="content-inner"><div class="recent-post-item"><a class="article-title" href="/blog/2022/06/18/">降雨減衰補正 (ZPHI method)</a><time class="article-date"><i class="fa fa-calendar" aria-hidden="true"></i> 2022-06-18</time><div class="article-inner"><h1 id="はじめに"><a class="markdownIt-Anchor" href="#はじめに"></a> はじめに</h1>
+</head><body><nav id="nav-bar"><nav class="clear-fix" id="nav-container"><div class="pull-left" id="page-home"><a href="/blog/">Takashi Unuma's Blog</a></div><i class="fa fa-bars pull-right" id="toggle-nav" aria-hidden="true"></i><ul class="pull-right" id="navs"><li><a class="nav" href="/blog/">Home</a></li><li><a class="nav" href="/blog/about">About</a></li><li><a class="nav" href="/blog/tags">Tags</a></li></ul></nav></nav><header id="header-info"><div id="header-container"><div id="site-info"><div id="terminal-pl"><div id="top-bar"><ul id="control"><li class="btn"></li><li class="btn"></li><li class="btn"></li></ul><div id="file-path"><i class="fa fa-folder folder-ic" aria-hidden="true"></i> @GitHub</div></div><div id="code-pl"></div></div></div></div></header><div id="content-outer"><div id="content-inner"><div class="recent-post-item"><a class="article-title" href="/blog/2022/08/05/">Precipitation Efficiency</a><time class="article-date"><i class="fa fa-calendar" aria-hidden="true"></i> 2022-08-05</time><div class="article-inner"><h1 id="はじめに"><a class="markdownIt-Anchor" href="#はじめに"></a> はじめに</h1>
+<p>降水の源は、周辺大気に存在する水蒸気である。その水蒸気が、様々な雲微物理過程を経て雨となって地上に到達する。周辺大気の水蒸気が多くとも、変換される効率が低ければ少量の雨しか地上には到達しない。一方、効率が高い場合には地上に到達する雨の量は多くなる。この効率は、降水強度 (Precipitation Efficiency) と呼ばれ、様々な定義・考え方が提案されている。そこで、今回は降水効率に関連する文献をレビューすることで、降水効率の定義・考え方を理解すると共に、地球上ではどのぐらいの降水効率が観測されているのかをまとめることにした。</p>
+<h1 id="降水効率に関連した文献レビュー"><a class="markdownIt-Anchor" href="#降水効率に関連した文献レビュー"></a> 降水効率に関連した文献レビュー</h1>
+<h2 id="lamb-2001"><a class="markdownIt-Anchor" href="#lamb-2001"></a> Lamb (2001)</h2>
+<p>雲がもたらす降水の効率は、様々な環境条件や雲微物理特性により大きく異なりかつそれらに依存する。対流系がもたらす顕著な降水強度は、力学的かつ雲微物理的に生じやすい。しかしながら、全ての対流系が降水強度の高い雨を降らせる訳ではない。対流系に流入する水蒸気量に対する地上に到達した降水の比、すなわち降水効率は、典型的な雷雨では 20% に満たない (Braham 1952)。小さな対流系の場合、環境場の乾燥空気によるエントレインメントの影響を大きく受ける。言い換えると、上昇流が非常に大きい場合には多くの流入する水蒸気が対流圏上層で蒸発してしまうということである (Ludlam 1980)。大きな対流系ほど、エントレインメントの影響を受けにくいと考えられる。凝結の多くは、雨粒や大きな氷の成長のために利用される。このような状況は The Big Thompson storm (Caracena et al. 1979) での大雨に大きく寄与していたことが知られている。しかし同時に、エントレインメントや乱流混合が、coalescence embryos の生成に重要な役割を果たしている可能性が高いという事実も見逃してはならない。</p>
+<p>効率的な雨の生成を理解する上で重要な点は、雨粒が形成された後に凝縮した水分の除去といった雲微物理学的な観点よりも、むしろ最初の段階で雲の中の凝結核に富む適切な場所で雨粒を発生させることにある。極端な降雨イベントは、降水効率を考える上で興味深い問題を提起している。記録的な大雨をもたらす降水系では、雨の生産効率は高いと考えるのが自然であるが、必ずしもそうではないかもしれない。残念ながら、稀な事象についてその水収支を正確に推定するために必要なレベルの詳細な調査が行われることはほとんどない。</p>
+<p>また、降水効率の計算と地表の特定地点の降水量の測定で行われる面的・時間的平均化を区別する必要がある。ある地点での降雨データは、降水系が水蒸気を雨に変換する効率だけでなく、降水系の継続時間と動き、および主な降雨域に対する観測地点の位置も反映される (Ludlam 1980)。過渡的な条件下では、極端な降雨をもたらさない降水系であっても、1 分間に観測される降水強度が 1000 mm h^-1 を超える場合がある (Engelbrecht and Brancato 1959; Elford 1956; Ludlam 1980)。長時間の降雨 (例えば1時間以上) をもたらす降水系は、持続的な降雨をもたらす安定した流れパターンを持っている可能性が非常に高い。雨の形成の真の効率と、ある地点での降雨の総量を増加させる他の多くの要因とを分離することは、多くの場合非常に困難である。</p>
+<h2 id="cotton-et-al-2010"><a class="markdownIt-Anchor" href="#cotton-et-al-2010"></a> Cotton et al. (2010)</h2>
+<p>上空の弱い風と水平風の弱〜中程度の鉛直シアーの存在は、しばしば対流性の豪雨現象の特徴である (Maddox et al. 1979)。上空の弱い風は、暴風雨の動きを弱め、局地的な豪雨をもたらすが、上空の強い風は、暴風雨が強い風と共に移動するため、広い範囲に雨が広がる。対流性豪雨を発生させるための弱～中程度の風のシアの役割は、より複雑である。降水効率 (Precipitation efﬁciency) は、雲底の水蒸気流束に対する地表の降水量の比として定義される。強い鉛直シアーとともに発生する降水系は降水効率が低く、逆に弱い鉛直シアーと共に発生する降水系は降水効率が高いことが知られている (Marwitz 1972)。降水効率の定義は論文によって考え方とともに様々である。定義によっては、降水雲の寿命の初期段階では降水効率は 0 となる一方、衰退段階では 100% を超えてしまう場合がある (Market et al., 2003)。Doswell et al. (1996) は、降水系の寿命で平均した場合に降水効率こそが、意味のある降水効率の値となることを提案している。Market et al. (2003) は、計算する体積を移動する系で定義するとともに、系に相対的な風の場で降水効率を定義することが最も良いと提案している。降水効率の定義が異なること、航空機による観測とレーダーによる観測などデータ源が異なること、時間的・空間的平均が異なることなどから、異なる研究による降水効率の推定値を比較することは、多くの場合できない (Hobbs et al. 1980)。</p>
+<p>水平風の鉛直シアーは、降水系への周辺大気の空気を取り込みやすくし、降水系内部の活発な上昇気流・下降気流の対の形成に有効である。水平風の鉛直シアーが大きいと、下降気流による雲水の損失が大きく、対流圏上層への雲水の輸送割合が大きくなるため、降水系自体の降水効率は低下することが予想される。一方、水平風の鉛直シアーは、降水系への暖湿な空気の流入を増加させ、系の寿命を維持し、降水量の効率が低下しても、水平風の鉛直シアーの小さい環境よりも大量の降水が発生する可能性がある。降雨の生成には、総観スケール、メソスケール、積乱雲スケールの特徴だけでなく、積乱雲内部の微物理的特徴も重要である。一般に、大雨を降らせる降水系は、暖湿流の流入を前提とした系である。このような環境では、水蒸気混合比が高く、warm rain process (温かい雨) が非常に活発になる。もし気塊が海洋性 (CCN が低い) であったり、以前の降水でエアロゾルが除去されていたりすると、warm rain process が対流圏下層に集中する結果となる。このような状況は The Big Thompson storm (Caracena et al. 1979) で当てはまることが知られている。数値実験による研究では、warm rain process の優勢な雲は、cold rain process の優勢な雲よりも効率よく雨を降らせる雲となることが知られている (Levy and Cotton, 1985; Tripoli and Cotton, 1982)。大きな降水系で cold rain process が優勢になると、より多くの雲水が氷晶となって降水系のかなとこ雲領域へ押し上げられるのである。</p>
+<h1 id="様々な地域での降水効率"><a class="markdownIt-Anchor" href="#様々な地域での降水効率"></a> 様々な地域での降水効率</h1>
+<p>降水効率の計算過程や計算に用いるデータが論文によって異なるため、厳密にはそれらを比較することは出来ない。しかしながら、値を知っておくことは重要なので、見つけられた文献の範囲で地域・使用したデータ・計算方法を明記しつつ、降水効率の値を列挙する。</p>
+<ul>
+<li>Braham (1952)
+<ul>
+<li>Thunderstorm Project</li>
+<li>米国フロリダ州</li>
+<li>降水効率: 20% 未満 (事例毎に異なる)</li>
+</ul>
+</li>
+<li>Caracena et al. (1979)
+<ul>
+<li>The Big Thompson storm</li>
+<li>降水効率: 85%</li>
+</ul>
+</li>
+<li>Fankhauser (1982)
+<ul>
+<li>Cooperative Convective Precipitation Experiment (CCOPE): <a target="_blank" rel="noopener" href="https://www.eol.ucar.edu/field_projects/ccope">https://www.eol.ucar.edu/field_projects/ccope</a></li>
+<li>降水効率: 19〜47%</li>
+</ul>
+</li>
+<li>Shusse and Tsuboki (2006)
+<ul>
+<li>Global Energy and Water Cycle Experiment (GEWEX) Asian Monsoon Experiment (GAME) Huaihe River Basin Experiment (HUBEX)</li>
+<li>降水効率: 0.03〜9.31%</li>
+</ul>
+</li>
+<li>Murata et al. (2009)
+<ul>
+<li>日本国近畿地方南部</li>
+<li>降水効率: 40〜60%</li>
+</ul>
+</li>
+</ul>
+<h1 id="おわりに"><a class="markdownIt-Anchor" href="#おわりに"></a> おわりに</h1>
+<p>今回は、降水効率 (Precipitation Efficiency) について関連する文献のレビューとその具体的な値について調べた。</p>
+<h1 id="参考文献"><a class="markdownIt-Anchor" href="#参考文献"></a> 参考文献</h1>
+<ul>
+<li>Braham, R. R. Jr., 1952: The water and energy budgets of the thunderstorm and their relation to thunderstorm development. J. Meteor., 9, 227-242.</li>
+<li>Caracena, F., R. A. Maddox, L. R. Hoxit, and C. F. Chappell, 1979: Mesoanalysis of the Big Thompson storm. Mon. Wea. Rev., 107, 1-17.</li>
+<li>Cotton, W., G. Bryan, and S. van den Heever, 2010: Storm and Cloud dynamics 2nd ed. Academic Press, 820 pp.</li>
+<li>Doswell, C. A., III, H. E. Brooks, and R. A. Maddox, 1996: Flash flood forecasting: An ingredients-based methodology. Wea. Forecasting, 11, 560-581.</li>
+<li>Engelbrecht, H. H., and G. N. Brancato 1959: WORLD RECORD ONE-MINUTE RAINFALL AT UNIONVILLE, MARYLAND, Mon. Wea. Rev., 87, 303-306.</li>
+<li>Elford, C. R., 1956: A New One-Minute Rainfall Record. Mon. Wea. Rev., 84, 51-52.</li>
+<li>Fankhauser, J. C., 1988: Estimates of thunderstorm precipitation efficiency from field measurements in CCOPE. Mon. Wea. Rev., 116 , 663–684.</li>
+<li>Ferrier, B. S., J. Simpson, and W-K. Tao, 1996: Factors responsible for precipitation efficiencies in midlatitude and tropical squall simulations. Mon. Wea. Rev., 124, 2100-2125.</li>
+<li>Lamb, D., 2001: Rain production in convective storms. Severe Convective Storms, Meteor. Monogr., No. 50, Amer. Meteor. Soc., 299-321.</li>
+<li>Levy, G., and W. R. Cotton, 1984: A numerical investigation of mechanisms linking glaciation of the ice-phase to the boundary layer. J. Climate Appl. Meteor., 23, 1505-1519.</li>
+<li>Ludlam, F. H., 1980: Clouds and Storms. The Pennsylvania State University Press, 405 pp.</li>
+<li>Market, P., S. Allen, R. Scofield, R. Kuligowski, and A. Gruber, 2003: Precipitation efficiency of warm-season Midwestern mesoscale convective systems. Wea. Forecasting, 18, 1273-1285.</li>
+<li>Marwitz, J. D., 1972: Precipitation efficiency of thunderstorms on the High Plains. J. Res. Atmos., 6, 367-370.</li>
+<li>Murata et al., 2009: A Mechanism for Heavy Precipitation over the Kii Peninsula Accompanying Typhoon Meari (2004). J. Meteor. Soc. Japan, 87 101-117.</li>
+<li>Shusse, Y. and K. Tsuboki, 2006: Dimension Characteristics and Precipitation Efficiency of Cumulonimbus Clouds in the Region Far South from the Mei-Yu Front over the Eastern Asian Continent. Mon. Wea. Rev., 134, 1942-1953.</li>
+<li>Tripoli, G., and W. Cotton, 1982: The Colorado State University three-dimensional cloud/mesoscale model-1982. Part I: General theoretical framework and sensitivity experiments. J. Rech. Atmos., 16, 185-220.</li>
+</ul>
+</div><div class="article-footer"><a class="article-more" href="/blog/2022/08/05/#more">more>></a><div class="article-tags"><i class="fa fa-tag" aria-hidden="true"></i><a class="article-tag" href="/blog/tags/#Research%20paper">Research paper</a></div></div></div><div class="recent-post-item"><a class="article-title" href="/blog/2022/06/18/">降雨減衰補正 (ZPHI method)</a><time class="article-date"><i class="fa fa-calendar" aria-hidden="true"></i> 2022-06-18</time><div class="article-inner"><h1 id="はじめに"><a class="markdownIt-Anchor" href="#はじめに"></a> はじめに</h1>
 <a href="/blog/2021/08/28/" title="二重偏波レーダー変数の算出とその補正">二重偏波レーダー変数の算出とその補正</a>では、降水強度算出に関連するレーダー変数の算出方法とレーダー変数推定時にバイアスとなりうる要素に対する補正方法について具体例を示した。この中で降雨減衰補正を利用したものの、その内容を十分に把握できていなかった。そこで、本稿では降雨減衰補正 (主に ZPHI method) の内容を把握することを目的とする。
 <h1 id="zphi-method-の変遷"><a class="markdownIt-Anchor" href="#zphi-method-の変遷"></a> ZPHI method の変遷</h1>
 <p>降水によるマイクロ波放射の減衰は、反射強度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi></mrow><annotation encoding="application/x-tex">Z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">Z</span></span></span></span> と 反射因子差 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Z</mi><mrow><mi mathvariant="normal">D</mi><mi mathvariant="normal">R</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Z_{\rm DR}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">Z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">D</span><span class="mord mathrm mtight">R</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> の観測時 (特に C や X などの短い波長帯で) に顕著なバイアスとなりうる。降雨による減衰 (以後、降雨減衰) は、反射強度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi></mrow><annotation encoding="application/x-tex">Z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">Z</span></span></span></span> を用いた Hitschfeld and Bordan (1954) の解として単偏波レーダーの時代から推定されてきた。しかしながら、減衰が大きい場合には Hitschfeld and Bordan (1954) で得られる解は、非常に不安定となる。</p>
