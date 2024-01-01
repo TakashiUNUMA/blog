@@ -11,11 +11,11 @@
   <meta charset="utf-8">
 
   
-  <title>SONDE monitor</title>
+  <title>WordCloud による論文分析</title>
   
-  <link rel="canonical" href="https://takashiunuma.github.io/blog/2021/03/21/">
+  <link rel="canonical" href="https://takashiunuma.github.io/blog/2024/01/02/">
   
-  <meta name="description" content="高層気象観測の内、ラジオゾンデ観測データを定期的に取得し、それを自動で解析している (SONDE monitor)。2013年頃から始め、今のサーバーには (確か) 2019 年頃に移設した。大気状態が顕著な場合は、下記のように記録したりしている。 It has already exceeded 6">
+  <meta name="description" content="はじめに 学術論文を読む際、タイトルやアブストラクトを一読し、どんな内容か把握することが多い。学術誌によっては、キーワードが書いてあったりするので、それを参考にするのも良いだろう。また、文章内に登場する単語毎の頻度分布を作成し、その頻出する語によって文章の特徴を把握することも可能である。最近では、W">
   
   
   <meta name="author" content="Takashi Unuma">
@@ -24,21 +24,21 @@
   
   <meta property="og:site_name" content="Takashi Unuma&#39;s Blog" />
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="SONDE monitor" />
+  <meta property="og:title" content="WordCloud による論文分析" />
   
-  <meta property="og:description" content="高層気象観測の内、ラジオゾンデ観測データを定期的に取得し、それを自動で解析している (SONDE monitor)。2013年頃から始め、今のサーバーには (確か) 2019 年頃に移設した。大気状態が顕著な場合は、下記のように記録したりしている。 It has already exceeded 6">
+  <meta property="og:description" content="はじめに 学術論文を読む際、タイトルやアブストラクトを一読し、どんな内容か把握することが多い。学術誌によっては、キーワードが書いてあったりするので、それを参考にするのも良いだろう。また、文章内に登場する単語毎の頻度分布を作成し、その頻出する語によって文章の特徴を把握することも可能である。最近では、W">
   
-  <meta property="og:url" content="https://takashiunuma.github.io/blog/2021/03/21/" />
+  <meta property="og:url" content="https://takashiunuma.github.io/blog/2024/01/02/" />
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SONDE monitor">
+  <meta name="twitter:title" content="WordCloud による論文分析">
   
-  <meta name="twitter:description" content="高層気象観測の内、ラジオゾンデ観測データを定期的に取得し、それを自動で解析している (SONDE monitor)。2013年頃から始め、今のサーバーには (確か) 2019 年頃に移設した。大気状態が顕著な場合は、下記のように記録したりしている。 It has already exceeded 6">
-  
-  
+  <meta name="twitter:description" content="はじめに 学術論文を読む際、タイトルやアブストラクトを一読し、どんな内容か把握することが多い。学術誌によっては、キーワードが書いてあったりするので、それを参考にするのも良いだろう。また、文章内に登場する単語毎の頻度分布を作成し、その頻出する語によって文章の特徴を把握することも可能である。最近では、W">
   
   
-  <meta name="twitter:url" content="https://takashiunuma.github.io/blog/2021/03/21/" />
+  
+  
+  <meta name="twitter:url" content="https://takashiunuma.github.io/blog/2024/01/02/" />
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -164,16 +164,44 @@
 </div>
 
         <div class="trans">
-            <h1>SONDE monitor</h1>
+            <h1>WordCloud による論文分析</h1>
 
-  <p>高層気象観測の内、ラジオゾンデ観測データを定期的に取得し、それを自動で解析している (<a href="https://mvp.nomaki.jp/sonde/" title="" target="">SONDE monitor</a>)。2013年頃から始め、今のサーバーには (確か) 2019 年頃に移設した。大気状態が顕著な場合は、下記のように記録したりしている。</p>
-<blockquote><p>It has already exceeded 60 mm of precipitable water at Tateno point and water vapor flux at lower troposphere is larger than at least 250 g/m^2/s. These are one of the favorable conditions for a development of organized deep convections…</p>
-<footer><strong>@UNUSB</strong><cite><a target="_blank" rel="noopener" href="https://twitter.com/UNUSB/status/1182907278883602432">Link</a></cite></footer></blockquote>
-<p>ただ、これだけでは値の高低は分かっても、何が言いたいのかちょっと分かりにくいなぁと思うようになった。そこで、2019年11月25日に下記の変更を加えた。</p>
-<p>I have updated SONDE monitor page by adding two figures. One is precipitable water (PW), the other is convective available potential energy (CAPE). These figures are special; for example, a value of a location will turn to be highlighted (thick red color) if the value is higher than the climatological values obtained <a href="http://doi.org/10.1002/qj.2726" title="" target="">Unuma and Takemi (2016, QJ)</a>. The figures make us to easily understand the observed diagnostic value is higher or lower than the QSCC climatological value.</p>
-<p>要は、Unuma and Takemi (2016, QJ) で調べた、移動速度の遅い或いは停滞性の降水系発生時の環境条件よりも大きいかどうか、という観点を加えたことになる。単純には年平均値や気候値との比較なのだろうけれど、それだと雨が降っているか降っていないかの違いもあるので意外と単純ではない。引き続き、どのような観点であれば有益な情報となるか模索してゆく。</p>
+  <h1>はじめに</h1>
+<p>学術論文を読む際、タイトルやアブストラクトを一読し、どんな内容か把握することが多い。学術誌によっては、キーワードが書いてあったりするので、それを参考にするのも良いだろう。また、文章内に登場する単語毎の頻度分布を作成し、その頻出する語によって文章の特徴を把握することも可能である。最近では、<a target="_blank" rel="noopener" href="https://github.com/amueller/word_cloud">WordCloud</a> というものが Python ベースで利用可能となってきている。それを応用し、大気科学系の学術誌が出版されたら、URL を入力として論文内の単語を解析、その<a target="_blank" rel="noopener" href="https://github.com/dennissergeev/atmosscibot">単語の頻度分布を図化したものとともに X に投稿する</a>といった取り組みをしている方も居るようだ。ただし、XML や plain HTML を入力の想定としている。このため、既に持っている PDF 形式の文章や論文では解析が出来ないという課題があった。そこで、本稿では PDF 形式の文章でも行える WordCloud によるテキストマイニングについて紹介する。</p>
+<h1>準備</h1>
+<ul>
+<li>WordCloud のインストール
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/amueller/word_cloud">https://github.com/amueller/word_cloud</a> の README に沿う。</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dennissergeev/atmosscibot/tree/main/exclude_words">除外する単語のリスト</a>の用意
+<ul>
+<li>別のファイルを作成し、単語を追記しても良い。</li>
+</ul>
+</li>
+</ul>
+<h1>ソースコード</h1>
+<p>基本的には、<a target="_blank" rel="noopener" href="http://amueller.github.io/word_cloud/auto_examples/simple.html#sphx-glr-auto-examples-simple-py">こちら</a>を元にした。本家と違うところは、除外する単語のリストを読み込んでいるところと、PDF 形式の文章を <code>pdftotext</code> で TEXT 形式にしているところである。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> glob <span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> pdftotext</span><br><span class="line"><span class="keyword">from</span> wordcloud <span class="keyword">import</span> WordCloud, STOPWORDS</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 除外する単語のリストの設定</span></span><br><span class="line">exclude_words = <span class="built_in">list</span>(STOPWORDS)</span><br><span class="line">stopword_files = glob(os.path.join(<span class="string">&#x27;data/&#x27;</span>, <span class="string">&#x27;exclude_words/&#x27;</span>, <span class="string">&quot;*.txt&quot;</span>))</span><br><span class="line"><span class="keyword">for</span> fname <span class="keyword">in</span> stopword_files:</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(fname, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        exclude_words += f.read().split(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">exclude_words = <span class="built_in">set</span>(exclude_words)</span><br><span class="line"></span><br><span class="line"><span class="comment"># PDF データの取得 (例として Unuma et al. 2023 をダウンロード)</span></span><br><span class="line">!wget <span class="string">&#x27;https://www.jstage.jst.go.jp/article/sola/19/0/19_2023-020/_pdf/-char/en&#x27;</span> -O test.pdf</span><br><span class="line"></span><br><span class="line"><span class="comment"># PDF を読み込み、text 整形。</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;test.pdf&quot;</span>, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    pdf = pdftotext.PDF(f)</span><br><span class="line">text = []</span><br><span class="line"><span class="keyword">for</span> page <span class="keyword">in</span> pdf:</span><br><span class="line">    text.append(re.sub(<span class="string">&#x27;[0-9][0-9]&#x27;</span>, <span class="string">&#x27; &#x27;</span>, page).replace(<span class="string">&quot;\n&quot;</span>, <span class="string">&quot; &quot;</span>))</span><br><span class="line">text = <span class="string">&#x27;&#x27;</span>.join(text)</span><br><span class="line">text = re.sub(<span class="string">&#x27;[0-9]&#x27;</span>, <span class="string">&#x27; &#x27;</span>, text).replace(<span class="string">&#x27;      &#x27;</span>, <span class="string">&quot; &quot;</span>).replace(<span class="string">&#x27;     &#x27;</span>, <span class="string">&quot; &quot;</span>).replace(<span class="string">&#x27;    &#x27;</span>, <span class="string">&quot; &quot;</span>).replace(<span class="string">&#x27;   &#x27;</span>, <span class="string">&quot; &quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># WordCloud による解析・可視化</span></span><br><span class="line">wordcloud = WordCloud(stopwords=exclude_words, colormap=<span class="string">&#x27;cividis&#x27;</span>).generate(text)</span><br><span class="line">plt.imshow(wordcloud, interpolation=<span class="string">&#x27;bilinear&#x27;</span>)</span><br><span class="line">plt.axis(<span class="string">&quot;off&quot;</span>)</span><br><span class="line">plt.savefig(<span class="string">&#x27;skewt.png&#x27;</span>, bbox_inches=<span class="string">&#x27;tight&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h1>出力結果</h1>
+<p>図のような結果となる。使っている単語の数が多いものほど単語が大きく表示され、少ないものほど小さくなる。</p>
+<img src="/blog/2024/01/02/wordcloud.png" class="">
+<p>本当は raindrop size distribution で解析してほしかったのだが、raindrop size と size distribution で分割されてしまっている。ほか、著者名は除外リストに入れたほうが良いかもしれない。</p>
+<h1>おわりに</h1>
+<p>PDF 形式の文章でも、Wordcloud を用いてテキストマイニングをする方法について紹介した。</p>
+<h1>参考文献/URL</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/amueller/word_cloud">https://github.com/amueller/word_cloud</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dennissergeev/atmosscibot">https://github.com/dennissergeev/atmosscibot</a></li>
+<li>Unuma, T., H. Yamauchi, A. Umehara, and T. Kato, 2023: An equilibrium raindrop size distribution associated with a heavy-rain-producing convective system in Japan. SOLA, 19, 150−156, doi:10.2151/sola.2023-020.</li>
+</ul>
+<h1>更新履歴</h1>
+<ul>
+<li>2024-01-02: 初稿</li>
+</ul>
 
-  <p><a class="classtest-link" href="/blog/tags/Miscellaneous/" rel="tag">Miscellaneous</a> — 2021年3月21日</p>
+  <p><a class="classtest-link" href="/blog/tags/Miscellaneous/" rel="tag">Miscellaneous</a> — 2024年1月2日</p>
   
   <hr>
 <section id="comments" class="mt-2 mb-3">
@@ -184,9 +212,9 @@
 
   <script>
     var disqus_config = function() {
-      this.page.url = 'https://takashiunuma.github.io/blog/2021/03/21/index.html';
-      this.page.identifier = '2021/03/21/index.html';
-      this.page.title = 'SONDE monitor';
+      this.page.url = 'https://takashiunuma.github.io/blog/2024/01/02/index.html';
+      this.page.identifier = '2024/01/02/index.html';
+      this.page.title = 'WordCloud による論文分析';
     };
 
     var is_disqus_loaded = false;
