@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+  <!-- Minima -->
+  <!-- Hexo theme created by @adisaktijrs -->
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+
+  
+  <title>Spectral Bin Microphysics Model</title>
+  
+  <link rel="canonical" href="https://takashiunuma.github.io/blog/2024/01/19/">
+  
+  <meta name="description" content="はじめに これまでに、粒径分布とレーダー変数や粒径分布パラメータのレーダー変数による推定といった記事で、主に観測データに関連した話題を扱ってきた。観測データはスナップショットではあるものの、真値に近い状態を示す。一方、時間・空間分解能に制約があるために観測結果がどうしてそうなったのか、という要因の特">
+  
+  
+  <meta name="author" content="Takashi Unuma">
+  
+  
+  
+  <meta property="og:site_name" content="Takashi Unuma&#39;s Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Spectral Bin Microphysics Model" />
+  
+  <meta property="og:description" content="はじめに これまでに、粒径分布とレーダー変数や粒径分布パラメータのレーダー変数による推定といった記事で、主に観測データに関連した話題を扱ってきた。観測データはスナップショットではあるものの、真値に近い状態を示す。一方、時間・空間分解能に制約があるために観測結果がどうしてそうなったのか、という要因の特">
+  
+  <meta property="og:url" content="https://takashiunuma.github.io/blog/2024/01/19/" />
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Spectral Bin Microphysics Model">
+  
+  <meta name="twitter:description" content="はじめに これまでに、粒径分布とレーダー変数や粒径分布パラメータのレーダー変数による推定といった記事で、主に観測データに関連した話題を扱ってきた。観測データはスナップショットではあるものの、真値に近い状態を示す。一方、時間・空間分解能に制約があるために観測結果がどうしてそうなったのか、という要因の特">
+  
+  
+  
+  
+  <meta name="twitter:url" content="https://takashiunuma.github.io/blog/2024/01/19/" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Preload fonts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload" href="/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<link rel="stylesheet" href="/blog/css/normalize.css">
+
+  
+<link rel="stylesheet" href="/blog/css/skeleton.css">
+
+  
+<link rel="stylesheet" href="/blog/css/custom.css">
+
+  
+<link rel="stylesheet" href="/blog/css/prism-dark.css">
+
+  
+<link rel="stylesheet" href="/blog/css/prism-line-numbers.css">
+
+  <!-- User css -->
+  
+  
+<link rel="stylesheet" href="/blog/css/user.css">
+
+  
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/favicon.ico">
+
+  <!-- Custom Theme Color Style
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <style>
+  a:not(.icon) {
+    text-decoration-color: #0FA0CE;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      #0FA0CE 50%
+    );
+  }
+  blockquote {
+    border-left: 8px solid #0FA0CE;
+  }
+  .nanobar .bar {
+    background: #0FA0CE;
+  }
+  .button.button-primary:hover,
+  button.button-primary:hover,
+  input[type="submit"].button-primary:hover,
+  input[type="reset"].button-primary:hover,
+  input[type="button"].button-primary:hover,
+  .button.button-primary:focus,
+  button.button-primary:focus,
+  input[type="submit"].button-primary:focus,
+  input[type="reset"].button-primary:focus,
+  input[type="button"].button-primary:focus {
+    background-color: #0FA0CE;
+    border-color: #0FA0CE;
+  }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border: 1px solid #0FA0CE;
+  }
+</style>
+
+  <!-- Google Analytics (With Privacy Settings On)
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+
+  
+  <script src="/js/pic.min.js" defer></script>
+  
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/blog/atom.xml" title="Takashi Unuma's Blog" type="application/atom+xml">
+<link rel="alternate" href="/blog/rss2.xml" title="Takashi Unuma's Blog" type="application/rss+xml">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div>
+
+        <div class="row">
+  <div class="ten columns ml-1">
+    <h1 class="mt-2">
+      Takashi Unuma&#39;s blog.
+    </h1>
+  </div>
+
+  <div class="twelve columns">
+    <div class="row">
+      <div class="nine columns left">
+        <a href="/blog/">Home</a>
+        
+          
+          <a href="/blog/archives" class="ml">Archive</a>
+          
+        
+      </div>
+    </div>
+    <hr style="margin-bottom: 2.6rem">
+  </div>
+</div>
+
+        <div class="trans">
+            <h1>Spectral Bin Microphysics Model</h1>
+
+  <h2 id="はじめに">はじめに</h2>
+<p>これまでに、<a href="/2021/10/01/" title="粒径分布とレーダー変数">粒径分布とレーダー変数</a>や<a href="/2022/11/19/" title="粒径分布パラメータのレーダー変数による推定">粒径分布パラメータのレーダー変数による推定</a>といった記事で、主に観測データに関連した話題を扱ってきた。観測データはスナップショットではあるものの、真値に近い状態を示す。一方、時間・空間分解能に制約があるために観測結果がどうしてそうなったのか、という要因の特定には不向きな場合がある。その点を補うものとして、数値モデルによる素過程のシミュレーションや解析が挙げられる。中でも雲微物理過程は、雨や雲を扱う重要な物理過程である。計算コストの観点から、粒径分布は特定の関数で近似されたものが使われることが多い。一方、Spectral bin microphysics (SBM) model は、粒径毎の数濃度等を陽に解くものである。最近では、Hebrew University で開発された Cloud Model (Khain et al. 2004, 2008; HUCM) の spectral (bin) microphysics 部分を他の大気モデルへ移植したものが、利用可能になっている (e.g., Khain et al. 2011; Igel and van den Heever 2017)。本稿では、粒径分布の特徴を把握するためのツールの一つとして、WRF-SBM の利用と簡単な出力結果の描画を試みる。</p>
+<h2 id="WRF-model">WRF model</h2>
+<p><a target="_blank" rel="noopener" href="https://www.mmm.ucar.edu/models/wrf">Weather Research and Frecasting Model</a> (WRF) は、主に<a target="_blank" rel="noopener" href="https://ncar.ucar.edu/">米国大気研究センター</a>が開発している領域数値気象予報モデルである。WRF のバージョンは、2023年12月22日時点で 4.5.2 が最新版である (<a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/releases/tag/v4.5.2">参考</a>)。HUCM SBM は <code>mp_physics = 32</code> or <code>30</code> として実装されている。これらは、それぞれ FULL-SBM、FAST-SBM と呼ばれている。前者は計算時間を要するものの物理過程の厳密さを重視したバージョン、後者は前者を特定の現象に対してやや簡略化し計算コストを減少させたバージョンである。バージョン 4.4.1 以降、FAST-SBM のみ利用可能であり、FULL-SBM は利用不可となっている (<a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/commit/e0616d3ea35bb2e599db5d84d250874205924c70">参考</a>)。ここでは、計算速度よりも物理過程の正確さを重視することを目的とし、FULL-SBM が利用可能なバージョン 4.2.2 を用いることにした (<a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/releases/tag/v4.2">参考</a>)。</p>
+<h2 id="動作環境">動作環境</h2>
+<ul>
+<li>Rocky Linux 8.9 x86_64</li>
+<li>GNU compiler version 8.5.0</li>
+<li>NetCDF-C version 4.7.0</li>
+<li>NetCDF-Fortran version 4.5.2</li>
+<li>HDF5 version 1.10.5</li>
+<li>ZLIB version 1.2.11</li>
+<li>WRF version 4.2.2</li>
+</ul>
+<p>必要なライブラリは、<code>dnf install</code> した。</p>
+<h2 id="コンパイル">コンパイル</h2>
+<ul>
+<li><code>export NETCDF=/usr &amp;&amp; export HDF5=/usr</code>
+<ul>
+<li>事前に環境変数の指定が必要。</li>
+<li>場合によっては、 <code>export NETCDF_classic=1</code> も必要。</li>
+</ul>
+</li>
+<li><code>./configure</code>
+<ul>
+<li>34 番の GNU compiler smpar (OpenMP) を選択。</li>
+</ul>
+</li>
+</ul>
+<p><code>configure.wrf</code> の <code>LIB_EXTERNAL</code> に <code>-L/usr/lib64</code> を追記し、コンパイル。</p>
+<ul>
+<li><code>./compile em_quarter_ss</code></li>
+</ul>
+<p><code>main/</code> 以下に <code>ideal.exe</code> と <code>wrf.exe</code> が生成されていれば、コンパイル成功。</p>
+<h2 id="出力変数の追加">出力変数の追加</h2>
+<p>今回は、粒径分布の特徴を把握するためことを意図し、各 bin の変数を出力できるように修正を施す。出力変数を追加するには、<code>Registry</code> を編集するのが一番簡単。方法は下記。</p>
+<ul>
+<li><code>Registry/registry.sbm</code> の編集
+<ul>
+<li><code>ff?i??</code> を出力する。下2桁が bin 番号になっていて、bin 毎に変数が出力される。</li>
+<li>各変数の <code>h3rusdf=(bdy_interp:dt)</code> の部分を <code>hrusdf=(bdy_interp:dt)</code> にすると良い。
+<ul>
+<li>元の <code>h3</code> の <code>3</code> は I/O stream 番号 3、つまり Fortran でいうところの出力番号に相当。</li>
+<li>WRF では、主出力ファイルとは別名で変数を出力するオプションがある。</li>
+<li>詳細は<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=JVZlo8WyGfs">こちら</a>を参照。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>再コンパイル
+<ul>
+<li><code>Registry</code> を変更した場合、反映させるためには再コンパイルが必要。</li>
+<li><code>./clean &amp;&amp; ./compile em_quarter_ss</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="定数ファイルの準備">定数ファイルの準備</h2>
+<p>WRF で SBM を実行するには、追加の定数ファイルが必要となる。下記に従い、定数ファイルをダウンロード・展開・配置する。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/src/wrf_files/">こちら</a>から3つのファイルをダウンロードし、<code>test/em_quarter_ss/</code> 以下にそれぞれ展開・配置する。
+<ul>
+<li>SBM_input_33.tgz</li>
+<li>SBM_input_43.tgz</li>
+<li>SBM_scatter_amplit.tgz</li>
+</ul>
+</li>
+</ul>
+<h2 id="実行">実行</h2>
+<p>準備が出来たら、<code>namelist.input</code> を編集し、<code>ideal.exe</code>、<code>wrf.exe</code> の順に実行する。<br>
+今回は、ideal case = 2 の supercell 理想化実験を用いる。<code>namelist.input</code> で <code>mp_physics = 32</code> に変更し、雲微物理過程のみ用いる。計算領域は、mass point で 41x41x40 grid (水平方向 82 km、鉛直方向に 20 km)。モデル上端から 5 km までダンピング層を配置。<code>ideal.exe</code> を実行すると <code>wrfinput_d01</code> が出力され、その後 <code>wrf.exe</code> を実行すると <code>wrfout_d01_*</code> が出力される。</p>
+<h2 id="データの描画">データの描画</h2>
+<p>まず、初期プロファイルの <code>input_sounding</code> データを <a href="/2024/01/01/" title="Skew-T LogP plot by MetPy">Skew-T LogP plot by MetPy</a> の方法で描画する。ただし、<code>read_fwf</code> の引数に <code>infer_nrows=222</code> を追加する。理由は、<a target="_blank" rel="noopener" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_fwf.html">行数のデフォルト値が 100 に制限されている</a>ため。</p>
+<img src="/blog/2024/01/19/skewt.png" class="">
+<p>横軸は気温または露点温度 (degree C)、縦軸は気圧 (hPa)。黒実線で気温、青実線で露点温度、橙点線で持ち上げたパーセルの気温をそれぞれ示す、赤色の陰影で示される面積は、持ち上げたパーセルと周辺大気との気温差、すなわち対流有効位置エネルギー (CAPE) である。黒丸印は持ち上げ凝結高度 (LCL) を示す。<a href="/2024/01/01/" title="Skew-T LogP plot by MetPy">Skew-T LogP plot by MetPy</a> で示した例よりも赤色の陰影で示される面積が大きく、また、中層付近は乾燥している点も異なる。</p>
+<p>次に、WRF の出力結果 <code>wrfout_d01_*</code> を <a target="_blank" rel="noopener" href="https://github.com/NCAR/wrf-python">wrf-python</a> により描画する。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> netCDF4 <span class="keyword">import</span> Dataset</span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> wrf <span class="keyword">import</span> (to_np, getvar)</span><br><span class="line"></span><br><span class="line"><span class="comment"># WRF 出力ファイル指定</span></span><br><span class="line">ncfile = Dataset(<span class="string">&quot;wrfout_d01_0001-01-01_00:50:00&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># QRAIN 変数を取得</span></span><br><span class="line">qr = getvar(ncfile, <span class="string">&quot;QRAIN&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 描画開始 (xy 断面)</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">8</span>,<span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 雨水混合比の描画</span></span><br><span class="line">plt.contourf(to_np(qr[<span class="number">0</span>,<span class="number">15</span>:<span class="number">25</span>,<span class="number">15</span>:<span class="number">25</span>].west_east)+<span class="number">15</span>,</span><br><span class="line">             to_np(qr[<span class="number">0</span>,<span class="number">15</span>:<span class="number">25</span>,<span class="number">15</span>:<span class="number">25</span>].south_north)+<span class="number">15</span>,</span><br><span class="line">             to_np(qr[<span class="number">0</span>,<span class="number">15</span>:<span class="number">25</span>,<span class="number">15</span>:<span class="number">25</span>]),</span><br><span class="line">             <span class="number">10</span>,</span><br><span class="line">             cmap=matplotlib.colormaps.get_cmap(<span class="string">&quot;jet&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># カラーバー追加</span></span><br><span class="line">plt.colorbar(shrink=<span class="number">.98</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># タイトル描画</span></span><br><span class="line">plt.title(<span class="string">&quot;QRAIN (k = &quot;</span>+<span class="built_in">str</span>(kk)+<span class="string">&quot;)&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;west_east grid number&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;south_north grid number&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.grid()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 描画開始 (xz 断面)</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">8</span>,<span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 雨水混合比の描画</span></span><br><span class="line">plt.contourf(to_np(qr[:<span class="number">15</span>,<span class="number">22</span>,<span class="number">16</span>:<span class="number">23</span>].west_east)+<span class="number">16</span>,</span><br><span class="line">             to_np(qr[:<span class="number">15</span>,<span class="number">22</span>,<span class="number">16</span>:<span class="number">23</span>].bottom_top),</span><br><span class="line">             to_np(qr[:<span class="number">15</span>,<span class="number">22</span>,<span class="number">16</span>:<span class="number">23</span>]),</span><br><span class="line">             <span class="number">10</span>,</span><br><span class="line">             cmap=matplotlib.colormaps.get_cmap(<span class="string">&quot;jet&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># カラーバー追加</span></span><br><span class="line">plt.colorbar(shrink=<span class="number">.98</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># タイトル描画</span></span><br><span class="line">plt.title(qr.description + <span class="string">&quot; (&quot;</span> + qr.units + <span class="string">&quot;)&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;west_east grid number&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;bottom_top grid number&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.grid()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>計算開始 50 分後の雨水混合比の水平分布。グリッド位置 (19,22) で雨水混合比の極大値が計算されている。</p>
+<img src="/blog/2024/01/19/qr_xy.png" class="">
+<p>雨水混合比の y = 22 における x-z 断面。地上付近に計算されていた雨水混合比は、鉛直方向には一様ではなく高度とともに値が変化している。</p>
+<img src="/blog/2024/01/19/qr_xz.png" class="">
+<p>以後、QRAIN の極大値が計算されていた グリッド位置 (19,22) に着目する。</p>
+<h2 id="出力結果から粒径分布を計算">出力結果から粒径分布を計算</h2>
+<p>方針は下記の通り。</p>
+<ul>
+<li>定数ファイル読み込み
+<ul>
+<li>粒径 (<code>bulkradii.asc_s_0_03_0_9</code>)</li>
+<li>密度 (<code>bulkdens.asc_s_0_03_0_9</code>)</li>
+<li>質量 (<code>masses.asc</code>)</li>
+</ul>
+</li>
+<li>WRF の出力結果読み込み
+<ul>
+<li><code>wrf-python</code> で <code>ff1i01</code>-<code>ff1i33</code> を読み込み。</li>
+<li><code>xarray</code> の <code>dataarray</code> をまとめて <code>dataset</code> にする。</li>
+<li>粒径分布の計算し、粒径分布の描画。今回は、特定 grid の粒径分布を鉛直方向 4 grid 分を図示。</li>
+</ul>
+</li>
+</ul>
+<p>ソースコードは下記。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> netCDF4 <span class="keyword">import</span> Dataset</span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> wrf <span class="keyword">import</span> getvar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 粒径 (半径) [unit: cm] 定数データ読み込み</span></span><br><span class="line"><span class="comment"># index とカテゴリの対応は下記。</span></span><br><span class="line"><span class="comment">#  0: aerosol</span></span><br><span class="line"><span class="comment">#  1: cloud + rain</span></span><br><span class="line"><span class="comment">#  2: ice + snow</span></span><br><span class="line"><span class="comment">#  3: graupel + hail</span></span><br><span class="line"><span class="comment">#  4: snow</span></span><br><span class="line"><span class="comment">#  5: graupel</span></span><br><span class="line"><span class="comment">#  6: hail</span></span><br><span class="line">bulkradii = [[<span class="number">0</span>] * <span class="number">33</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">7</span>)]</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;bulkradii.asc_s_0_03_0_9&quot;</span>) <span class="keyword">as</span> f1:</span><br><span class="line">    k = <span class="number">0</span></span><br><span class="line">    j = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f1:</span><br><span class="line">        records = line.rstrip(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">        columns = records.split(<span class="string">&#x27; &#x27;</span>)[:]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(columns)):</span><br><span class="line">            <span class="keyword">if</span> (columns[i] != <span class="string">&#x27;&#x27;</span>):</span><br><span class="line">                bulkradii[k][j] = <span class="built_in">float</span>(columns[i])</span><br><span class="line">                j = j + <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> (j%<span class="number">33</span> == <span class="number">0</span>):</span><br><span class="line">                    j = <span class="number">0</span></span><br><span class="line">                    k = k + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 密度 [unit: g cm^-3] 定数データ読み込み</span></span><br><span class="line"><span class="comment"># index とカテゴリの対応は粒径と同じ。</span></span><br><span class="line">bulkdens = [[<span class="number">0</span>] * <span class="number">33</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">7</span>)]</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;bulkdens.asc_s_0_03_0_9&quot;</span>) <span class="keyword">as</span> f2:</span><br><span class="line">    k = <span class="number">0</span></span><br><span class="line">    j = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f2:</span><br><span class="line">        records = line.rstrip(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">        columns = records.split(<span class="string">&#x27; &#x27;</span>)[:]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(columns)):</span><br><span class="line">            <span class="keyword">if</span> (columns[i] != <span class="string">&#x27;&#x27;</span>):</span><br><span class="line">                bulkdens[k][j] = <span class="built_in">float</span>(columns[i])</span><br><span class="line">                j = j + <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> (j%<span class="number">33</span> == <span class="number">0</span>):</span><br><span class="line">                    j = <span class="number">0</span></span><br><span class="line">                    k = k + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 質量 [unit: g] 定数データ読み込み</span></span><br><span class="line"><span class="comment"># index とカテゴリの対応は粒径と同じ。</span></span><br><span class="line">masses = [[<span class="number">0</span>] * <span class="number">33</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">7</span>)]</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;masses.asc&quot;</span>) <span class="keyword">as</span> f3:</span><br><span class="line">    k = <span class="number">0</span></span><br><span class="line">    j = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f3:</span><br><span class="line">        records = line.rstrip(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">        columns = records.split(<span class="string">&#x27; &#x27;</span>)[:]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(columns)):</span><br><span class="line">            <span class="keyword">if</span> (columns[i] != <span class="string">&#x27;&#x27;</span>):</span><br><span class="line">                masses[k][j] = <span class="built_in">float</span>(columns[i])</span><br><span class="line">                j = j + <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> (j%<span class="number">33</span> == <span class="number">0</span>):</span><br><span class="line">                    j = <span class="number">0</span></span><br><span class="line">                    k = k + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># WRF 出力結果を読み込み</span></span><br><span class="line">ncfile = Dataset(<span class="string">&quot;wrfout_d01_0001-01-01_00:50:00&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 出力結果の cloud and rain bin データを xarray dataset に変換。</span></span><br><span class="line">vlist = [<span class="string">&#x27;ff1i01&#x27;</span>, <span class="string">&#x27;ff1i02&#x27;</span>, <span class="string">&#x27;ff1i03&#x27;</span>, <span class="string">&#x27;ff1i04&#x27;</span>, <span class="string">&#x27;ff1i05&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;ff1i06&#x27;</span>, <span class="string">&#x27;ff1i07&#x27;</span>, <span class="string">&#x27;ff1i08&#x27;</span>, <span class="string">&#x27;ff1i09&#x27;</span>, <span class="string">&#x27;ff1i10&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;ff1i11&#x27;</span>, <span class="string">&#x27;ff1i12&#x27;</span>, <span class="string">&#x27;ff1i13&#x27;</span>, <span class="string">&#x27;ff1i14&#x27;</span>, <span class="string">&#x27;ff1i15&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;ff1i16&#x27;</span>, <span class="string">&#x27;ff1i17&#x27;</span>, <span class="string">&#x27;ff1i18&#x27;</span>, <span class="string">&#x27;ff1i19&#x27;</span>, <span class="string">&#x27;ff1i20&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;ff1i21&#x27;</span>, <span class="string">&#x27;ff1i22&#x27;</span>, <span class="string">&#x27;ff1i23&#x27;</span>, <span class="string">&#x27;ff1i24&#x27;</span>, <span class="string">&#x27;ff1i25&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;ff1i26&#x27;</span>, <span class="string">&#x27;ff1i27&#x27;</span>, <span class="string">&#x27;ff1i28&#x27;</span>, <span class="string">&#x27;ff1i29&#x27;</span>, <span class="string">&#x27;ff1i30&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;ff1i31&#x27;</span>, <span class="string">&#x27;ff1i32&#x27;</span>, <span class="string">&#x27;ff1i33&#x27;</span>]</span><br><span class="line">xdsff1i = getvar(ncfile, <span class="string">&quot;ff1i01&quot;</span>)</span><br><span class="line">xdsff1i = xdsff1i.to_dataset()</span><br><span class="line"><span class="keyword">for</span> ivar <span class="keyword">in</span> vlist:</span><br><span class="line">    xdsff1i[ivar] = getvar(ncfile, ivar)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 粒径を半径から直径に、単位を cm から mm に、それぞれ変換。</span></span><br><span class="line">diameter = np.zeros((<span class="number">33</span>), <span class="built_in">float</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">33</span>):</span><br><span class="line">    diameter[i] = bulkradii[<span class="number">0</span>][i] * <span class="number">2.</span> * <span class="number">10.</span> <span class="comment"># unit: diameter in mm</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 特定グリッドの指定 (水平分布で極大値のあったグリッド)</span></span><br><span class="line">jj = <span class="number">22</span></span><br><span class="line">ii = <span class="number">19</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> kk <span class="keyword">in</span> [<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>]:</span><br><span class="line">    <span class="comment"># 粒径分布データ用の numpy array を初期化。</span></span><br><span class="line">    ff1i = np.zeros((<span class="number">33</span>), <span class="built_in">float</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 33 bin に分かれた変数を一つの numpy array に結合</span></span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> ivar <span class="keyword">in</span> vlist:</span><br><span class="line">        ff1i[i] = xdsff1i[ivar][kk,jj,ii].to_numpy()</span><br><span class="line">        i = i + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 粒形分布 N(D) [m^-3 mm^-1] 計算</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">33</span>):</span><br><span class="line">        <span class="comment"># unit: (kg kg^-1) (g^-1) (g cm^-3) (mm^-1)</span></span><br><span class="line">        <span class="comment">#    -&gt; (kg kg^-1) (kg^-1) (kg m^-3) (mm^-1)</span></span><br><span class="line">        <span class="comment">#    -&gt; m^-3 mm^-1 (多分これであっているはず)</span></span><br><span class="line">        ff1i[i] = (ff1i[i] / (masses[<span class="number">0</span>][i] * <span class="number">0.001</span>)) * (bulkdens[<span class="number">0</span>][i] * <span class="number">1000.</span>) / (diameter[i] * <span class="number">1000.</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 粒径分布データ描画。ただし、rain bin のみ。</span></span><br><span class="line">    plt.plot(diameter[<span class="number">16</span>:<span class="number">33</span>], ff1i[<span class="number">16</span>:<span class="number">33</span>], label=<span class="string">&quot;k = &quot;</span>+<span class="built_in">str</span>(kk))</span><br><span class="line">    plt.scatter(diameter[<span class="number">16</span>:<span class="number">33</span>], ff1i[<span class="number">16</span>:<span class="number">33</span>])</span><br><span class="line"></span><br><span class="line">plt.yscale(<span class="string">&#x27;log&#x27;</span>)</span><br><span class="line">plt.xlim(<span class="number">0</span>,<span class="number">6</span>)</span><br><span class="line">plt.ylim(<span class="number">0.01</span>, <span class="number">10000</span>)</span><br><span class="line"></span><br><span class="line">plt.title(<span class="string">&#x27;N(D) for rain at (&#x27;</span>+<span class="built_in">str</span>(ii)+<span class="string">&#x27;,&#x27;</span>+<span class="built_in">str</span>(jj)+<span class="string">&#x27;)&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Diameter (mm)&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Number concentration (mm$^&#123;-1&#125;$ m$^&#123;-3&#125;$)&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.grid()</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>粒形分布を確認すると、地上に近い (i.e., k = 0) ほど粒径 2 mm 未満の頻度が低く、上空 (i.e., k = 3) ほど頻度が高くなっている。一方、粒径 2 mm よりも大きい粒径は地上ほど頻度が高い。また、頻度のピークは、地上に近いほど複数 (粒径 0.26 mm, 0.51 mm, 1.62 mm) 現れる傾向にある。</p>
+<img src="/blog/2024/01/19/nd.png" class="">
+<p>鉛直分布を確認した時、雨水混合比の値は k = 8 を極大とし、地上に向かって減少していた。これは、粒形分布では第一近似として粒径 2 mm 未満の頻度が低くなっていたことに対応していると考えられる。雨水混合比としては減少する一方、粒径 2 mm 以上の頻度が僅かながら高くなっていた。このことは、雨滴同士の衝突併合によって雨粒が地上に向かって成長している可能性を示唆する。このように、粒形分布を確認することで雨の特徴をより多角的に捉えることが可能となる。</p>
+<h2 id="おわりに">おわりに</h2>
+<p>今回は、WRF-SBM を用いた粒形分布の解析例を示した。実は、十数年前に WRF モデルの version 3 系列を利用したことがあった。その当時よりも利用可能なオプションが格段に増えており、使い勝手もとてもよくなっていると感じた。特に、描画を Python で行える点は、近年の流行を追っていて舌を巻く。当時は大雨を再現するだけでなく出力結果の解析にも時間と労力を費やしていたが、今後はそんな苦労も少なくなるだろうか。</p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li>wrf-model: <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF">https://github.com/wrf-model/WRF</a></li>
+<li>wrf-python: <a target="_blank" rel="noopener" href="https://github.com/NCAR/wrf-python">https://github.com/NCAR/wrf-python</a></li>
+<li>Khain, A. P., A. Pokrovsky, M. Pinsky, A. Seifert, and V. Phillips, 2004: Effects of atmospheric aerosols on deep convective clouds as seen from simulations using a spectral microphysics mixed-phase cumulus cloud model. Part I: Model description. J. Atmos. Sci., 61, 2963–2982.</li>
+<li>Khain, A. P., N. Benmoshe, and A. Pokrovsky, 2008: Factors determining the impact of aerosols on surface precipitation from clouds: An attempt at classification. J. Atmos. Sci., 65, 1721–1748.</li>
+<li>Khain, A. P., D. Rosenfeld, A. Pokrovsky, U. Blahak, and A. Ryzhkov, 2011: The role of CCN in precipitation and hail in a midlatitude storm as seen in simulations using a spectral (bin) microphysics model in a 2D dynamic frame. Atmos. Res., 99, 129–146.</li>
+<li>Igel, A. L., and S. C. van den Heever, 2017: The role of the gamma function shape parameter in determining differences between condensation rates in bin and bulk microphysics schemes. Atmos. Chem. Phys., 17, 4599–4609.</li>
+</ul>
+<h2 id="更新履歴">更新履歴</h2>
+<ul>
+<li>2024-01-19: 初稿</li>
+</ul>
+
+  <p><a class="classtest-link" href="/blog/tags/Miscellaneous/" rel="tag">Miscellaneous</a> — 2024年1月19日</p>
+  
+  <hr>
+<section id="comments" class="mt-2 mb-3">
+
+  <div id="disqus_thread">
+    <a href="#" class="button button-primary" onclick="loadDisqus();return false;">View / Make Comments</a>
+  </div>
+
+  <script>
+    var disqus_config = function() {
+      this.page.url = 'https://takashiunuma.github.io/blog/2024/01/19/index.html';
+      this.page.identifier = '2024/01/19/index.html';
+      this.page.title = 'Spectral Bin Microphysics Model';
+    };
+
+    var is_disqus_loaded = false;
+
+    function loadDisqus() {
+      if (!is_disqus_loaded) {
+        is_disqus_loaded = true;
+
+        var d = document,
+          s = d.createElement('script');
+        s.src = 'https://unusblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+    }
+
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+        </div>
+        <div class="row mt-2">
+  
+    <div class="eight columns">
+      <p id="madewith">Made with ❤ and
+        <a class="footer-link icon" href="https://hexo.io" target="_blank" style="text-decoration: none;" rel="noreferrer" aria-label="Hexo.io">
+        <svg class="hexo svg-hov" width="14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hexo.js</title><path d="M12 .007L1.57 6.056V18.05L12 23.995l10.43-6.049V5.952L12 .007zm4.798 17.105l-.939.521-.939-.521V12.94H9.08v4.172l-.94.521-.938-.521V6.89l.939-.521.939.521v4.172h5.84V6.89l.94-.521.938.521v10.222z"/></svg>
+        </a>
+        
+        at <a href="https://scholar.google.co.jp/citations?user=8PamjYsAAAAJ" target="_blank" rel="noreferrer">Japan</a>.</p>
+        
+    </div>
+
+    <!-- Sepcial thanks to https://simpleicons.org/ for the icons -->
+    <div class="four columns mb-3 posisi" >
+      
+      <a class="ml-0 footer-link icon" href="https://github.com/TakashiUNUMA" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="GitHub">
+        <svg class="github svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://www.linkedin.com/in/takashiunuma/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="LinkedIn">
+        <svg class="linkedin svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>LinkedIn</title><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://twitter.com/UNUSB" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Twitter">
+        <svg class="twitter svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Twitter</title><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://www.instagram.com/unusb/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Instagram">
+        <svg class="instagram svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+      </a>
+      
+
+      
+
+    </div>
+  
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <script src="/js/nanobar.min.js"></script>
+
+  <script>
+    var options = {
+      classname: 'nanobar',
+      id: 'myNanobar'
+    };
+    var nanobar = new Nanobar(options);
+    nanobar.go(30);
+    nanobar.go(76);
+    nanobar.go(100);
+  </script>
+
+</body>
+
+</html>
