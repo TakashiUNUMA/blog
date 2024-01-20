@@ -15,7 +15,7 @@
   
   <link rel="canonical" href="https://takashiunuma.github.io/blog/2024/01/20/">
   
-  <meta name="description" content="はじめに 前回、Spectral Bin Microphysics Model にて、気象数値モデルを用いた粒形分布の計算例を示した。以前、粒径分布とレーダー変数で示したように、レーダー変数もまた粒形分布から計算できる。そこで、今回は Spectral Bin Microphysics Model ">
+  <meta name="description" content="はじめに 前回、Spectral Bin Microphysics Model にて、気象数値モデルを用いた粒形分布の計算例を示した。以前、粒径分布とレーダー変数で示したように、レーダー変数もまた粒形分布から計算可能である。そこで、今回は Spectral Bin Microphysics Mode">
   
   
   <meta name="author" content="Takashi Unuma">
@@ -26,14 +26,14 @@
   <meta property="og:type" content="article" />
   <meta property="og:title" content="Polarimetric Radar Observation Operator" />
   
-  <meta property="og:description" content="はじめに 前回、Spectral Bin Microphysics Model にて、気象数値モデルを用いた粒形分布の計算例を示した。以前、粒径分布とレーダー変数で示したように、レーダー変数もまた粒形分布から計算できる。そこで、今回は Spectral Bin Microphysics Model ">
+  <meta property="og:description" content="はじめに 前回、Spectral Bin Microphysics Model にて、気象数値モデルを用いた粒形分布の計算例を示した。以前、粒径分布とレーダー変数で示したように、レーダー変数もまた粒形分布から計算可能である。そこで、今回は Spectral Bin Microphysics Mode">
   
   <meta property="og:url" content="https://takashiunuma.github.io/blog/2024/01/20/" />
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Polarimetric Radar Observation Operator">
   
-  <meta name="twitter:description" content="はじめに 前回、Spectral Bin Microphysics Model にて、気象数値モデルを用いた粒形分布の計算例を示した。以前、粒径分布とレーダー変数で示したように、レーダー変数もまた粒形分布から計算できる。そこで、今回は Spectral Bin Microphysics Model ">
+  <meta name="twitter:description" content="はじめに 前回、Spectral Bin Microphysics Model にて、気象数値モデルを用いた粒形分布の計算例を示した。以前、粒径分布とレーダー変数で示したように、レーダー変数もまた粒形分布から計算可能である。そこで、今回は Spectral Bin Microphysics Mode">
   
   
   
@@ -75,7 +75,7 @@
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" href="/blog/images/favicon.ico">
 
   <!-- Custom Theme Color Style
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -125,14 +125,14 @@
   
 
   
-  <script src="/js/pic.min.js" defer></script>
+  <script src="/blog/js/pic.min.js" defer></script>
   
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/blog/atom.xml" title="Takashi Unuma's Blog" type="application/atom+xml">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/blog/atom.xml" title="Takashi Unuma's Blog" type="application/atom+xml">
 <link rel="alternate" href="/blog/rss2.xml" title="Takashi Unuma's Blog" type="application/rss+xml">
 </head>
 
@@ -167,12 +167,75 @@
             <h1>Polarimetric Radar Observation Operator</h1>
 
   <h2 id="はじめに">はじめに</h2>
-<p>前回、<a href="/blog/2024/01/19/">Spectral Bin Microphysics Model</a> にて、気象数値モデルを用いた粒形分布の計算例を示した。以前、<a href="/blog/2021/10/01/">粒径分布とレーダー変数</a>で示したように、レーダー変数もまた粒形分布から計算できる。そこで、今回は <a href="/blog/2024/01/19/">Spectral Bin Microphysics Model</a> で出力したデータを用い、レーダー変数を計算・描画することを試みる。</p>
+<p>前回、<a href="/blog/2024/01/19/">Spectral Bin Microphysics Model</a> にて、気象数値モデルを用いた粒形分布の計算例を示した。以前、<a href="/blog/2021/10/01/">粒径分布とレーダー変数</a>で示したように、レーダー変数もまた粒形分布から計算可能である。そこで、今回は <a href="/blog/2024/01/19/">Spectral Bin Microphysics Model</a> で出力したデータを用い、レーダー変数を計算・描画することを試みる。</p>
 <h2 id="Cloud-Resolving-Model-Radar-Simulator">Cloud Resolving Model Radar Simulator</h2>
 <p>雲解像モデルを用いたレーダー変数の計算は、いくつかの方法が提案されている。最近では、パッケージ化されたものが開発されてきている。中でも Cloud Resolving Model Radar Simulator (<a target="_blank" rel="noopener" href="https://you.stonybrook.edu/radar/research/radar-simulators/">CR-SIM</a>; Oue et al. 2020) は、GNU PUBLIC LICENSE で利用可能なツールの一つである。2020年6月20日時点の最新版は 3.33 となっている。<a target="_blank" rel="noopener" href="https://you.stonybrook.edu/radar/research/radar-simulators/">Stony Brook University の Web ページ</a>からダウンロードが可能。ただし、ファイルサイズが約 13 GB と少々大きいので、ダウンロード時の回線速度やパケット容量に注意が必要。今回は、レーダー変数の計算に必要なコアパッケージ <code>crsim-3.33.tar.gz</code> のみをダウンロードした。</p>
 <h2 id="プログラムの修正">プログラムの修正</h2>
 <p>tar.gz ファイルを展開後、そのままコンパイルするだけではエラーを吐くので、下記を修正する。</p>
-<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">diff --git a/share/crsim/test/Makefile.in b/share/crsim/test/Makefile.in</span></span><br><span class="line"><span class="comment">index 3b862a3..1fb76f5 100644</span></span><br><span class="line"><span class="comment">--- a/share/crsim/test/Makefile.in</span></span><br><span class="line"><span class="comment">+++ b/share/crsim/test/Makefile.in</span></span><br><span class="line"><span class="meta">@@ -195,21 +195,19 @@</span> target_alias = @target_alias@</span><br><span class="line"> top_build_prefix = @top_build_prefix@</span><br><span class="line"> top_builddir = @top_builddir@</span><br><span class="line"> top_srcdir = @top_srcdir@</span><br><span class="line"><span class="deletion">-TESTS = run_test1.sh run_test2.sh run_test3.sh run_test4.sh</span></span><br><span class="line"><span class="addition">+TESTS = run_test1.sh run_test2.sh run_test3.sh</span></span><br><span class="line"> EXTRA_DIST = run_test1.sh.in \</span><br><span class="line">              run_test2.sh.in \</span><br><span class="line"><span class="deletion">-             run_test3.sh.in \</span></span><br><span class="line"><span class="deletion">-             run_test4.sh.in</span></span><br><span class="line"><span class="addition">+             run_test3.sh.in</span></span><br><span class="line"></span><br><span class="line"> auxdir = $(datadir)/crsim/test</span><br><span class="line"> ddir = .$(pwd)</span><br><span class="line"> edit = sed -e &#x27;s|@nccmp[@]|$(NCCMP)|g&#x27;</span><br><span class="line"> nobase_dist_aux_DATA = run_test1.sh \</span><br><span class="line">                         run_test2.sh \</span><br><span class="line"><span class="deletion">-                        run_test3.sh \</span></span><br><span class="line"><span class="deletion">-                        run_test4.sh</span></span><br><span class="line"><span class="addition">+                        run_test3.sh</span></span><br><span class="line"></span><br><span class="line"><span class="deletion">-CLEANFILES = run_test1.sh run_test2.sh run_test3.sh run_test4.sh</span></span><br><span class="line"><span class="addition">+CLEANFILES = run_test1.sh run_test2.sh run_test3.sh</span></span><br><span class="line"> all: all-am</span><br><span class="line"></span><br><span class="line"> .SUFFIXES:</span><br><span class="line"><span class="meta">@@ -522,21 +520,16 @@</span> run_test2.sh: run_test2.sh.in Makefile</span><br><span class="line"> run_test3.sh: run_test3.sh.in Makefile</span><br><span class="line">        $(edit) &#x27;$(srcdir)/$@.in&#x27; &gt; $@</span><br><span class="line">        chmod 755 run_test3.sh</span><br><span class="line"><span class="deletion">-run_test4.sh: run_test4.sh.in Makefile</span></span><br><span class="line"><span class="deletion">-       $(edit) &#x27;$(srcdir)/$@.in&#x27; &gt; $@</span></span><br><span class="line"><span class="deletion">-       chmod 755 run_test4.sh</span></span><br><span class="line"></span><br><span class="line"> install-data-hook:</span><br><span class="line">        chmod a+rx $(auxdir)/run_test1.sh</span><br><span class="line">        chmod a+rx $(auxdir)/run_test2.sh</span><br><span class="line">        chmod a+rx $(auxdir)/run_test3.sh</span><br><span class="line"><span class="deletion">-       chmod a+rx $(auxdir)/run_test4.sh</span></span><br><span class="line"></span><br><span class="line"> installcheck-local:</span><br><span class="line">        cd $(auxdir) &amp;&amp; sh run_test1.sh</span><br><span class="line">        cd $(auxdir) &amp;&amp; sh run_test2.sh</span><br><span class="line">        cd $(auxdir) &amp;&amp; sh run_test3.sh</span><br><span class="line"><span class="deletion">-       cd $(auxdir) &amp;&amp; sh run_test4.sh</span></span><br><span class="line"></span><br><span class="line"> # Tell versions [3.59,3.63) of GNU make to not export all variables.</span><br><span class="line"> # Otherwise a system limit (for SysV at least) may be exceeded.</span><br><span class="line"><span class="comment">diff --git a/src/crsim_subrs.f90 b/src/crsim_subrs.f90</span></span><br><span class="line"><span class="comment">index 4539fe4..9c9120b 100644</span></span><br><span class="line"><span class="comment">--- a/src/crsim_subrs.f90</span></span><br><span class="line"><span class="comment">+++ b/src/crsim_subrs.f90</span></span><br><span class="line"><span class="meta">@@ -4023,6 +4023,7 @@</span></span><br><span class="line">       if (conf%MP_PHYSICS==9)  den_string=&#x27;800&#x27; !changed by oue because mpl lut does not includes 840 2017/12/08</span><br><span class="line">       if (conf%MP_PHYSICS==10) den_string=&#x27;500&#x27;</span><br><span class="line">       if (conf%MP_PHYSICS==8)  den_string=&#x27;900&#x27; !Added by oue 2016/09/16: Note that Thopmson scheme assumes ice density of 890</span><br><span class="line"><span class="addition">+      if (conf%MP_PHYSICS==20)  den_string=&#x27;400&#x27; !Added for HUCM SBM</span></span><br><span class="line">       if (conf%MP_PHYSICS==30)  den_string=&#x27;400&#x27; !Added by oue 2017/07/17:</span><br><span class="line">       if (conf%MP_PHYSICS==40)  den_string=&#x27;400&#x27; !Added by oue 2017/07/21:</span><br><span class="line">       if (conf%MP_PHYSICS==50)  den_string=&#x27;900&#x27; !Added by DW for P3</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-diff" data-language="diff"><code class="language-diff">diff --git a/share/crsim/test/Makefile.in b/share/crsim/test/Makefile.in
+index 3b862a3..1fb76f5 100644
+<span class="token coord">--- a/share/crsim/test/Makefile.in</span>
+<span class="token coord">+++ b/share/crsim/test/Makefile.in</span>
+@@ -195,21 +195,19 @@ target_alias = @target_alias@
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">top_build_prefix = @top_build_prefix@
+</span><span class="token prefix unchanged"> </span><span class="token line">top_builddir = @top_builddir@
+</span><span class="token prefix unchanged"> </span><span class="token line">top_srcdir = @top_srcdir@
+</span></span><span class="token deleted-sign deleted"><span class="token prefix deleted">-</span><span class="token line">TESTS = run_test1.sh run_test2.sh run_test3.sh run_test4.sh
+</span></span><span class="token inserted-sign inserted"><span class="token prefix inserted">+</span><span class="token line">TESTS = run_test1.sh run_test2.sh run_test3.sh
+</span></span><span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">EXTRA_DIST = run_test1.sh.in \
+</span><span class="token prefix unchanged"> </span><span class="token line">             run_test2.sh.in \
+</span></span><span class="token deleted-sign deleted"><span class="token prefix deleted">-</span><span class="token line">             run_test3.sh.in \
+</span><span class="token prefix deleted">-</span><span class="token line">             run_test4.sh.in
+</span></span><span class="token inserted-sign inserted"><span class="token prefix inserted">+</span><span class="token line">             run_test3.sh.in
+</span></span>
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">auxdir = $(datadir)/crsim/test
+</span><span class="token prefix unchanged"> </span><span class="token line">ddir = .$(pwd)
+</span><span class="token prefix unchanged"> </span><span class="token line">edit = sed -e 's|@nccmp[@]|$(NCCMP)|g'
+</span><span class="token prefix unchanged"> </span><span class="token line">nobase_dist_aux_DATA = run_test1.sh \
+</span><span class="token prefix unchanged"> </span><span class="token line">                        run_test2.sh \
+</span></span><span class="token deleted-sign deleted"><span class="token prefix deleted">-</span><span class="token line">                        run_test3.sh \
+</span><span class="token prefix deleted">-</span><span class="token line">                        run_test4.sh
+</span></span><span class="token inserted-sign inserted"><span class="token prefix inserted">+</span><span class="token line">                        run_test3.sh
+</span></span>
+<span class="token deleted-sign deleted"><span class="token prefix deleted">-</span><span class="token line">CLEANFILES = run_test1.sh run_test2.sh run_test3.sh run_test4.sh
+</span></span><span class="token inserted-sign inserted"><span class="token prefix inserted">+</span><span class="token line">CLEANFILES = run_test1.sh run_test2.sh run_test3.sh
+</span></span><span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">all: all-am
+</span></span>
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">.SUFFIXES:
+</span></span>@@ -522,21 +520,16 @@ run_test2.sh: run_test2.sh.in Makefile
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">run_test3.sh: run_test3.sh.in Makefile
+</span><span class="token prefix unchanged"> </span><span class="token line">       $(edit) '$(srcdir)/$@.in' > $@
+</span><span class="token prefix unchanged"> </span><span class="token line">       chmod 755 run_test3.sh
+</span></span><span class="token deleted-sign deleted"><span class="token prefix deleted">-</span><span class="token line">run_test4.sh: run_test4.sh.in Makefile
+</span><span class="token prefix deleted">-</span><span class="token line">       $(edit) '$(srcdir)/$@.in' > $@
+</span><span class="token prefix deleted">-</span><span class="token line">       chmod 755 run_test4.sh
+</span></span>
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">install-data-hook:
+</span><span class="token prefix unchanged"> </span><span class="token line">       chmod a+rx $(auxdir)/run_test1.sh
+</span><span class="token prefix unchanged"> </span><span class="token line">       chmod a+rx $(auxdir)/run_test2.sh
+</span><span class="token prefix unchanged"> </span><span class="token line">       chmod a+rx $(auxdir)/run_test3.sh
+</span></span><span class="token deleted-sign deleted"><span class="token prefix deleted">-</span><span class="token line">       chmod a+rx $(auxdir)/run_test4.sh
+</span></span>
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">installcheck-local:
+</span><span class="token prefix unchanged"> </span><span class="token line">       cd $(auxdir) &amp;&amp; sh run_test1.sh
+</span><span class="token prefix unchanged"> </span><span class="token line">       cd $(auxdir) &amp;&amp; sh run_test2.sh
+</span><span class="token prefix unchanged"> </span><span class="token line">       cd $(auxdir) &amp;&amp; sh run_test3.sh
+</span></span><span class="token deleted-sign deleted"><span class="token prefix deleted">-</span><span class="token line">       cd $(auxdir) &amp;&amp; sh run_test4.sh
+</span></span>
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line"># Tell versions [3.59,3.63) of GNU make to not export all variables.
+</span><span class="token prefix unchanged"> </span><span class="token line"># Otherwise a system limit (for SysV at least) may be exceeded.
+</span></span>diff --git a/src/crsim_subrs.f90 b/src/crsim_subrs.f90
+index 4539fe4..9c9120b 100644
+<span class="token coord">--- a/src/crsim_subrs.f90</span>
+<span class="token coord">+++ b/src/crsim_subrs.f90</span>
+<span class="token coord">@@ -4023,6 +4023,7 @@</span>
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">      if (conf%MP_PHYSICS==9)  den_string='800' !changed by oue because mpl lut does not includes 840 2017/12/08
+</span><span class="token prefix unchanged"> </span><span class="token line">      if (conf%MP_PHYSICS==10) den_string='500'
+</span><span class="token prefix unchanged"> </span><span class="token line">      if (conf%MP_PHYSICS==8)  den_string='900' !Added by oue 2016/09/16: Note that Thopmson scheme assumes ice density of 890
+</span></span><span class="token inserted-sign inserted"><span class="token prefix inserted">+</span><span class="token line">      if (conf%MP_PHYSICS==20)  den_string='400' !Added for HUCM SBM
+</span></span><span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">      if (conf%MP_PHYSICS==30)  den_string='400' !Added by oue 2017/07/17:
+</span><span class="token prefix unchanged"> </span><span class="token line">      if (conf%MP_PHYSICS==40)  den_string='400' !Added by oue 2017/07/21:
+</span><span class="token prefix unchanged"> </span><span class="token line">      if (conf%MP_PHYSICS==50)  den_string='900' !Added by DW for P3</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>Makefile.in</code> の <code>run_test4.sh</code> はテスト用のサンプルデータが同梱されておらず実行不可だったので、除外した。また、WRF-SBM の結果を用いる場合、条件分岐に抜けがあったので暫定値を追加した。</p>
 <h2 id="動作環境">動作環境</h2>
 <ul>
@@ -204,18 +267,120 @@
 <ul>
 <li><code>make install</code></li>
 </ul>
-<p>指定したディレクトリ以下に <code>bin</code> <code>etc</code> <code>share</code> がそれぞれ出来ていれば OK。</p>
+<p>指定したディレクトリ以下に <code>bin/</code> <code>etc/</code> <code>share/</code> がそれぞれあれば OK。</p>
 <h2 id="パラメーターファイル">パラメーターファイル</h2>
 <p><code>PARAMETERS</code> に設定を書き込む仕様となっている。サンプルファイルは、インストール先の <code>etc</code> 以下にある。以下、今回利用するパラメーター例。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"># PARAMETERS CR-SIM v3.2x</span><br><span class="line"># speccify the number of OpenMP threads used in the code (integer, OMPThreadNum)</span><br><span class="line">1</span><br><span class="line"># specify the starting and ending indices of domain and desired saved time step: ix_start,ix_end, iy_start,iy_end, iz_start,iz_end,it. If negative, all points in specific direction are used( 1-&gt; nx, 1-&gt; ny, 1-&gt;nz, respectivelly.</span><br><span class="line">1,41</span><br><span class="line">1,41</span><br><span class="line">1,40    # iz_start,iz_end</span><br><span class="line">1       # it</span><br><span class="line"># specify the microphysics Morrison 10, JFan 20, Milbranndt-Yau 9 with snow spherical,optionally 901 for Milbranndt-Yau with snow not spherical, P3 50, and Thompson 8 (modified by DW)</span><br><span class="line">20</span><br><span class="line"># specify the indices of radar position ixc,iyc. if ixc=-999, radar locations are every grid box at iyc, iyc=-999, radar locations are every grid box at ixc.</span><br><span class="line">20,20</span><br><span class="line"># specify the height of radar in meters</span><br><span class="line">1000.d0</span><br><span class="line">#Specify the file of ice PSD parameters for P3 microphysics scheme (added by DW)</span><br><span class="line">#&quot;./../aux/p3_ice_psd_para_lookup_table.dat&quot; #(added by DW)</span><br><span class="line">#assign the scattering type to each hydrometeor (5 lines for MP_PHYSICS=10,20; 6 lines for MP_PHYSICS=9 and 50). Order has to be 1-cloud, 2-rain, 3-ice, 4-snow, 5-graupel and 6 -hail. (For P3, order has to be 1-cloud, 2-rain, 3-small ice, 4-unrimed ice, 5-graupel and 6-partial rimed ice.) (modified by DW)</span><br><span class="line">&quot;cloud&quot;</span><br><span class="line">&quot;rainb&quot;</span><br><span class="line">&quot;ice_ar0.20&quot;</span><br><span class="line">&quot;snow_ar0.60&quot;</span><br><span class="line">&quot;gh_ryzh&quot;</span><br><span class="line">#assign the minimum thresholds of the input mixing ratio for the radar simulation. The input values of mixing ratios &lt;= specified threshold will be set to 0. Order has to be 1-cloud, 2-rain, 3-ice, 4-snow, 5-graupel and 6 -hail. (For P3, order has to be 1-cloud, 2-rain, 3-small ice, 4-unrimed ice, 5-graupel and 6-partial rimed ice.) (modified by DW)</span><br><span class="line">1.d-8</span><br><span class="line">1.d-8</span><br><span class="line">1.d-11</span><br><span class="line">1.d-11</span><br><span class="line">1.d-8</span><br><span class="line"># horienID (integer),sigma(double precis.) for each hydrometeor category  - choice of orientation distribution (1=chaotic,2=random orientation in the horizontal plane, 3=2D Gaussian with zero mean and sigma standard deviation). In the case those values are negative, the default value are used. If horienID /=3, sigma values are disregarded.Order has to be 1-cloud, 2-rain, 3-ice, 4-snow, 5-graupel (and 6 -hail). (For P3, order has to be 1-cloud, 2-rain, 3-small ice, 4-unrimed ice, 5-graupel and 6-partial rimed ice.) (modified by DW)</span><br><span class="line">3,10.d0</span><br><span class="line">3,10.d0</span><br><span class="line">3,10.d0</span><br><span class="line">3,40.d0</span><br><span class="line">3,40.d0</span><br><span class="line"># Specify radar frequency (3.0d0, 5.5d0, 9.5d0, 35.0d0, 94.0d0)</span><br><span class="line">5.5d0</span><br><span class="line"># Specify elevation, if this ranges from -90 to 90, elevation has a fixed value; if -999, elevation of each pixel is relative to radar origin given by indices (ixc,iyc)</span><br><span class="line">0.7d0</span><br><span class="line">##turn off the polaraimetric variables : yes ==1 , any other number no</span><br><span class="line">0</span><br><span class="line"># Specify radar beamwidth ( i.e one-way angular resolution Theta1) in degrees</span><br><span class="line">0.1d0</span><br><span class="line"># Specify the radar range resolution dr in meters (= (c Tau) / 2 )</span><br><span class="line">250.d0</span><br><span class="line"># Specify value of coefficient ZMIN in relation dBZ_min(dBZ)=ZMIN(dBZ)+20 log10(range in km)</span><br><span class="line">-50.d0</span><br><span class="line"># Introduce cloud lidar (ceilometer,fr=905 nm) ceiloID=0 no; =1 yes</span><br><span class="line">0</span><br><span class="line"># Introduce micropulse lidar (MPL) mplID =1 for 353 nm, mplID =2 for 532 nm, or do not include MPL simulations,mplID&lt;=0</span><br><span class="line">0</span><br><span class="line"># Whether to include an average aerosol profile in MPL simulation (aeroID=1), or not (aeroID=0)</span><br><span class="line">2</span><br><span class="line"># Value of desired  optical  to normalize the aerosol ext profile, if negative, do not normalize</span><br><span class="line">0.1d0</span><br><span class="line"># fixed value for aerosol lidar ratio aero_lidar_ratio</span><br><span class="line">30.d0</span><br><span class="line"># Introduce Doppler spectra (spectraID=1: yes; /=1:  no)</span><br><span class="line">0</span><br><span class="line"># Post Processing: Produce ARSCL variables : arsclID=1 yes; any other number no. arsclID=1 works with ceiloID=1 and mplID&gt;0</span><br><span class="line">0</span><br><span class="line"># Post Processing: Produce microwave radiometer liquid water path taking account of field of view ARSCL variables : mwrID=1 yes; any other number no.</span><br><span class="line">0</span><br><span class="line"># Post Processing: Microwave radiometer field of view in degree</span><br><span class="line">5.9</span><br><span class="line"># Post Processing: Altitude of Microwave radiometer location in m</span><br><span class="line">0.0</span><br><span class="line">#</span><br></pre></td></tr></table></figure>
-<p>計算領域は、入力に使用する WRF-SBM の mass point でのグリッド数に併せる。レーダーの設定は、気象庁の C バンドレーダーを想定し、5.5 GHz 帯に変更。Micropulse lidar, Doppler spectra, Microwave radiometer の計算は無しに変更。</p>
+<pre class="line-numbers language-none"><code class="language-none"># PARAMETERS CR-SIM v3.2x
+# speccify the number of OpenMP threads used in the code (integer, OMPThreadNum)
+1
+# specify the starting and ending indices of domain and desired saved time step: ix_start,ix_end, iy_start,iy_end, iz_start,iz_end,it. If negative, all points in specific direction are used( 1-&gt; nx, 1-&gt; ny, 1-&gt;nz, respectivelly.
+1,41
+1,41
+1,40    # iz_start,iz_end
+1       # it
+# specify the microphysics Morrison 10, JFan 20, Milbranndt-Yau 9 with snow spherical,optionally 901 for Milbranndt-Yau with snow not spherical, P3 50, and Thompson 8 (modified by DW)
+20
+# specify the indices of radar position ixc,iyc. if ixc&#x3D;-999, radar locations are every grid box at iyc, iyc&#x3D;-999, radar locations are every grid box at ixc.
+20,20
+# specify the height of radar in meters
+1000.d0
+#Specify the file of ice PSD parameters for P3 microphysics scheme (added by DW)
+#&quot;.&#x2F;..&#x2F;aux&#x2F;p3_ice_psd_para_lookup_table.dat&quot; #(added by DW)
+#assign the scattering type to each hydrometeor (5 lines for MP_PHYSICS&#x3D;10,20; 6 lines for MP_PHYSICS&#x3D;9 and 50). Order has to be 1-cloud, 2-rain, 3-ice, 4-snow, 5-graupel and 6 -hail. (For P3, order has to be 1-cloud, 2-rain, 3-small ice, 4-unrimed ice, 5-graupel and 6-partial rimed ice.) (modified by DW)
+&quot;cloud&quot;
+&quot;rainb&quot;
+&quot;ice_ar0.20&quot;
+&quot;snow_ar0.60&quot;
+&quot;gh_ryzh&quot;
+#assign the minimum thresholds of the input mixing ratio for the radar simulation. The input values of mixing ratios &lt;&#x3D; specified threshold will be set to 0. Order has to be 1-cloud, 2-rain, 3-ice, 4-snow, 5-graupel and 6 -hail. (For P3, order has to be 1-cloud, 2-rain, 3-small ice, 4-unrimed ice, 5-graupel and 6-partial rimed ice.) (modified by DW)
+1.d-8
+1.d-8
+1.d-11
+1.d-11
+1.d-8
+# horienID (integer),sigma(double precis.) for each hydrometeor category  - choice of orientation distribution (1&#x3D;chaotic,2&#x3D;random orientation in the horizontal plane, 3&#x3D;2D Gaussian with zero mean and sigma standard deviation). In the case those values are negative, the default value are used. If horienID &#x2F;&#x3D;3, sigma values are disregarded.Order has to be 1-cloud, 2-rain, 3-ice, 4-snow, 5-graupel (and 6 -hail). (For P3, order has to be 1-cloud, 2-rain, 3-small ice, 4-unrimed ice, 5-graupel and 6-partial rimed ice.) (modified by DW)
+3,10.d0
+3,10.d0
+3,10.d0
+3,40.d0
+3,40.d0
+# Specify radar frequency (3.0d0, 5.5d0, 9.5d0, 35.0d0, 94.0d0)
+5.5d0
+# Specify elevation, if this ranges from -90 to 90, elevation has a fixed value; if -999, elevation of each pixel is relative to radar origin given by indices (ixc,iyc)
+0.7d0
+##turn off the polaraimetric variables : yes &#x3D;&#x3D;1 , any other number no
+0
+# Specify radar beamwidth ( i.e one-way angular resolution Theta1) in degrees
+0.1d0
+# Specify the radar range resolution dr in meters (&#x3D; (c Tau) &#x2F; 2 )
+250.d0
+# Specify value of coefficient ZMIN in relation dBZ_min(dBZ)&#x3D;ZMIN(dBZ)+20 log10(range in km)
+-50.d0
+# Introduce cloud lidar (ceilometer,fr&#x3D;905 nm) ceiloID&#x3D;0 no; &#x3D;1 yes
+0
+# Introduce micropulse lidar (MPL) mplID &#x3D;1 for 353 nm, mplID &#x3D;2 for 532 nm, or do not include MPL simulations,mplID&lt;&#x3D;0
+0
+# Whether to include an average aerosol profile in MPL simulation (aeroID&#x3D;1), or not (aeroID&#x3D;0)
+2
+# Value of desired  optical  to normalize the aerosol ext profile, if negative, do not normalize
+0.1d0
+# fixed value for aerosol lidar ratio aero_lidar_ratio
+30.d0
+# Introduce Doppler spectra (spectraID&#x3D;1: yes; &#x2F;&#x3D;1:  no)
+0
+# Post Processing: Produce ARSCL variables : arsclID&#x3D;1 yes; any other number no. arsclID&#x3D;1 works with ceiloID&#x3D;1 and mplID&gt;0
+0
+# Post Processing: Produce microwave radiometer liquid water path taking account of field of view ARSCL variables : mwrID&#x3D;1 yes; any other number no.
+0
+# Post Processing: Microwave radiometer field of view in degree
+5.9
+# Post Processing: Altitude of Microwave radiometer location in m
+0.0
+#<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>計算領域は、入力に使用する WRF-SBM の mass point でのグリッド数に合わせる。レーダーの設定は、気象庁の C バンドレーダーを想定し、5.5 GHz に変更。Micropulse lidar, Doppler spectra, Microwave radiometer の計算は無しに変更。</p>
 <h2 id="実行">実行</h2>
 <p>下記を実行する。引数には、上記で用意したパラメーターファイル、WRF-SBM の出力ファイル、CR-SIM 計算結果の出力ファイル名をそれぞれ指定する。</p>
 <p><code>./crsim PARAMETERS wrfout_d01_0001-01-01_00:50:00 wrfout_d01_005000.nc</code></p>
-<p>実行すると、計算結果の出力ファイル名で、全カテゴリをまとめたもの、雲・雨・雪・氷・雹の各カテゴリに分けたものがそれぞれ出力される。</p>
+<p>実行すると、計算結果の出力ファイル名で、全カテゴリをまとめたもの、雲・雨・雪・氷・雹の各カテゴリに分けたものがそれぞれ出力される。詳細は User Guide を参照されたし。</p>
 <h2 id="データの描画">データの描画</h2>
 <p>今回は、雨 (rain) のデータを可視化してみる。データの読み込みには <code>xarray</code> を用いた。以下、サンプルコード。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="keyword">import</span> pyart</span><br><span class="line"></span><br><span class="line"><span class="comment"># データを xarray で読み込み</span></span><br><span class="line">ds = xr.open_dataset(<span class="string">&quot;wrfout_d01_005000_rain.nc&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 水平偏波反射強度 Zhh (dBZ) の水平断面 (k = 0)</span></span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line">ds.Zhh[<span class="number">0</span>,:,:].plot(ax=ax, cmap=pyart.graph.cm_colorblind.HomeyerRainbow, vmin=-<span class="number">25</span>, vmax=<span class="number">65</span>)</span><br><span class="line">ax.set_xlim(<span class="number">15</span>,<span class="number">24</span>)</span><br><span class="line">ax.set_ylim(<span class="number">15</span>,<span class="number">24</span>)</span><br><span class="line">ax.set_title(<span class="string">&#x27;$Z_&#123;H&#125;$ (k = 0)&#x27;</span>)</span><br><span class="line">ax.grid()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 水平偏波反射強度 ZH (dBZ) の鉛直断面 (j = 22)</span></span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line">ds.Zhh[:,<span class="number">22</span>,:].plot(ax=ax, cmap=pyart.graph.cm_colorblind.HomeyerRainbow, vmin=-<span class="number">25</span>, vmax=<span class="number">65</span>)</span><br><span class="line">ax.set_xlim(<span class="number">16</span>,<span class="number">22</span>)</span><br><span class="line">ax.set_ylim(<span class="number">0</span>,<span class="number">14</span>)</span><br><span class="line">ax.set_title(<span class="string">&#x27;$Z_&#123;H&#125;$ (j = 22)&#x27;</span>)</span><br><span class="line">ax.grid()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 反射因子差 ZDR (dB) の鉛直断面 (j = 22)</span></span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line">ds.Zdr[:,<span class="number">22</span>,:].plot(ax=ax, cmap=pyart.graph.cm.RefDiff, vmin=-<span class="number">3</span>, vmax=<span class="number">6</span>)</span><br><span class="line">ax.set_xlim(<span class="number">16</span>,<span class="number">22</span>)</span><br><span class="line">ax.set_ylim(<span class="number">0</span>,<span class="number">14</span>)</span><br><span class="line">ax.set_title(<span class="string">&#x27;$Z_\mathrm&#123;DR&#125;$ (j = 22)&#x27;</span>)</span><br><span class="line">ax.grid()</span><br><span class="line"></span><br><span class="line">fig, axs = plt.subplots(ncols=<span class="number">2</span>)</span><br><span class="line">ds.Zhh[:<span class="number">11</span>,<span class="number">22</span>,<span class="number">19</span>].plot(y=<span class="string">&#x27;nz&#x27;</span>, ax=axs[<span class="number">0</span>])</span><br><span class="line">axs[<span class="number">0</span>].grid()</span><br><span class="line">ds.Zdr[:<span class="number">11</span>,<span class="number">22</span>,<span class="number">19</span>].plot(y=<span class="string">&#x27;nz&#x27;</span>, ax=axs[<span class="number">1</span>])</span><br><span class="line">axs[<span class="number">1</span>].set_ylabel(<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">axs[<span class="number">1</span>].grid()</span><br><span class="line">fig.suptitle(<span class="string">&#x27;Vertical profiles of polarimetric retreivals&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> xarray <span class="token keyword">as</span> xr
+<span class="token keyword">import</span> pyart
+
+<span class="token comment"># データを xarray で読み込み</span>
+ds <span class="token operator">=</span> xr<span class="token punctuation">.</span>open_dataset<span class="token punctuation">(</span><span class="token string">"wrfout_d01_005000_rain.nc"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 水平偏波反射強度 Zhh (dBZ) の水平断面 (k = 0)</span>
+fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">.</span>Zhh<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>plot<span class="token punctuation">(</span>ax<span class="token operator">=</span>ax<span class="token punctuation">,</span> cmap<span class="token operator">=</span>pyart<span class="token punctuation">.</span>graph<span class="token punctuation">.</span>cm_colorblind<span class="token punctuation">.</span>HomeyerRainbow<span class="token punctuation">,</span> vmin<span class="token operator">=</span><span class="token operator">-</span><span class="token number">25</span><span class="token punctuation">,</span> vmax<span class="token operator">=</span><span class="token number">65</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_xlim<span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">24</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_ylim<span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">24</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_title<span class="token punctuation">(</span><span class="token string">'$Z_&#123;H&#125;$ (k = 0)'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>grid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 水平偏波反射強度 ZH (dBZ) の鉛直断面 (j = 22)</span>
+fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">.</span>Zhh<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>plot<span class="token punctuation">(</span>ax<span class="token operator">=</span>ax<span class="token punctuation">,</span> cmap<span class="token operator">=</span>pyart<span class="token punctuation">.</span>graph<span class="token punctuation">.</span>cm_colorblind<span class="token punctuation">.</span>HomeyerRainbow<span class="token punctuation">,</span> vmin<span class="token operator">=</span><span class="token operator">-</span><span class="token number">25</span><span class="token punctuation">,</span> vmax<span class="token operator">=</span><span class="token number">65</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_xlim<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_ylim<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">14</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_title<span class="token punctuation">(</span><span class="token string">'$Z_&#123;H&#125;$ (j = 22)'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>grid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 反射因子差 ZDR (dB) の鉛直断面 (j = 22)</span>
+fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">.</span>Zdr<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>plot<span class="token punctuation">(</span>ax<span class="token operator">=</span>ax<span class="token punctuation">,</span> cmap<span class="token operator">=</span>pyart<span class="token punctuation">.</span>graph<span class="token punctuation">.</span>cm<span class="token punctuation">.</span>RefDiff<span class="token punctuation">,</span> vmin<span class="token operator">=</span><span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">,</span> vmax<span class="token operator">=</span><span class="token number">6</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_xlim<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_ylim<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">14</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_title<span class="token punctuation">(</span><span class="token string">'$Z_\mathrm&#123;DR&#125;$ (j = 22)'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>grid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+fig<span class="token punctuation">,</span> axs <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span>ncols<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">.</span>Zhh<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">,</span><span class="token number">19</span><span class="token punctuation">]</span><span class="token punctuation">.</span>plot<span class="token punctuation">(</span>y<span class="token operator">=</span><span class="token string">'nz'</span><span class="token punctuation">,</span> ax<span class="token operator">=</span>axs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+axs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>grid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">.</span>Zdr<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">,</span><span class="token number">19</span><span class="token punctuation">]</span><span class="token punctuation">.</span>plot<span class="token punctuation">(</span>y<span class="token operator">=</span><span class="token string">'nz'</span><span class="token punctuation">,</span> ax<span class="token operator">=</span>axs<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+axs<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>set_ylabel<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+axs<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>grid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+fig<span class="token punctuation">.</span>suptitle<span class="token punctuation">(</span><span class="token string">'Vertical profiles of polarimetric retreivals'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>まず、<a href="/blog/2024/01/19/">Spectral Bin Microphysics Model</a> で確認した雨水混合比と同じ領域で、計算した水平偏波反射強度の水平分布を確認した。反射強度で見てもだいたい同じ位置で値のピークがある。</p>
 <img src="/blog/2024/01/20/zhh_h.png" class="">
 <p>次に、y = 22 に沿った断面を示す。ここでは、水平偏波反射強度と反射因子差を示す。z = 10 がだいたい高度 5 km に相当する。Zhh &gt; 30 dBZ の領域が x = 19 付近で 5 km を超えて分布している。同じ断面を反射因子差で見ると、反射強度の高い領域とは少しずれた部分に ZDR &gt; 3 dB となる分布が計算されている。</p>
@@ -321,7 +486,7 @@
     </div>
 
   </div>
-  <script src="/js/nanobar.min.js"></script>
+  <script src="/blog/js/nanobar.min.js"></script>
 
   <script>
     var options = {

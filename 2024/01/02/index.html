@@ -75,7 +75,7 @@
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" href="/blog/images/favicon.ico">
 
   <!-- Custom Theme Color Style
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -125,14 +125,14 @@
   
 
   
-  <script src="/js/pic.min.js" defer></script>
+  <script src="/blog/js/pic.min.js" defer></script>
   
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/blog/atom.xml" title="Takashi Unuma's Blog" type="application/atom+xml">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/blog/atom.xml" title="Takashi Unuma's Blog" type="application/atom+xml">
 <link rel="alternate" href="/blog/rss2.xml" title="Takashi Unuma's Blog" type="application/rss+xml">
 </head>
 
@@ -183,7 +183,38 @@
 </ul>
 <h1>ソースコード</h1>
 <p>基本的には、<a target="_blank" rel="noopener" href="http://amueller.github.io/word_cloud/auto_examples/simple.html#sphx-glr-auto-examples-simple-py">こちら</a>を元にした。本家と違うところは、除外する単語のリストを読み込んでいるところと、PDF 形式の文章を <code>pdftotext</code> で TEXT 形式にしているところである。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> glob <span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> pdftotext</span><br><span class="line"><span class="keyword">from</span> wordcloud <span class="keyword">import</span> WordCloud, STOPWORDS</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 除外する単語のリストの設定</span></span><br><span class="line">exclude_words = <span class="built_in">list</span>(STOPWORDS)</span><br><span class="line">stopword_files = glob(os.path.join(<span class="string">&#x27;data/&#x27;</span>, <span class="string">&#x27;exclude_words/&#x27;</span>, <span class="string">&quot;*.txt&quot;</span>))</span><br><span class="line"><span class="keyword">for</span> fname <span class="keyword">in</span> stopword_files:</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(fname, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        exclude_words += f.read().split(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">exclude_words = <span class="built_in">set</span>(exclude_words)</span><br><span class="line"></span><br><span class="line"><span class="comment"># PDF データの取得 (例として Unuma et al. 2023 をダウンロード)</span></span><br><span class="line">!wget <span class="string">&#x27;https://www.jstage.jst.go.jp/article/sola/19/0/19_2023-020/_pdf/-char/en&#x27;</span> -O test.pdf</span><br><span class="line"></span><br><span class="line"><span class="comment"># PDF を読み込み、text 整形。</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;test.pdf&quot;</span>, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    pdf = pdftotext.PDF(f)</span><br><span class="line">text = []</span><br><span class="line"><span class="keyword">for</span> page <span class="keyword">in</span> pdf:</span><br><span class="line">    text.append(re.sub(<span class="string">&#x27;[0-9][0-9]&#x27;</span>, <span class="string">&#x27; &#x27;</span>, page).replace(<span class="string">&quot;\n&quot;</span>, <span class="string">&quot; &quot;</span>))</span><br><span class="line">text = <span class="string">&#x27;&#x27;</span>.join(text)</span><br><span class="line">text = re.sub(<span class="string">&#x27;[0-9]&#x27;</span>, <span class="string">&#x27; &#x27;</span>, text).replace(<span class="string">&#x27;      &#x27;</span>, <span class="string">&quot; &quot;</span>).replace(<span class="string">&#x27;     &#x27;</span>, <span class="string">&quot; &quot;</span>).replace(<span class="string">&#x27;    &#x27;</span>, <span class="string">&quot; &quot;</span>).replace(<span class="string">&#x27;   &#x27;</span>, <span class="string">&quot; &quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># WordCloud による解析・可視化</span></span><br><span class="line">wordcloud = WordCloud(stopwords=exclude_words, colormap=<span class="string">&#x27;cividis&#x27;</span>).generate(text)</span><br><span class="line">plt.imshow(wordcloud, interpolation=<span class="string">&#x27;bilinear&#x27;</span>)</span><br><span class="line">plt.axis(<span class="string">&quot;off&quot;</span>)</span><br><span class="line">plt.savefig(<span class="string">&#x27;skewt.png&#x27;</span>, bbox_inches=<span class="string">&#x27;tight&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
+<span class="token keyword">import</span> re
+<span class="token keyword">from</span> glob <span class="token keyword">import</span> glob
+<span class="token keyword">import</span> pdftotext
+<span class="token keyword">from</span> wordcloud <span class="token keyword">import</span> WordCloud<span class="token punctuation">,</span> STOPWORDS
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+
+<span class="token comment"># 除外する単語のリストの設定</span>
+exclude_words <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span>STOPWORDS<span class="token punctuation">)</span>
+stopword_files <span class="token operator">=</span> glob<span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token string">'data/'</span><span class="token punctuation">,</span> <span class="token string">'exclude_words/'</span><span class="token punctuation">,</span> <span class="token string">"*.txt"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> fname <span class="token keyword">in</span> stopword_files<span class="token punctuation">:</span>
+    <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>fname<span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+        exclude_words <span class="token operator">+=</span> f<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span>
+exclude_words <span class="token operator">=</span> <span class="token builtin">set</span><span class="token punctuation">(</span>exclude_words<span class="token punctuation">)</span>
+
+<span class="token comment"># PDF データの取得 (例として Unuma et al. 2023 をダウンロード)</span>
+!wget <span class="token string">'https://www.jstage.jst.go.jp/article/sola/19/0/19_2023-020/_pdf/-char/en'</span> <span class="token operator">-</span>O test<span class="token punctuation">.</span>pdf
+
+<span class="token comment"># PDF を読み込み、text 整形。</span>
+<span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"test.pdf"</span><span class="token punctuation">,</span> <span class="token string">"rb"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    pdf <span class="token operator">=</span> pdftotext<span class="token punctuation">.</span>PDF<span class="token punctuation">(</span>f<span class="token punctuation">)</span>
+text <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> page <span class="token keyword">in</span> pdf<span class="token punctuation">:</span>
+    text<span class="token punctuation">.</span>append<span class="token punctuation">(</span>re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">'[0-9][0-9]'</span><span class="token punctuation">,</span> <span class="token string">' '</span><span class="token punctuation">,</span> page<span class="token punctuation">)</span><span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+text <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+text <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span><span class="token string">'[0-9]'</span><span class="token punctuation">,</span> <span class="token string">' '</span><span class="token punctuation">,</span> text<span class="token punctuation">)</span><span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'      '</span><span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'     '</span><span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'    '</span><span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'   '</span><span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">)</span>
+
+<span class="token comment"># WordCloud による解析・可視化</span>
+wordcloud <span class="token operator">=</span> WordCloud<span class="token punctuation">(</span>stopwords<span class="token operator">=</span>exclude_words<span class="token punctuation">,</span> colormap<span class="token operator">=</span><span class="token string">'cividis'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>generate<span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span>wordcloud<span class="token punctuation">,</span> interpolation<span class="token operator">=</span><span class="token string">'bilinear'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>axis<span class="token punctuation">(</span><span class="token string">"off"</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>savefig<span class="token punctuation">(</span><span class="token string">'skewt.png'</span><span class="token punctuation">,</span> bbox_inches<span class="token operator">=</span><span class="token string">'tight'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1>出力結果</h1>
 <p>図のような結果となる。使っている単語の数が多いものほど単語が大きく表示され、少ないものほど小さくなる。</p>
 <img src="/blog/2024/01/02/wordcloud.png" class="">
@@ -287,7 +318,7 @@
     </div>
 
   </div>
-  <script src="/js/nanobar.min.js"></script>
+  <script src="/blog/js/nanobar.min.js"></script>
 
   <script>
     var options = {

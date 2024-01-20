@@ -75,7 +75,7 @@
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" href="/blog/images/favicon.ico">
 
   <!-- Custom Theme Color Style
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -125,14 +125,14 @@
   
 
   
-  <script src="/js/pic.min.js" defer></script>
+  <script src="/blog/js/pic.min.js" defer></script>
   
 
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/blog/atom.xml" title="Takashi Unuma's Blog" type="application/atom+xml">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/blog/atom.xml" title="Takashi Unuma's Blog" type="application/atom+xml">
 <link rel="alternate" href="/blog/rss2.xml" title="Takashi Unuma's Blog" type="application/rss+xml">
 </head>
 
@@ -171,7 +171,7 @@
 　データの形式については、複数地点を集約した離散的なデータとなるためひと工夫必要となる。気象レーダー・ライダーの観測値や数値予報モデルなどは格子点データなので <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/GRIB">GRIB</a> 形式で格納される場合が多い。一方、地上観測データの場合は離散的な地点データとなるため、主に格子点データを扱う GRIB 形式ではデータを格納しづらくなる。このような非格子点形式のデータを表現するために <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/BUFR">BUFR</a> 形式が採用されている。気象庁では、地上観測データ (気象庁内外含む) は本庁で集約・品質管理され、<a target="_blank" rel="noopener" href="https://www.data.jma.go.jp/gmd/risk/obsdl/index.php">気象庁HP</a>や<a target="_blank" rel="noopener" href="http://www.jmbsc.or.jp/jp/online/file/f-online33100.html">気象業務支援センター</a>で公開される。気象庁HPでは csv フォーマットで任意の日時・要素のデータが取得可能になっており、とても便利になった。こちらについては特に言及しない。他方、気象業務支援センターで公開されているデータは、前述の BUFR 形式であり実際に扱ってみるとなかなか苦労した。本稿は BUFR 形式データをデコードし、そのデータを用いて地理空間分布を描くところまでの備忘録である。</p>
 <h1>データの入手</h1>
 <p>気象業務支援センターでは、<a target="_blank" rel="noopener" href="http://www.jmbsc.or.jp/jp/online/c-onlineGsample.html">実際に配信されたデータによるサンプル提供</a>のページでサンプルデータが公開されている。この中から<a target="_blank" rel="noopener" href="http://www.jmbsc-west.jp/jp/online/online-sample/OBS/OBS_AMDSxx_Rjp_Nx.zip">地域気象観測報</a>を選びダウンロードする。圧縮ファイルを展開すると2020年02月13日 15:10 UTC ～ 2020年02月14日 15:00 UTC のデータが入っている。この中から、下記のデータを例にデコードしてみる。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OBS_AMDSxx_Rjp_Nx/AMDS/Z__C_RJTD_20200214000000_OBS_AMDS_Rjp_N2_bufr4.bin</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">OBS_AMDSxx_Rjp_Nx&#x2F;AMDS&#x2F;Z__C_RJTD_20200214000000_OBS_AMDS_Rjp_N2_bufr4.bin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h1>フォーマット読解</h1>
 <p>気象業務支援センターから得たサンプルデータは、BUFR version 4 形式となっている。<a target="_blank" rel="noopener" href="http://www.jmbsc.or.jp/jp/online/file/f-online33100.html">気象業務支援センターのページ</a>に配信資料に関する技術資料 (気象編) 第273号という資料があり、<a target="_blank" rel="noopener" href="https://www.data.jma.go.jp/suishin/jyouhou/pdf/273.pdf">これ</a>を参照しながらデコードする。もっと詳しい資料として、<a target="_blank" rel="noopener" href="https://www.jma.go.jp/jma/kishou/books/tsuhoshiki/tsuhoshiki.html">国際気象通報式・別冊</a>というものがあり、これも読解に役立つ。</p>
 <h2 id="プログラム">プログラム</h2>
@@ -180,24 +180,123 @@
 <p>LibECBUFR のインストールが出来ていることを前提に話を進める。LibECBUFR は、Table ファイルを参照しながらデコードするようなプログラム構成になっている。気象庁が配信する BUFR 報は、独自 Table でデータが格納されているため LibECBUFR のデフォルトのままではデコード出来ない。そこで、前述の配信資料に関する技術資料を見ながら Table に要素を追記し、その Table ファイルを読ませてデコードするという流れとなる。LibECBUFR には <code>bufr_decoder</code> というユーティリティプログラムが同梱されているので、これを使いながら修正箇所を特定しつつデコードしてみる。</p>
 <h2 id="デコード">デコード</h2>
 <p>LibECBUFR に Table ファイルが同梱されているので、まずはこれを使ってみる。Table は、<code>table_b_bufr</code> と <code>table_d_bufr</code> の 2 種類。環境変数 <code>BUFR_TABLES</code> で Table ファイルの場所を指定する。データは先程のサンプルデータを引数で下記のように与えてみる。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BUFR_TABLES=./Tables ./bufr_decoder -inbufr Z__C_RJTD_20200214000000_OBS_AMDS_Rjp_N2_bufr4.bin -debug</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">BUFR_TABLES</span><span class="token operator">=</span>./Tables ./bufr_decoder <span class="token parameter variable">-inbufr</span> Z__C_RJTD_20200214000000_OBS_AMDS_Rjp_N2_bufr4.bin <span class="token parameter variable">-debug</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>すると、下記のような標準出力とファイル (<code>DEBUG.decoder</code>) が吐き出される。</p>
 <p>標準出力</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">### BUFR Edition              : 4</span><br><span class="line">###          length           : 167201</span><br><span class="line">###   Section 0</span><br><span class="line">###      length               : 8</span><br><span class="line">###   Section 1</span><br><span class="line">###      length               : 22</span><br><span class="line">###      BUFR master table    : 0</span><br><span class="line">###      originating center   : 34</span><br><span class="line">###      sub center           : 0</span><br><span class="line">###      update sequence number : 0</span><br><span class="line">###      Data category        : 0</span><br><span class="line">###      International sub category  : 255</span><br><span class="line">###      Local sub category   : 255</span><br><span class="line">###      master table version : 13</span><br><span class="line">###      local table version  : 1</span><br><span class="line">###      Year                 : 2020</span><br><span class="line">###      Month                : 2</span><br><span class="line">###      Day                  : 14</span><br><span class="line">###      Hour                 : 0</span><br><span class="line">###      Min                  : 0</span><br><span class="line">###      Sec                  : 0</span><br><span class="line">###      octet 8              : 0</span><br><span class="line">###         optional section  : No</span><br><span class="line">###   Section 2</span><br><span class="line">###      length               : 0</span><br><span class="line">###   Section 3</span><br><span class="line">###      length               : 207</span><br><span class="line">###      datasubsets          : 1298</span><br><span class="line">###      octet 7              : 128</span><br><span class="line">###         compression       : No</span><br><span class="line">###         observed data</span><br><span class="line">###   Section 4</span><br><span class="line">###      length               : 166960</span><br><span class="line">###   Section 5</span><br><span class="line">###      length               : 4</span><br><span class="line">###</span><br><span class="line">Error: can&#x27;t decode messages</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">### BUFR Edition              : 4
+###          length           : 167201
+###   Section 0
+###      length               : 8
+###   Section 1
+###      length               : 22
+###      BUFR master table    : 0
+###      originating center   : 34
+###      sub center           : 0
+###      update sequence number : 0
+###      Data category        : 0
+###      International sub category  : 255
+###      Local sub category   : 255
+###      master table version : 13
+###      local table version  : 1
+###      Year                 : 2020
+###      Month                : 2
+###      Day                  : 14
+###      Hour                 : 0
+###      Min                  : 0
+###      Sec                  : 0
+###      octet 8              : 0
+###         optional section  : No
+###   Section 2
+###      length               : 0
+###   Section 3
+###      length               : 207
+###      datasubsets          : 1298
+###      octet 7              : 128
+###         compression       : No
+###         observed data
+###   Section 4
+###      length               : 166960
+###   Section 5
+###      length               : 4
+###
+Error: can&#39;t decode messages<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>DEBUG.decoder</code> (長いので要所のみ)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">### Converting BUFR Message into Dataset</span><br><span class="line">Warning: master Table B version: 35 differs from message&#x27;s: 13</span><br><span class="line">Warning: Unknown BUFR descriptor: 25219</span><br><span class="line">Warning: 25219 is a local descriptor</span><br><span class="line">Error: unknown descriptor 25219</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">### Converting BUFR Message into Dataset
+Warning: master Table B version: 35 differs from message&#39;s: 13
+Warning: Unknown BUFR descriptor: 25219
+Warning: 25219 is a local descriptor
+Error: unknown descriptor 25219<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>どうやら、Table ファイルに未定義の descriptor があるようだ。そこで、<code>DEBUG.decoder</code> でエラーになっている番号とフォーマットの番号とを比較しながら <code>table_b_bufr</code> に追記する。集約演算子がある場合は、<code>table_d_bufr</code> にも追記が必要となる (今回は必要なかった)。最終的にファイルが読めるようになった Table は<a target="_blank" rel="noopener" href="https://gitlab.com/unujma/unuwiki/-/snippets/2163731/raw/main/table_b_bufr">ここ</a>から取得出来る。</p>
 <p>修正した Table ファイルを読み込ませると、下記のように出力される (一部のみ)。</p>
 <p>コマンド</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BUFR_TABLES=./Tables ./bufr_decoder -inbufr Z__C_RJTD_20200214000000_OBS_AMDS_Rjp_N2_bufr4.bin</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">BUFR_TABLES</span><span class="token operator">=</span>./Tables ./bufr_decoder <span class="token parameter variable">-inbufr</span> Z__C_RJTD_20200214000000_OBS_AMDS_Rjp_N2_bufr4.bin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>標準出力</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">### BUFR Edition              : 4</span><br><span class="line">###          length           : 167201</span><br><span class="line">###   Section 0</span><br><span class="line">###      length               : 8</span><br><span class="line">###   Section 1</span><br><span class="line">###      length               : 22</span><br><span class="line">###      BUFR master table    : 0</span><br><span class="line">###      originating center   : 34</span><br><span class="line">###      sub center           : 0</span><br><span class="line">###      update sequence number : 0</span><br><span class="line">###      Data category        : 0</span><br><span class="line">###      International sub category  : 255</span><br><span class="line">###      Local sub category   : 255</span><br><span class="line">###      master table version : 13</span><br><span class="line">###      local table version  : 1</span><br><span class="line">###      Year                 : 2020</span><br><span class="line">###      Month                : 2</span><br><span class="line">###      Day                  : 14</span><br><span class="line">###      Hour                 : 0</span><br><span class="line">###      Min                  : 0</span><br><span class="line">###      Sec                  : 0</span><br><span class="line">###      octet 8              : 0</span><br><span class="line">###         optional section  : No</span><br><span class="line">###   Section 2</span><br><span class="line">###      length               : 0</span><br><span class="line">###   Section 3</span><br><span class="line">###      length               : 207</span><br><span class="line">###      datasubsets          : 1298</span><br><span class="line">###      octet 7              : 128</span><br><span class="line">###         compression       : No</span><br><span class="line">###         observed data</span><br><span class="line">###   Section 4</span><br><span class="line">###      length               : 166960</span><br><span class="line">###   Section 5</span><br><span class="line">###      length               : 4</span><br><span class="line">###</span><br><span class="line">## Subset 1 : 132 descriptors</span><br><span class="line">  001202                INSTUTUTION NUMBER                                               CODE TABLE              1 </span><br><span class="line">  001200                PREFECTURE DISPLAY NUMBER                                        NUMERIC                 11 </span><br><span class="line">  001201                POINT DISPLAY NUMBER                                             NUMERIC                 1 </span><br><span class="line">  002001                TYPE OF STATION                                                  CODE TABLE              0 </span><br><span class="line"># 301011          </span><br><span class="line">  004001                YEAR                                                             YEAR                    2020 </span><br><span class="line">  004002                MONTH                                                            MONTH                   2 </span><br><span class="line">  004003                DAY                                                              DAY                     14 </span><br><span class="line"># 301012          </span><br><span class="line">  004004                HOUR                                                             HOUR                    0 </span><br><span class="line">  004005                MINUTE                                                           MINUTES                 0 </span><br><span class="line"># 301021          </span><br><span class="line">  005001                LATITUDE(HIGH ACCURACY)                                          DEGREE                  45.52111</span><br><span class="line">  006001                LONGITUDE (HIGH ACCURACY)                                        DEGREE                  141.93611</span><br><span class="line">  007030                HEIGHT OF STATION GROUND ABV MSL                                 M                       26.0</span><br><span class="line">  001197                OBS REPORT TYPE                                                  CODE TABLE              1</span><br><span class="line">... (以下略) ...</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">### BUFR Edition              : 4
+###          length           : 167201
+###   Section 0
+###      length               : 8
+###   Section 1
+###      length               : 22
+###      BUFR master table    : 0
+###      originating center   : 34
+###      sub center           : 0
+###      update sequence number : 0
+###      Data category        : 0
+###      International sub category  : 255
+###      Local sub category   : 255
+###      master table version : 13
+###      local table version  : 1
+###      Year                 : 2020
+###      Month                : 2
+###      Day                  : 14
+###      Hour                 : 0
+###      Min                  : 0
+###      Sec                  : 0
+###      octet 8              : 0
+###         optional section  : No
+###   Section 2
+###      length               : 0
+###   Section 3
+###      length               : 207
+###      datasubsets          : 1298
+###      octet 7              : 128
+###         compression       : No
+###         observed data
+###   Section 4
+###      length               : 166960
+###   Section 5
+###      length               : 4
+###
+## Subset 1 : 132 descriptors
+  001202                INSTUTUTION NUMBER                                               CODE TABLE              1 
+  001200                PREFECTURE DISPLAY NUMBER                                        NUMERIC                 11 
+  001201                POINT DISPLAY NUMBER                                             NUMERIC                 1 
+  002001                TYPE OF STATION                                                  CODE TABLE              0 
+# 301011          
+  004001                YEAR                                                             YEAR                    2020 
+  004002                MONTH                                                            MONTH                   2 
+  004003                DAY                                                              DAY                     14 
+# 301012          
+  004004                HOUR                                                             HOUR                    0 
+  004005                MINUTE                                                           MINUTES                 0 
+# 301021          
+  005001                LATITUDE(HIGH ACCURACY)                                          DEGREE                  45.52111
+  006001                LONGITUDE (HIGH ACCURACY)                                        DEGREE                  141.93611
+  007030                HEIGHT OF STATION GROUND ABV MSL                                 M                       26.0
+  001197                OBS REPORT TYPE                                                  CODE TABLE              1
+... (以下略) ...<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>これで Table の準備が出来、BUFR データが読めるようになった。同梱されている他のプログラムも、この Table を用いれば利用可能となる。</p>
 <p>次に、出力する要素を絞り、それらに緯度経度座標値を付加し、地理空間分布を描画してみる。その際、品質管理情報(AQC)を取得しておき、異常データを出来る限り省いた状態で出力してみる。LibECBUFR に同梱されているサンプルプログラムを改修し、<a target="_blank" rel="noopener" href="https://gitlab.com/unujma/unuwiki/-/snippets/2163731/raw/main/decode_bufr_sample.c">こちら</a>のようなプログラムを書いた。コンパイルし、Table ファイルを用意した上で引数に BUFR ファイルを指定すると、出力ファイルに緯度・経度・前10分間雨量・前10分間雨量 AQC 情報・前60分間雨量・前60分間雨量 AQC 情報をそれぞれ 1 地点 1 行で表示する。</p>
 <p>コマンド</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BUFR_TABLES=. ./decode_bufr_sample Z__C_RJTD_20200214000000_OBS_AMDS_Rjp_N2_bufr4.bin</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">BUFR_TABLES</span><span class="token operator">=</span>. ./decode_bufr_sample Z__C_RJTD_20200214000000_OBS_AMDS_Rjp_N2_bufr4.bin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>出力ファイル <code>OUTPUT.txt</code> (一部のみ表示)</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">45.521111 141.936111 0.000000 0 0.000000 0</span><br><span class="line">45.415279 141.678604 0.000000 0 0.000000 0</span><br><span class="line">45.305279 141.045837 0.000000 0 0.000000 0</span><br><span class="line">... (中略) ...</span><br><span class="line">24.396391 124.245003 0.000000 0 0.000000 0</span><br><span class="line">24.264999 123.872223 0.000000 0 0.000000 0</span><br><span class="line">24.055559 123.768059 0.000000 0 0.000000 0</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token number">45.521111</span> <span class="token number">141.936111</span> <span class="token number">0.000000</span> <span class="token number">0</span> <span class="token number">0.000000</span> <span class="token number">0</span>
+<span class="token number">45.415279</span> <span class="token number">141.678604</span> <span class="token number">0.000000</span> <span class="token number">0</span> <span class="token number">0.000000</span> <span class="token number">0</span>
+<span class="token number">45.305279</span> <span class="token number">141.045837</span> <span class="token number">0.000000</span> <span class="token number">0</span> <span class="token number">0.000000</span> <span class="token number">0</span>
+<span class="token punctuation">..</span>. <span class="token punctuation">(</span>中略<span class="token punctuation">)</span> <span class="token punctuation">..</span>.
+<span class="token number">24.396391</span> <span class="token number">124.245003</span> <span class="token number">0.000000</span> <span class="token number">0</span> <span class="token number">0.000000</span> <span class="token number">0</span>
+<span class="token number">24.264999</span> <span class="token number">123.872223</span> <span class="token number">0.000000</span> <span class="token number">0</span> <span class="token number">0.000000</span> <span class="token number">0</span>
+<span class="token number">24.055559</span> <span class="token number">123.768059</span> <span class="token number">0.000000</span> <span class="token number">0</span> <span class="token number">0.000000</span> <span class="token number">0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1>描画</h1>
 <p>ようやく BUFR 形式のデータが読めるようになったので、可視化してみる。</p>
 <img src="/blog/2021/08/16/bufr_1hrain.png" class="">
@@ -297,7 +396,7 @@
     </div>
 
   </div>
-  <script src="/js/nanobar.min.js"></script>
+  <script src="/blog/js/nanobar.min.js"></script>
 
   <script>
     var options = {

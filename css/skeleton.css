@@ -200,7 +200,7 @@ body {
   /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
   font-weight: 400;
-  font-family: Verdana, Roboto, "Droid Sans", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+  font-family: Verdana, Roboto, "Droid Sans", "メイリオ", Meiryo, sans-serif;
   color: #222;
 }
 
@@ -209,7 +209,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 1.5rem;
-  font-family: Verdana, Roboto, "Droid Sans", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+  font-family: Verdana, Roboto, "Droid Sans", "メイリオ", Meiryo, sans-serif;
   font-weight: 400;
 }
 
