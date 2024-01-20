@@ -75,7 +75,7 @@
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="/favicon.ico">
+  <link rel="icon" type="image/png" href="/images/favicon.ico">
 
   <!-- Custom Theme Color Style
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -167,7 +167,7 @@
             <h1>降雨減衰補正 (ZPHI method)</h1>
 
   <h1>はじめに</h1>
-<a href="/2021/08/28/" title="二重偏波レーダー変数の算出とその補正">二重偏波レーダー変数の算出とその補正</a>では、降水強度算出に関連するレーダー変数の算出方法とレーダー変数推定時にバイアスとなりうる要素に対する補正方法について具体例を示した。この中で降雨減衰補正を利用したものの、その内容を十分に把握できていなかった。そこで、本稿では降雨減衰補正 (主に ZPHI method) の内容を把握することを目的とする。
+<a href="/blog/2021/08/28/">二重偏波レーダー変数の算出とその補正</a>では、降水強度算出に関連するレーダー変数の算出方法とレーダー変数推定時にバイアスとなりうる要素に対する補正方法について具体例を示した。この中で降雨減衰補正を利用したものの、その内容を十分に把握できていなかった。そこで、本稿では降雨減衰補正 (主に ZPHI method) の内容を把握することを目的とする。
 <h1>ZPHI method の変遷</h1>
 <p>降水によるマイクロ波放射の減衰は、反射強度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi></mrow><annotation encoding="application/x-tex">Z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">Z</span></span></span></span> と 反射因子差 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Z</mi><mrow><mi mathvariant="normal">D</mi><mi mathvariant="normal">R</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Z_{\rm DR}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">Z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">D</span><span class="mord mathrm mtight">R</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> の観測時 (特に C や X などの短い波長帯で) に顕著なバイアスとなりうる。降雨による減衰 (以後、降雨減衰) は、反射強度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi></mrow><annotation encoding="application/x-tex">Z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">Z</span></span></span></span> を用いた Hitschfeld and Bordan (1954) の解として単偏波レーダーの時代から推定されてきた。しかしながら、減衰が大きい場合には Hitschfeld and Bordan (1954) で得られる解は、非常に不安定となる。</p>
 <p>そこで、解を安定させるための制約条件として、独立した観測量により推定される path-integrated attenuation (PIA) が注目されるようになった。PIA が既知ならば、減衰量の視線方向のプロファイルが得られる (Meneghini and Nakamura 1990)。PIA は、山岳や背の高いタワー、海面といった比較的安定した物体を対象に用いることで、航空機や衛星観測において推定可能である。</p>

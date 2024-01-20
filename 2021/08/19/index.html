@@ -15,7 +15,7 @@
   
   <link rel="canonical" href="https://takashiunuma.github.io/blog/2021/08/19/">
   
-  <meta name="description" content="はじめに 降水強度のKDP推定アルゴリズムについてでは、主に Reimel and Kumjian (2021) で用いられた偏波間位相差変化率 (KDPK_{\rm DP}KDP​) 推定アルゴリズムについて概観した。各アルゴリズムの内容が分かってきたので、どのような分布が得られ処理前後でどのよう">
+  <meta name="description" content="はじめに 降水強度のKDP推定アルゴリズムについて&amp;#x2F;2021&amp;#x2F;07&amp;#x2F;28&amp;#x2F;では、主に Reimel and Kumjian (2021) で用いられた偏波間位相差変化率 (KDPK_{\rm DP}KDP​) 推定アルゴリズムについて概観した。各アルゴリズムの">
   
   
   <meta name="author" content="Takashi Unuma">
@@ -26,14 +26,14 @@
   <meta property="og:type" content="article" />
   <meta property="og:title" content="KDP推定アルゴリズムの比較" />
   
-  <meta property="og:description" content="はじめに 降水強度のKDP推定アルゴリズムについてでは、主に Reimel and Kumjian (2021) で用いられた偏波間位相差変化率 (KDPK_{\rm DP}KDP​) 推定アルゴリズムについて概観した。各アルゴリズムの内容が分かってきたので、どのような分布が得られ処理前後でどのよう">
+  <meta property="og:description" content="はじめに 降水強度のKDP推定アルゴリズムについて&amp;#x2F;2021&amp;#x2F;07&amp;#x2F;28&amp;#x2F;では、主に Reimel and Kumjian (2021) で用いられた偏波間位相差変化率 (KDPK_{\rm DP}KDP​) 推定アルゴリズムについて概観した。各アルゴリズムの">
   
   <meta property="og:url" content="https://takashiunuma.github.io/blog/2021/08/19/" />
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="KDP推定アルゴリズムの比較">
   
-  <meta name="twitter:description" content="はじめに 降水強度のKDP推定アルゴリズムについてでは、主に Reimel and Kumjian (2021) で用いられた偏波間位相差変化率 (KDPK_{\rm DP}KDP​) 推定アルゴリズムについて概観した。各アルゴリズムの内容が分かってきたので、どのような分布が得られ処理前後でどのよう">
+  <meta name="twitter:description" content="はじめに 降水強度のKDP推定アルゴリズムについて&amp;#x2F;2021&amp;#x2F;07&amp;#x2F;28&amp;#x2F;では、主に Reimel and Kumjian (2021) で用いられた偏波間位相差変化率 (KDPK_{\rm DP}KDP​) 推定アルゴリズムについて概観した。各アルゴリズムの">
   
   
   
@@ -75,7 +75,7 @@
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="/favicon.ico">
+  <link rel="icon" type="image/png" href="/images/favicon.ico">
 
   <!-- Custom Theme Color Style
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -167,7 +167,7 @@
             <h1>KDP推定アルゴリズムの比較</h1>
 
   <h1>はじめに</h1>
-<p><a href="/2021/07/28/" title="降水強度のKDP推定アルゴリズムについて">降水強度のKDP推定アルゴリズムについて</a>では、主に Reimel and Kumjian (2021) で用いられた偏波間位相差変化率 (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mrow><mi mathvariant="normal">D</mi><mi mathvariant="normal">P</mi></mrow></msub></mrow><annotation encoding="application/x-tex">K_{\rm DP}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">D</span><span class="mord mathrm mtight">P</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) 推定アルゴリズムについて概観した。各アルゴリズムの内容が分かってきたので、どのような分布が得られ処理前後でどのように変化するかを実際に手を動かしながら確認してみる。今回は、<a target="_blank" rel="noopener" href="https://github.com/ARM-DOE/pyart">Py-ART</a> にお世話になった。</p>
+<p><a href="/blog/">降水強度のKDP推定アルゴリズムについて&#x2F;2021&#x2F;07&#x2F;28&#x2F;</a>では、主に Reimel and Kumjian (2021) で用いられた偏波間位相差変化率 (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mrow><mi mathvariant="normal">D</mi><mi mathvariant="normal">P</mi></mrow></msub></mrow><annotation encoding="application/x-tex">K_{\rm DP}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">D</span><span class="mord mathrm mtight">P</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) 推定アルゴリズムについて概観した。各アルゴリズムの内容が分かってきたので、どのような分布が得られ処理前後でどのように変化するかを実際に手を動かしながら確認してみる。今回は、<a target="_blank" rel="noopener" href="https://github.com/ARM-DOE/pyart">Py-ART</a> にお世話になった。</p>
 <h1>比較方法</h1>
 <ul>
 <li>Py-ART 環境構築: <a target="_blank" rel="noopener" href="https://gitlab.com/unujma/unuwiki/-/wikis/Python#py-art">こちら</a></li>

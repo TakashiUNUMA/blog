@@ -75,7 +75,7 @@
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="/favicon.ico">
+  <link rel="icon" type="image/png" href="/images/favicon.ico">
 
   <!-- Custom Theme Color Style
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -167,7 +167,7 @@
             <h1>二重偏波要素の特徴</h1>
 
   <h1>はじめに</h1>
-<p>以前、<a href="/2021/03/22/" title="Signal Processing Methods">Signal Processing Methods</a> という記事を書いた。言葉だけだとどうもイメージが沸かないので、実際のデータで図を描いてみることにした。最近では Python 関連の便利でたくさんのパッケージが出回っている。いろいろと試した結果、ここでは <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi></mrow><annotation encoding="application/x-tex">\omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span></span></span></span>radlib を用いることにした。Python や <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi></mrow><annotation encoding="application/x-tex">\omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span></span></span></span>radlib の環境構築については、<a href="https://gitlab.com/unujma/unuwiki/-/wikis/Python" title="" target="">こちら</a>を参照されたい。</p>
+<p>以前、<a href="/blog/2021/03/22/">Signal Processing Methods</a> という記事を書いた。言葉だけだとどうもイメージが沸かないので、実際のデータで図を描いてみることにした。最近では Python 関連の便利でたくさんのパッケージが出回っている。いろいろと試した結果、ここでは <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi></mrow><annotation encoding="application/x-tex">\omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span></span></span></span>radlib を用いることにした。Python や <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi></mrow><annotation encoding="application/x-tex">\omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span></span></span></span>radlib の環境構築については、<a href="https://gitlab.com/unujma/unuwiki/-/wikis/Python" title="" target="">こちら</a>を参照されたい。</p>
 <h1>降水・非降水エコー</h1>
 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi></mrow><annotation encoding="application/x-tex">\omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span></span></span></span>radlib で Simple fuzzy echo classification (ファジーロジックによるエコー判別) が出来るので、一例を示す。<a href="https://docs.wradlib.org/en/stable/notebooks/classify/wradlib_fuzzy_echo_classify.html" title="" target="">ここ</a>に書いてあるとおりにコマンドを打つと、下記の図が出来る。
 <img src="/blog/2021/04/28/fuzzy_echo_classification.png" class="">
