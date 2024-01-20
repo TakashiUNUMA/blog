@@ -21,6 +21,8 @@
   <meta name="author" content="Takashi Unuma">
   
   
+  <meta property="og:image" content="https://takashiunuma.github.io/blogzhh_h.png">
+  
   
   <meta property="og:site_name" content="Takashi Unuma&#39;s Blog" />
   <meta property="og:type" content="article" />
@@ -37,6 +39,8 @@
   
   
   
+  <meta name="twitter:image" content="https://takashiunuma.github.io/blogzhh_h.png">
+  
   
   <meta name="twitter:url" content="https://takashiunuma.github.io/blog/2024/01/20/" />
 
@@ -46,8 +50,8 @@
 
   <!-- Preload fonts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="preload" href="/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/blog/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/blog/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -68,10 +72,6 @@
 
   <!-- User css -->
   
-  
-<link rel="stylesheet" href="/blog/css/user.css">
-
-  
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -81,18 +81,18 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <style>
   a:not(.icon) {
-    text-decoration-color: #0FA0CE;
+    text-decoration-color: #0A6987;
     background-image: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0) 50%,
-      #0FA0CE 50%
+      #0A6987 50%
     );
   }
   blockquote {
-    border-left: 8px solid #0FA0CE;
+    border-left: 8px solid #0A6987;
   }
   .nanobar .bar {
-    background: #0FA0CE;
+    background: #0A6987;
   }
   .button.button-primary:hover,
   button.button-primary:hover,
@@ -104,8 +104,8 @@
   input[type="submit"].button-primary:focus,
   input[type="reset"].button-primary:focus,
   input[type="button"].button-primary:focus {
-    background-color: #0FA0CE;
-    border-color: #0FA0CE;
+    background-color: #0A6987;
+    border-color: #0A6987;
   }
   input[type="email"]:focus,
   input[type="number"]:focus,
@@ -116,7 +116,7 @@
   input[type="password"]:focus,
   textarea:focus,
   select:focus {
-    border: 1px solid #0FA0CE;
+    border: 1px solid #0A6987;
   }
 </style>
 
@@ -166,11 +166,11 @@
         <div class="trans">
             <h1>Polarimetric Radar Observation Operator</h1>
 
-  <h2 id="はじめに">はじめに</h2>
+  <h1>はじめに</h1>
 <p>前回、<a href="/blog/2024/01/19/">Spectral Bin Microphysics Model</a> にて、気象数値モデルを用いた粒形分布の計算例を示した。以前、<a href="/blog/2021/10/01/">粒径分布とレーダー変数</a>で示したように、レーダー変数もまた粒形分布から計算可能である。そこで、今回は <a href="/blog/2024/01/19/">Spectral Bin Microphysics Model</a> で出力したデータを用い、レーダー変数を計算・描画することを試みる。</p>
-<h2 id="Cloud-Resolving-Model-Radar-Simulator">Cloud Resolving Model Radar Simulator</h2>
+<h1>Cloud Resolving Model Radar Simulator</h1>
 <p>雲解像モデルを用いたレーダー変数の計算は、いくつかの方法が提案されている。最近では、パッケージ化されたものが開発されてきている。中でも Cloud Resolving Model Radar Simulator (<a target="_blank" rel="noopener" href="https://you.stonybrook.edu/radar/research/radar-simulators/">CR-SIM</a>; Oue et al. 2020) は、GNU PUBLIC LICENSE で利用可能なツールの一つである。2020年6月20日時点の最新版は 3.33 となっている。<a target="_blank" rel="noopener" href="https://you.stonybrook.edu/radar/research/radar-simulators/">Stony Brook University の Web ページ</a>からダウンロードが可能。ただし、ファイルサイズが約 13 GB と少々大きいので、ダウンロード時の回線速度やパケット容量に注意が必要。今回は、レーダー変数の計算に必要なコアパッケージ <code>crsim-3.33.tar.gz</code> のみをダウンロードした。</p>
-<h2 id="プログラムの修正">プログラムの修正</h2>
+<h1>プログラムの修正</h1>
 <p>tar.gz ファイルを展開後、そのままコンパイルするだけではエラーを吐くので、下記を修正する。</p>
 <pre class="line-numbers language-diff" data-language="diff"><code class="language-diff">diff --git a/share/crsim/test/Makefile.in b/share/crsim/test/Makefile.in
 index 3b862a3..1fb76f5 100644
@@ -237,7 +237,7 @@ index 4539fe4..9c9120b 100644
 </span><span class="token prefix unchanged"> </span><span class="token line">      if (conf%MP_PHYSICS==40)  den_string='400' !Added by oue 2017/07/21:
 </span><span class="token prefix unchanged"> </span><span class="token line">      if (conf%MP_PHYSICS==50)  den_string='900' !Added by DW for P3</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>Makefile.in</code> の <code>run_test4.sh</code> はテスト用のサンプルデータが同梱されておらず実行不可だったので、除外した。また、WRF-SBM の結果を用いる場合、条件分岐に抜けがあったので暫定値を追加した。</p>
-<h2 id="動作環境">動作環境</h2>
+<h1>動作環境</h1>
 <ul>
 <li>Rocky Linux 8.9 x86_64</li>
 <li>GNU compiler version 8.5.0</li>
@@ -246,10 +246,10 @@ index 4539fe4..9c9120b 100644
 <li>HDF5 version 1.10.5</li>
 <li>ZLIB version 1.2.11</li>
 </ul>
-<h2 id="コンパイル">コンパイル</h2>
+<h1>コンパイル</h1>
 <p><code>make check</code> 時に <a target="_blank" rel="noopener" href="https://gitlab.com/remikz/nccmp">NCCMP</a> が必要となるので、事前にインストールしておく。また、tar.gz ファイルを展開すると、数十 GB 程度に肥大するので、ディスク容量に十分な空きスペースがあることも確認しておく。また、<code>configure</code> の前に <code>FCFLAGS</code> と <code>CFLAGS</code> の環境変数を設定しておく。</p>
 <ul>
-<li><code>export FCFLAGS=\</code>nc-config --fflags` &amp;&amp; export CFLAGS=`nc-config --cflags``</li>
+<li><code>export FCFLAGS=$(nc-config --fflags) &amp;&amp; export CFLAGS=$(nc-config --cflags)</code></li>
 </ul>
 <p>設定出来たら、NetCDF, NetCDF-Fortran, NCCMP, インストール先のそれぞれのディレクトリを指定した上で <code>configure</code> を実行。</p>
 <ul>
@@ -268,7 +268,7 @@ index 4539fe4..9c9120b 100644
 <li><code>make install</code></li>
 </ul>
 <p>指定したディレクトリ以下に <code>bin/</code> <code>etc/</code> <code>share/</code> がそれぞれあれば OK。</p>
-<h2 id="パラメーターファイル">パラメーターファイル</h2>
+<h1>パラメーターファイル</h1>
 <p><code>PARAMETERS</code> に設定を書き込む仕様となっている。サンプルファイルは、インストール先の <code>etc</code> 以下にある。以下、今回利用するパラメーター例。</p>
 <pre class="line-numbers language-none"><code class="language-none"># PARAMETERS CR-SIM v3.2x
 # speccify the number of OpenMP threads used in the code (integer, OMPThreadNum)
@@ -338,11 +338,11 @@ index 4539fe4..9c9120b 100644
 0.0
 #<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>計算領域は、入力に使用する WRF-SBM の mass point でのグリッド数に合わせる。レーダーの設定は、気象庁の C バンドレーダーを想定し、5.5 GHz に変更。Micropulse lidar, Doppler spectra, Microwave radiometer の計算は無しに変更。</p>
-<h2 id="実行">実行</h2>
+<h1>実行</h1>
 <p>下記を実行する。引数には、上記で用意したパラメーターファイル、WRF-SBM の出力ファイル、CR-SIM 計算結果の出力ファイル名をそれぞれ指定する。</p>
 <p><code>./crsim PARAMETERS wrfout_d01_0001-01-01_00:50:00 wrfout_d01_005000.nc</code></p>
 <p>実行すると、計算結果の出力ファイル名で、全カテゴリをまとめたもの、雲・雨・雪・氷・雹の各カテゴリに分けたものがそれぞれ出力される。詳細は User Guide を参照されたし。</p>
-<h2 id="データの描画">データの描画</h2>
+<h1>データの描画</h1>
 <p>今回は、雨 (rain) のデータを可視化してみる。データの読み込みには <code>xarray</code> を用いた。以下、サンプルコード。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> xarray <span class="token keyword">as</span> xr
 <span class="token keyword">import</span> pyart
@@ -389,13 +389,13 @@ fig<span class="token punctuation">.</span>suptitle<span class="token punctuatio
 <a href="/blog/2024/01/19/">Spectral Bin Microphysics Model</a> の粒径分布の高度変化を確認した grid で水平偏波反射強度と反射因子差の鉛直分布を確認する。z < 4 では、反射強度は地上に向かって減少、反射因子差は地上に向かって微増していることがわかる。ここで、<a href="/blog/2021/10/01/">粒径分布とレーダー変数</a>で示した Zhh と ZDR の式の形をよく見ると、Zhh は粒径の 6 乗、ZDR は粒子のアスペクト比にそれぞれ比例する。2 mm 未満の粒径の頻度が地上に向かって減少していたことは、Zhh が地上に向かって減少していることと整合的である。加えて、2 mm 以上の粒径の頻度が地上に向かってやや増加していたことは、ZDR が地上に向かって微増していることに対応していると考えることができる。これを言い換えると、雨粒は大きくなるほど扁平になるので、アスペクト比が大きくなるということを意味する。
 <img src="/blog/2024/01/20/vprof.png" class="">
 <p>以上のように、粒形分布に加えて二重偏波レーダー変数が算出できると、それぞれの特徴を相互に比較することが可能となる。加えて、観測データと直接比較も容易になる。</p>
-<h2 id="おわりに">おわりに</h2>
+<h1>おわりに</h1>
 <p>今回は、CR-SIM を用いたレーダー変数の計算、それらの描画について試行した。有益なツールの開発・管理を行っている開発者の方々に謝意を示す。</p>
-<h2 id="参考文献">参考文献</h2>
+<h1>参考文献</h1>
 <ul>
 <li>Oue, M., A. Tatarevic, P. Kollias, D. Wang, K. Yu, and A. M. Vogelmann, 2020: The Cloud-resolving model Radar SIMulator (CR-SIM) Version 3.3: description and applications of a virtual observatory, Geosci. Model Dev., 13, 1975–1998.</li>
 </ul>
-<h2 id="更新履歴">更新履歴</h2>
+<h1>更新履歴</h1>
 <ul>
 <li>2024-01-20: 初稿</li>
 </ul>

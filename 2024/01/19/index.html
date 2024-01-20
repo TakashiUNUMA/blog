@@ -46,8 +46,8 @@
 
   <!-- Preload fonts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="preload" href="/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/blog/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/blog/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -68,10 +68,6 @@
 
   <!-- User css -->
   
-  
-<link rel="stylesheet" href="/blog/css/user.css">
-
-  
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -81,18 +77,18 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <style>
   a:not(.icon) {
-    text-decoration-color: #0FA0CE;
+    text-decoration-color: #0A6987;
     background-image: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0) 50%,
-      #0FA0CE 50%
+      #0A6987 50%
     );
   }
   blockquote {
-    border-left: 8px solid #0FA0CE;
+    border-left: 8px solid #0A6987;
   }
   .nanobar .bar {
-    background: #0FA0CE;
+    background: #0A6987;
   }
   .button.button-primary:hover,
   button.button-primary:hover,
@@ -104,8 +100,8 @@
   input[type="submit"].button-primary:focus,
   input[type="reset"].button-primary:focus,
   input[type="button"].button-primary:focus {
-    background-color: #0FA0CE;
-    border-color: #0FA0CE;
+    background-color: #0A6987;
+    border-color: #0A6987;
   }
   input[type="email"]:focus,
   input[type="number"]:focus,
@@ -116,7 +112,7 @@
   input[type="password"]:focus,
   textarea:focus,
   select:focus {
-    border: 1px solid #0FA0CE;
+    border: 1px solid #0A6987;
   }
 </style>
 
@@ -166,11 +162,11 @@
         <div class="trans">
             <h1>Spectral Bin Microphysics Model</h1>
 
-  <h2 id="はじめに">はじめに</h2>
+  <h1>はじめに</h1>
 <p>これまでに、<a href="/blog/2021/10/01/">粒径分布とレーダー変数</a>や<a href="/blog/2022/11/19/">粒径分布パラメータのレーダー変数による推定</a>といった記事で、主に観測データに関連した話題を扱ってきた。観測データはスナップショットではあるものの、真値に近い状態を示す。一方、時間・空間分解能に制約があるために観測結果がどうしてそうなったのか、という要因の特定には不向きな場合がある。その点を補うものとして、数値モデルによる素過程のシミュレーションや解析が挙げられる。中でも雲微物理過程は、雨や雲を扱う重要な物理過程である。計算コストの観点から、粒径分布は特定の関数で近似されたものが使われることが多い。一方、Spectral bin microphysics (SBM) model は、粒径毎の数濃度等を陽に解くものである。最近では、Hebrew University で開発された Cloud Model (Khain et al. 2004, 2008; HUCM) の spectral (bin) microphysics 部分を他の大気モデルへ移植したものが、利用可能になっている (e.g., Khain et al. 2011; Igel and van den Heever 2017)。本稿では、粒径分布の特徴を把握するためのツールの一つとして、WRF-SBM の利用と簡単な出力結果の描画を試みる。</p>
-<h2 id="WRF-model">WRF model</h2>
+<h1>WRF model</h1>
 <p><a target="_blank" rel="noopener" href="https://www.mmm.ucar.edu/models/wrf">Weather Research and Frecasting Model</a> (WRF) は、主に<a target="_blank" rel="noopener" href="https://ncar.ucar.edu/">米国大気研究センター</a>が開発している領域数値気象予報モデルである。WRF のバージョンは、2023年12月22日時点で 4.5.2 が最新版である (<a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/releases/tag/v4.5.2">参考</a>)。HUCM SBM は <code>mp_physics = 32</code> or <code>30</code> として実装されている。これらは、それぞれ FULL-SBM、FAST-SBM と呼ばれている。前者は計算時間を要するものの物理過程の厳密さを重視したバージョン、後者は前者を特定の現象に対してやや簡略化し計算コストを減少させたバージョンである。バージョン 4.4.1 以降、FAST-SBM のみ利用可能であり、FULL-SBM は利用不可となっている (<a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/commit/e0616d3ea35bb2e599db5d84d250874205924c70">参考</a>)。ここでは、計算速度よりも物理過程の正確さを重視することを目的とし、FULL-SBM が利用可能なバージョン 4.2.2 を用いることにした (<a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/releases/tag/v4.2">参考</a>)。</p>
-<h2 id="動作環境">動作環境</h2>
+<h1>動作環境</h1>
 <ul>
 <li>Rocky Linux 8.9 x86_64</li>
 <li>GNU compiler version 8.5.0</li>
@@ -181,7 +177,7 @@
 <li>WRF version 4.2.2</li>
 </ul>
 <p>必要なライブラリは、<code>dnf install</code> した。</p>
-<h2 id="コンパイル">コンパイル</h2>
+<h1>コンパイル</h1>
 <ul>
 <li><code>export NETCDF=/usr &amp;&amp; export HDF5=/usr</code>
 <ul>
@@ -200,7 +196,7 @@
 <li><code>./compile em_quarter_ss</code></li>
 </ul>
 <p><code>main/</code> 以下に <code>ideal.exe</code> と <code>wrf.exe</code> が生成されていれば、コンパイル成功。</p>
-<h2 id="出力変数の追加">出力変数の追加</h2>
+<h1>出力変数の追加</h1>
 <p>今回は、粒径分布の特徴を把握することを意図し、各 bin の変数を出力できるように修正を施す。出力変数を追加するには、<code>Registry</code> を編集するのが一番簡単。方法は下記。</p>
 <ul>
 <li><code>Registry/registry.sbm</code> の編集
@@ -222,7 +218,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="定数ファイルの準備">定数ファイルの準備</h2>
+<h1>定数ファイルの準備</h1>
 <p>WRF で SBM を実行するには、追加の定数ファイルが必要となる。下記に従い、定数ファイルをダウンロード・展開・配置する。</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/src/wrf_files/">こちら</a>から3つのファイルをダウンロードし、<code>test/em_quarter_ss/</code> 以下にそれぞれ展開・配置する。
@@ -233,10 +229,10 @@
 </ul>
 </li>
 </ul>
-<h2 id="実行">実行</h2>
+<h1>実行</h1>
 <p>準備が出来たら、<code>namelist.input</code> を編集し、<code>ideal.exe</code>、<code>wrf.exe</code> の順に実行する。<br>
 今回は、ideal case = 2 の supercell 理想化実験を用いる。<code>namelist.input</code> で <code>mp_physics = 32</code> に変更し、雲微物理過程のみ用いる。計算領域は、mass point で 41x41x40 grid (水平方向 82 km、鉛直方向に 20 km)。モデル上端から 5 km までダンピング層を配置。<code>ideal.exe</code> を実行すると <code>wrfinput_d01</code> が出力され、その後 <code>wrf.exe</code> を実行すると <code>wrfout_d01_*</code> が出力される。</p>
-<h2 id="データの描画">データの描画</h2>
+<h1>データの描画</h1>
 <p>まず、初期プロファイルの <code>input_sounding</code> データを <a href="/blog/2024/01/01/">Skew-T LogP plot by MetPy</a> の方法で描画する。ただし、<code>read_fwf</code> の引数に <code>infer_nrows=222</code> を追加する。理由は、<a target="_blank" rel="noopener" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_fwf.html">行数のデフォルト値が 100 に制限されている</a>ため。</p>
 <img src="/blog/2024/01/19/skewt.png" class="">
 <p>横軸は気温または露点温度 (degree C)、縦軸は気圧 (hPa)。黒実線で気温、青実線で露点温度、橙点線で持ち上げたパーセルの気温をそれぞれ示す、赤色の陰影で示される面積は、持ち上げたパーセルと周辺大気との気温差、すなわち対流有効位置エネルギー (CAPE) である。黒丸印は持ち上げ凝結高度 (LCL) を示す。<a href="/blog/2024/01/01/">Skew-T LogP plot by MetPy</a> で示した例よりも赤色の陰影で示される面積が大きく、また、中・上層は乾燥している点も異なる。</p>
@@ -300,7 +296,7 @@ plt<span class="token punctuation">.</span>show<span class="token punctuation">(
 <p>雨水混合比の y = 22 における x-z 断面。地上付近に計算されていた雨水混合比は、鉛直方向には一様ではなく高度とともに値が変化している。</p>
 <img src="/blog/2024/01/19/qr_xz.png" class="">
 <p>以後、QRAIN の極大値が計算されていた グリッド位置 (19,22) に着目する。</p>
-<h2 id="出力結果から粒径分布を計算">出力結果から粒径分布を計算</h2>
+<h1>出力結果から粒径分布を計算</h1>
 <p>方針は下記の通り。</p>
 <ul>
 <li>定数ファイル読み込み
@@ -443,9 +439,9 @@ plt<span class="token punctuation">.</span>show<span class="token punctuation">(
 <p>粒形分布を確認すると、地上に近い (i.e., k = 0) ほど粒径 2 mm 未満の頻度が低く、上空 (i.e., k = 3) ほど頻度が高くなっている。一方、粒径 2 mm よりも大きい粒径は地上ほど頻度が高い。また、頻度のピークは、地上に近いほど複数 (粒径 0.26 mm, 0.51 mm, 1.62 mm) 現れる傾向にある。</p>
 <img src="/blog/2024/01/19/nd.png" class="">
 <p>鉛直分布を確認した時、雨水混合比の値は k = 8 を極大とし、地上に向かって減少していた。これは、粒形分布では第一近似として粒径 2 mm 未満の頻度が低くなっていたことに対応していると考えられる。雨水混合比としては減少する一方、粒径 2 mm 以上の頻度が僅かながら高くなっていた。このことは、雨滴同士の衝突併合によって雨粒が地上に向かって成長している可能性を示唆する。このように、粒形分布を確認することで雨の特徴をより多角的に捉えることが可能となる。</p>
-<h2 id="おわりに">おわりに</h2>
+<h1>おわりに</h1>
 <p>今回は、WRF-SBM を用いた粒形分布の解析例を示した。実は、十数年前に WRF モデルの version 3 系列を利用したことがあった。その当時よりも利用可能なオプションが格段に増えており、使い勝手もとてもよくなっていると感じた。特に、描画を Python で行える点は、近年の流行を追っていて舌を巻く。当時は大雨を再現するだけでなく出力結果の解析にも時間と労力を費やしていたが、今後はそんな苦労も少なくなるだろうか。</p>
-<h2 id="参考文献">参考文献</h2>
+<h1>参考文献</h1>
 <ul>
 <li>wrf-model: <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF">https://github.com/wrf-model/WRF</a></li>
 <li>wrf-python: <a target="_blank" rel="noopener" href="https://github.com/NCAR/wrf-python">https://github.com/NCAR/wrf-python</a></li>
@@ -454,10 +450,10 @@ plt<span class="token punctuation">.</span>show<span class="token punctuation">(
 <li>Khain, A. P., D. Rosenfeld, A. Pokrovsky, U. Blahak, and A. Ryzhkov, 2011: The role of CCN in precipitation and hail in a midlatitude storm as seen in simulations using a spectral (bin) microphysics model in a 2D dynamic frame. Atmos. Res., 99, 129–146.</li>
 <li>Igel, A. L., and S. C. van den Heever, 2017: The role of the gamma function shape parameter in determining differences between condensation rates in bin and bulk microphysics schemes. Atmos. Chem. Phys., 17, 4599–4609.</li>
 </ul>
-<h2 id="更新履歴">更新履歴</h2>
+<h1>更新履歴</h1>
 <ul>
 <li>2024-01-19: 初稿</li>
-<li>2024-01-22: 誤字を修正</li>
+<li>2024-01-20: 誤字を修正</li>
 </ul>
 
   <p><a class="classtest-link" href="/blog/tags/Miscellaneous/" rel="tag">Miscellaneous</a> — 2024年1月19日</p>
