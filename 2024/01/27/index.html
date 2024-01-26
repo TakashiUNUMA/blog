@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+  <!-- Minima -->
+  <!-- Hexo theme created by @adisaktijrs -->
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+
+  
+  <title>Multi-peak drop size distribution</title>
+  
+  <link rel="canonical" href="https://takashiunuma.github.io/blog/2024/01/27/">
+  
+  <meta name="description" content="はじめに 雨滴粒径分布の話題は、レーダー気象学と関連するものとして Self-consistency Principle、粒径分布とレーダー変数を繋ぐ関係式、或いはその逆で粒径分布パラメータのレーダー変数による推定について取り上げてきた。これらの記事では、仮定する粒径分布関数の形は基本的に既知である">
+  
+  
+  <meta name="author" content="Takashi Unuma">
+  
+  
+  
+  <meta property="og:site_name" content="Takashi Unuma&#39;s Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Multi-peak drop size distribution" />
+  
+  <meta property="og:description" content="はじめに 雨滴粒径分布の話題は、レーダー気象学と関連するものとして Self-consistency Principle、粒径分布とレーダー変数を繋ぐ関係式、或いはその逆で粒径分布パラメータのレーダー変数による推定について取り上げてきた。これらの記事では、仮定する粒径分布関数の形は基本的に既知である">
+  
+  <meta property="og:url" content="https://takashiunuma.github.io/blog/2024/01/27/" />
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Multi-peak drop size distribution">
+  
+  <meta name="twitter:description" content="はじめに 雨滴粒径分布の話題は、レーダー気象学と関連するものとして Self-consistency Principle、粒径分布とレーダー変数を繋ぐ関係式、或いはその逆で粒径分布パラメータのレーダー変数による推定について取り上げてきた。これらの記事では、仮定する粒径分布関数の形は基本的に既知である">
+  
+  
+  
+  
+  <meta name="twitter:url" content="https://takashiunuma.github.io/blog/2024/01/27/" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Preload fonts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload" href="/blog/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/blog/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<link rel="stylesheet" href="/blog/css/normalize.css">
+
+  
+<link rel="stylesheet" href="/blog/css/skeleton.css">
+
+  
+<link rel="stylesheet" href="/blog/css/custom.css">
+
+  
+<link rel="stylesheet" href="/blog/css/prism-dark.css">
+
+  
+<link rel="stylesheet" href="/blog/css/prism-line-numbers.css">
+
+  <!-- User css -->
+  
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/blog/images/favicon.ico">
+
+  <!-- Custom Theme Color Style
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <style>
+  a:not(.icon) {
+    text-decoration-color: #0A6987;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      #0A6987 50%
+    );
+  }
+  blockquote {
+    border-left: 8px solid #0A6987;
+  }
+  .nanobar .bar {
+    background: #0A6987;
+  }
+  .button.button-primary:hover,
+  button.button-primary:hover,
+  input[type="submit"].button-primary:hover,
+  input[type="reset"].button-primary:hover,
+  input[type="button"].button-primary:hover,
+  .button.button-primary:focus,
+  button.button-primary:focus,
+  input[type="submit"].button-primary:focus,
+  input[type="reset"].button-primary:focus,
+  input[type="button"].button-primary:focus {
+    background-color: #0A6987;
+    border-color: #0A6987;
+  }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border: 1px solid #0A6987;
+  }
+</style>
+
+  <!-- Google Analytics (With Privacy Settings On)
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+
+  
+  <script src="/blog/js/pic.min.js" defer></script>
+  
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/blog/atom.xml" title="Takashi Unuma's Blog" type="application/atom+xml">
+<link rel="alternate" href="/blog/rss2.xml" title="Takashi Unuma's Blog" type="application/rss+xml">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div>
+
+        <div class="row">
+  <div class="ten columns ml-1">
+    <h1 class="mt-2">
+      Takashi Unuma&#39;s blog.
+    </h1>
+  </div>
+
+  <div class="twelve columns">
+    <div class="row">
+      <div class="nine columns left">
+        <a href="/blog/">Home</a>
+        
+          
+          <a href="/blog/archives" class="ml">Archive</a>
+          
+        
+      </div>
+    </div>
+    <hr style="margin-bottom: 2.6rem">
+  </div>
+</div>
+
+        <div class="trans">
+            <h1>Multi-peak drop size distribution</h1>
+
+  <h1>はじめに</h1>
+<p>雨滴粒径分布の話題は、レーダー気象学と関連するものとして <a href="/blog/2021/09/19/">Self-consistency Principle</a>、<a href="/blog/2021/10/01/">粒径分布とレーダー変数</a>を繋ぐ関係式、或いはその逆で<a href="/blog/2022/11/19/">粒径分布パラメータのレーダー変数による推定</a>について取り上げてきた。これらの記事では、仮定する粒径分布関数の形は基本的に既知であるものとして扱ってきた。ところが、実際に観測される雨滴粒径分布というのは、我々が思っている以上に多様である。これは、<a href="/blog/2024/01/19/">Spectral Bin Microphysics Model</a> で示したように、数値モデル内で計算される粒径分布からもその多様性が認知されうる。そこで、本稿では複数のピークを持つ雨滴粒径分布の形成過程に着目し、主に McFarquhar (2010) のレビューを行うことで理解を深める。</p>
+<h1>複数のピークを持つ雨滴粒径分布</h1>
+<p>前述した通り、雨滴粒径分布は複数のピークを持つ場合があることが知られている (Valdez and Young 1985; Brown 1986; Feingold et al. 1988; List and McFarquhar 1990; Chen and Lamb 1994)。中でも、2 つのピークをもつ雨滴粒径分布について室内実験或いは地上観測により調べられてきた (Steiner and Waldvogel 1987; List et al. 1987; Asselin de Beauville et al. 1988; Zawadzki and de Agostinho Antonio 1988)。これらの複数ピークを持つ雨滴粒径分布の形成には、雨滴同士の衝突・併合・分裂が主な要因として重要視されている。これらの物理過程を数値的に扱い十分な時間を経た結果、「定常的な分布 (stationary distribution)」が得られる。この定常的な分布はあくまで数値的に表現されるものであって、自然界で観測的或いは物理的に表現されるものとは異なると考えられている (McFarquhar 2010)。</p>
+<p>雨滴同士の衝突・併合が継続して生じれば、より大きな雨滴が生じることは容易に想像できるだろう。しかしながら、雨滴にも大きさの限界があり、ある一定の大きさになると分裂してしまう。この分裂にはいくつかのパターンがあることが知られている。具体的には、filament (neck) 型・sheet 型・disk 型・Bag 型である (McTaggart-Cowan and List 1975; Low and List 1982a)。前述の数値的に得られる定常的な分布は、この分裂過程と併合過程とのバランスによって表現される (Srivastava 1971; Young 1975; List and Gillespie 1976)。</p>
+<p>雨滴の分裂過程を取り入れた数値的研究の多くは、Low and List (1982b) による breakup kernel が用いられた。この kernel を用いると、定常あるいは非定常な降雨に対して 3 つのピークを持つ定常的な分布が得られる。ところが、より物理的な分裂過程を加味した kernel を用いると、2 つのピークを持つ定常的な分布が得られる (McFarquhar 2004a)。さらに、Schlottke et al. (2010) が 32 個の雨滴ペアの衝突過程を数値的に調べ、その結果を踏まえて構築した kernel を用いると、ピークの位置がやや異なるものの McFarquhar (2004a) と同様に 2 つのピークを持った定常的な分布が得られる (Straub et al. 2010)。いずれの場合も、観測事実として特有の分布が得られている訳では無い。</p>
+<p>雨滴の衝突頻度は、弱雨の場合に定常分布に関連するピークを作り出すほど頻繁ではないと考えられる (e.g., Zawadzki et al. 1994)。一方、雨滴の衝突頻度は非常に激しい雨量の場合には数値的に得られたような定常的な分布を作り出せる可能性がある (McFarquhar and List 1991a, 1991b; McFarquhar 2004b)。このようなピークが生じた観測結果は、いくつかの研究 (Willis 1984; McFarquhar et al. 1996; Garcia-Garcia and Gonzalez 2000) で指摘されているものの、定常的な分布でのピークは一貫して観測される訳では無い。このことから、数値モデルと観測結果との不一致の要因を調べる必要がある。</p>
+<h1>なぜ数値的に得られる定常的な分布は自然界で一貫して観測されないのか？</h1>
+<p>McFarquhar (2004b) は、衝突する雨滴の特定のペアによって生成されるフラグメント分布の大きな広がりが、空間内の特定の場所と時間でサンプリングされた粒径分布に大きな変動を引き起こすという仮説を立てた。このことは、自然界で定常分布が観察されない理由や、衝突相互作用率を高める雨滴のクラスターの役割を考慮しても、大雨で同じ特定の場所にピークが見られない理由を説明することになる (McFarquhar 2004b)。また、定常分布に近づくのに必要な時間は、初期の粒径分布によって大きく変化する (e.g., Prat and Barros 2007)。加えて、雨滴の蒸発 (Brown 1993; Hu and Srivastava 1995) や周辺大気環境条件としての上昇気流による size sorting (Kollias et al. 2001) など、粒径分布への影響が局所的な条件に依存する他の要因もある。</p>
+<p>ここで、定式化された数値モデルの準統一的な仮定を正当化するために必要なサンプル数を考える。50 mm h<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">^{-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span> を超える降水強度の条件下で、いくつかのイベントにわたって積分された地上の粒形分布観測データを数値実験の結果と比較するためには、約 6 時間のデータが必要であることが推定されている (McFarquhar 2004b)。さまざまなフィールドキャンペーンからのデータを組み合わせれば、そのようなデータセットは存在しうる。今後、個々のフィールドキャンペーンからのデータ解析だけでなく、様々なプログラムから収集されたデータの統合的な解析にも注力が必要である (McFarquhar 2010)。</p>
+<h1>最近の研究動向</h1>
+<p>ここからは、McFarquhar (2010) で議論された内容の内、近年の研究で明らかになってきていることについて述べる。</p>
+<p>D’Adderio et al. (2015) は、数値的に表現される定常的な分布の一つの特徴である衝突分裂のシグナルを捉えるアルゴリズムを開発し、いくつかの地域で行われた観測データを用いてその特徴が調べられた。さらに、D’Adderio et al. (2018) は、弱い雨に対してもアルゴリズムを適用し、頻度は低いものの衝突分裂の特徴を有する定常的な分布が自然界でも観測される場合があることを明らかにした。加えて、弱雨や層状性の降雨の場合には定常的な分布になりにくく、強雨や対流性の降雨ほど定常的な分布になりやすいことを示した。</p>
+<p>Kumjian and Prat (2014) は、鉛直一次元の Spectral bin microphysics model を用いることで粒径分布の鉛直変化に対する影響を調べ、個々の雲微物理過程は二重偏波レーダー変数の空間パラメーター上で遷移することを明らかにした。このように、粒径分布が鉛直方向に変化していることに対しても考慮が必要と考えられる。Kobayashi and Adachi (2001) は、400 MHz 帯のウィンドプロファイラーを用いた粒径分布の推定結果から地上で強雨がもたらされる際には粒径分布の鉛直分布に違いがあり、地上付近では衝突分裂のシグナルが捉えられている可能性があることを示した。近年の二重偏波レーダーによる観測結果では、地上付近で衝突分裂が支配的なシグナルを示す一方、その上空では衝突併合のシグナルが支配的となることが確認されてきている (Jung and jou 2023; Unuma 2024)。</p>
+<p>雨滴の蒸発は、周辺の熱力学場における気温・湿度の条件に大きく左右されると考えられる。乾燥している場合には雨滴に対する蒸発の効果は高く、逆に飽和に近い条件下では蒸発しにくいであろう。日本の暖候期、特に梅雨期には大気下層の相対湿度が 100% に近い状態がしばしば観測され、そのような条件下で大雨がもたらされることが知られている (Tsuguti and Kato 2014; Unuma and Takemi 2016)。そのような大雨をもたらす降水系の内部構造を、Unuma (2024) は世界で初めて現業二重偏波レーダーと地上のディスドロメーターにより捉えることに成功した。二重偏波レーダーの解析から、高度 1.5 km より上層では雨滴の衝突併合、それより下層では衝突分裂のシグナルが捉えられていた (Unuma 2024)。さらに、地上のディスドロメーターデータでも、降水強度が 100 mm h<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">^{-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span> を超えた時間帯に 2 つのピークを持つ粒形分布が観測され、雨滴の衝突分裂のシグナルが捉えられていることを示した (Unuma 2024)。Unuma (2024) で得られた地上での粒形分布のピーク位置は、数値的に得られる定常的な分布 (Low and List 1982b; McFarquhar 2004a; Straub et al. 2010) のいずれとも異なっていた。この結果を受け、近傍の高層気象観測データを調べたところ、地上付近から対流圏中層付近までほぼ飽和していることが分かった。このことから、非常に湿った環境下では雨滴の蒸発が起こりにくいだけでなく、雨粒になる前の雲粒と雨粒との衝突併合 (accretion) が生じていることでピーク位置が異なっていると考察している (Unuma 2024)。</p>
+<p>以上の研究動向を鑑みると、降水強度が強い場合に限っては周辺大気の環境条件のいくつかを数値実験と同じ条件として見做すことが出来、McFarquhar (2010) で指摘されているように数値実験と観測データとで定常的な分布の一貫性を調べられるのかもしれない。</p>
+<h1>おわりに</h1>
+<p>複数ピークを持つ雨滴粒径分布について、McFarquhar (2010) を基に理解を深めた。特に、複数のピークを持つ定常的な分布が観測事実として得られるかどうかは決着がついておらず、議論は現在も続いているようである。今後の研究動向に注視するとともに、自身でも研究を進めていきたい。</p>
+<h1>参考文献</h1>
+<ul>
+<li>Asselin de Beauville, C., R. H. Petit, G. Marion, and J. P. Lacaux, 1988: Evolution of peaks in the spectral distribution of raindrops from warm isolated maritime clouds. J. Atmos. Sci., 45, 3320–3332.</li>
+<li>Brown, P. S., 1986: Analysis of the Low and List drop-breakup formulation. J. Appl. Meteor. Climatol., 25, 313–321.</li>
+<li>Chen, J., and D. Lamb, 1994: Simulation of cloud microphysical and chemical processes using a multicomponent framework. Part I: Description of the microphysical model. J. Atmos. Sci., 51, 2613–2630.</li>
+<li>D’Adderio, L. P., F. Porcù, and A. Tokay, 2015: Identification and analysis of collisional breakup in natural rain. J. Atmos. Sci., 72, 3404–3416.</li>
+<li>D’Adderio, L. P., F. Porcù, and A. Tokay, 2018: Evolution of drop size distribution in natural rain, Atmos. Res., 200, 70-76.</li>
+<li>Feingold, G., S. Tzivion (Tzitzvashvili), and Z. Leviv, 1988: Evolution of raindrop spectra. Part I: Solution to the stochastic collection/breakup equation using the method of moments. J. Atmos. Sci., 45, 3387–3399.</li>
+<li>Garcia-Garcia, F., and J. E. Gonzalez, 2000: Raindrop spectra observations from convective showers in the valley of Mexico, paper presented at 13th International Conference on Clouds and Precipitation, Int. Comm. on Cloud Phys., Reno, Nev.</li>
+<li>Hu, Z., and R. C. Srivastava, 1995: Evolution of raindrop size distribution by coalescence, breakup, and evaporation: Theory and observations, J. Atmos. Sci., 52, 1761–1783.</li>
+<li>Jung, C., and B. J. Jou, 2023: Bulk microphysical characteristics of a heavy-rain complex thunderstorm system in the Taipei Basin. Mon. Wea. Rev., 151, 877–896.</li>
+<li>Kollias, P., B. A. Albrecht, and F. D. Marks Jr., 2001: Raindrop sorting induced by vertical drafts in convective clouds, Geophys. Res. Lett., 28, 2787–2790.</li>
+<li>Kobayashi, T., and A. Adachi, 2001: Measurements of raindrop breakup by using UHF wind profilers. Geophys. Res. Lett., 28, 4071–4074.</li>
+<li>Kumjian, M. R., and O. P. Prat, 2014: The impact of raindrop collisional processes on the polarimetric radar variables. J. Atmos. Sci., 71, 3052–3067.</li>
+<li>List, R., and J. R. Gillespie, 1976: Evolution of raindrop spectra with collision-induced breakup, J. Atmos. Sci., 33, 2007–2013.</li>
+<li>List, R., and G. M. McFarquhar, 1990: The role of breakup and coalescence in the three-peak equilibrium distribution of raindrops, J. Atmos. Sci., 47, 2274–2292.</li>
+<li>List, R., N. R. Donaldson, and R. E. Stewart, 1987: Temporal evolution of drop spectra to collisional equilibrium in steady and pulsating rain. J. Atmos. Sci., 44, 362–372.</li>
+<li>Low, T. B., and R. List, 1982a: Collision, coalescence and breakup of raindrops. Part I: Experimentally established coalescence efficiencies and fragment size distributions in breakup. J. Atmos. Sci., 39, 1591–1606.</li>
+<li>Low, T. B., and R. List, 1982b: Collision, coalescence and breakup of raindrops. Part II: Parameterizations of fragment size distributions, J. Atmos. Sci., 39, 1607–1618.</li>
+<li>McFarquhar, G. M., 2004a: A new representation of collision-induced breakup of raindrops and its implications for the shapes of raindrop size distributions. J. Atmos. Sci., 61, 777–794.</li>
+<li>McFarquhar, G. M., 2004b: The effect of raindrop clustering on collision-induced break-up of raindrops. Quart. J. Roy. Meteor. Soc., 130, 2169–2190.</li>
+<li>McFarquhar, G. M., 2010: Raindrop size distribution and evolution. Rainfall: State of the Science, Geophys. Monogr., 191, Amer. Geophys. Union, 49–60.</li>
+<li>McFarquhar, G. M., and R. List, 1991a: The evolution of threepeak raindrop size distributions in one-dimensional shaft models. Part II: Multiple pulse rain, J. Atmos. Sci., 48, 1587–1595.</li>
+<li>McFarquhar, G. M., and R. List, 1991b: The raindrop mean free path and collision rate dependence on rainrate for three-peak equilibrium and Marshall-Palmer distributions, J. Atmos. Sci., 48, 1999–2004.</li>
+<li>McFarquhar, G. M., R. List, D. R. Hudak, R. P. Nissen, J. S. Dobbie, N. P. Tung, and T. S. Kang, 1996: Flux measurements of pulsating rain packages with disdrometers and Doppler radar made during Phase II of the Joint Tropical Rain Experiment in Penang, Malaysia, J. Appl. Meteorol., 35, 859–874.</li>
+<li>McTaggart-Cowan, J. D., and R. List, 1975: Collision and breakup of water drops at terminal velocity. J. Atmos. Sci., 32, 1401–1411.</li>
+<li>Prat, O. P., and A. P. Barros, 2007: A robust numerical solution of the stochastic collection–breakup equation for warm rain. J. Appl. Meteor. Climatol., 46, 1480–1497.</li>
+<li>Schlottke, J., W. Straub, K. D. Beheng, H. Gomaa, and B. Weigand, 2010: Numerical investigation of collision-induced breakup of raindrops. Part I: Methodology and dependencies on collision energy and eccentricity, J. Atmos. Sci., 67, 557–575.</li>
+<li>Srivastava, R. C., 1971: Size distribution of raindrops generated by their breakup and coalescence, J. Atmos. Sci., 28, 410–415.</li>
+<li>Steiner, M., and A. Waldvogel, 1987: Peaks in raindrop size distributions. J. Atmos. Sci., 44, 3127–3133.</li>
+<li>Straub, W., K. D. Beheng, A. Seifert, J. Schlottke, and B. Weigand, 2010: Numerical investigation of collisioninduced breakup of raindrops. Part II: Parameterizations of coalescence efficiencies and fragment size distributions, J. Atmos. Sci., 67, 576–588.</li>
+<li>Tsuguti, H., and T. Kato, 2014: Objective extraction of heavy rainfall events and statistical analysis on their characteristic features. Tenki, 61, 455–469. (in Japanese)</li>
+<li>Unuma, T., 2024: Three-dimensional structure of an equilibrium drop size distribution within a convective system in Japan. SOLA, 20, 40-43(TBA), doi:10.2151/sola.2024-007.</li>
+<li>Unuma, T., and T. Takemi, 2016: Characteristics and environmental conditions of quasi-stationary convective clusters during the warm season in Japan. Quart. J. Royal Meteor. Soc., 142, 1232–1249.</li>
+<li>Valdez, M. P., and K. C. Young, 1985: Number fluxes in equilibrium raindrop populations: A Markov chain analysis. J. Atmos. Sci., 42, 1024–1036.</li>
+<li>Willis, P. T., 1984: Functional fits of observed drop size distributions and parameterization of rain, J. Atmos. Sci., 41, 1648–1661.</li>
+<li>Young, K. C., 1975: The evolution of drop-spectra due to condensation, coalescence, and breakup, J. Atmos. Sci., 32, 965–973.</li>
+<li>Zawadzki, I., and M. De Agostinho Antonio, 1988: Equilibrium raindrop size distributions in tropical rain. J. Atmos. Sci., 45, 3452–3459.</li>
+<li>Zawadzki, I., E. Monteiro, and F. Fabry, 1994: The development of drop size distributions in light rain, J. Atmos Sci., 51, 1100–1114.</li>
+</ul>
+<h1>更新履歴</h1>
+<ul>
+<li>2024-01-27: 初稿</li>
+</ul>
+
+  <p><a class="classtest-link" href="/blog/tags/Research-paper/" rel="tag">Research paper</a> — 2024年1月27日</p>
+  
+  <hr>
+<section id="comments" class="mt-2 mb-3">
+
+  <div id="disqus_thread">
+    <a href="#" class="button button-primary" onclick="loadDisqus();return false;">View / Make Comments</a>
+  </div>
+
+  <script>
+    var disqus_config = function() {
+      this.page.url = 'https://takashiunuma.github.io/blog/2024/01/27/index.html';
+      this.page.identifier = '2024/01/27/index.html';
+      this.page.title = 'Multi-peak drop size distribution';
+    };
+
+    var is_disqus_loaded = false;
+
+    function loadDisqus() {
+      if (!is_disqus_loaded) {
+        is_disqus_loaded = true;
+
+        var d = document,
+          s = d.createElement('script');
+        s.src = 'https://unusblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+    }
+
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+        </div>
+        <div class="row mt-2">
+  
+    <div class="eight columns">
+      <p id="madewith">Made with ❤ and
+        <a class="footer-link icon" href="https://hexo.io" target="_blank" style="text-decoration: none;" rel="noreferrer" aria-label="Hexo.io">
+        <svg class="hexo svg-hov" width="14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hexo.js</title><path d="M12 .007L1.57 6.056V18.05L12 23.995l10.43-6.049V5.952L12 .007zm4.798 17.105l-.939.521-.939-.521V12.94H9.08v4.172l-.94.521-.938-.521V6.89l.939-.521.939.521v4.172h5.84V6.89l.94-.521.938.521v10.222z"/></svg>
+        </a>
+        
+        at <a href="https://scholar.google.co.jp/citations?user=8PamjYsAAAAJ" target="_blank" rel="noreferrer">Japan</a>.</p>
+        
+    </div>
+
+    <!-- Sepcial thanks to https://simpleicons.org/ for the icons -->
+    <div class="four columns mb-3 posisi" >
+      
+      <a class="ml-0 footer-link icon" href="https://github.com/TakashiUNUMA" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="GitHub">
+        <svg class="github svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://www.linkedin.com/in/takashiunuma/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="LinkedIn">
+        <svg class="linkedin svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>LinkedIn</title><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://twitter.com/UNUSB" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Twitter">
+        <svg class="twitter svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Twitter</title><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://www.instagram.com/unusb/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Instagram">
+        <svg class="instagram svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+      </a>
+      
+
+      
+
+    </div>
+  
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <script src="/blog/js/nanobar.min.js"></script>
+
+  <script>
+    var options = {
+      classname: 'nanobar',
+      id: 'myNanobar'
+    };
+    var nanobar = new Nanobar(options);
+    nanobar.go(30);
+    nanobar.go(76);
+    nanobar.go(100);
+  </script>
+
+</body>
+
+</html>
