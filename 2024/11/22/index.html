@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Minima -->
+  <!-- Hexo theme created by @adisaktijrs -->
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+
+  
+  <title>雨滴粒径分布の解析・可視化</title>
+  
+  <link rel="canonical" href="https://takashiunuma.github.io/blog/2024/11/22/">
+  
+  <meta name="description" content="はじめに 雨滴粒径分布は、雲・降水過程を特徴づける基礎的かつ重要なものである。その形には複数のピークを持つこと(Multi-peak drop size distribution) や、数値モデルでの取り扱い (Spectral Bin Microphysics Model)、レーダー変数との関係 ">
+  
+  
+  <meta name="author" content="Takashi Unuma">
+  
+  
+  
+  <meta property="og:site_name" content="Takashi Unuma&#39;s Blog" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="雨滴粒径分布の解析・可視化" />
+  
+  <meta property="og:description" content="はじめに 雨滴粒径分布は、雲・降水過程を特徴づける基礎的かつ重要なものである。その形には複数のピークを持つこと(Multi-peak drop size distribution) や、数値モデルでの取り扱い (Spectral Bin Microphysics Model)、レーダー変数との関係 ">
+  
+  <meta property="og:url" content="https://takashiunuma.github.io/blog/2024/11/22/" />
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="雨滴粒径分布の解析・可視化">
+  
+  <meta name="twitter:description" content="はじめに 雨滴粒径分布は、雲・降水過程を特徴づける基礎的かつ重要なものである。その形には複数のピークを持つこと(Multi-peak drop size distribution) や、数値モデルでの取り扱い (Spectral Bin Microphysics Model)、レーダー変数との関係 ">
+  
+  
+  
+  
+  <meta name="twitter:url" content="https://takashiunuma.github.io/blog/2024/11/22/" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Preload fonts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload" href="/blog/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/blog/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<link rel="stylesheet" href="/blog/css/normalize.css">
+
+  
+<link rel="stylesheet" href="/blog/css/skeleton.css">
+
+  
+<link rel="stylesheet" href="/blog/css/custom.css">
+
+  
+<link rel="stylesheet" href="/blog/css/prism-dark.css">
+
+  
+<link rel="stylesheet" href="/blog/css/prism-line-numbers.css">
+
+  <!-- User css -->
+  
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/blog/images/favicon.ico">
+
+  <!-- Custom Theme Color Style
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <style>
+  a:not(.icon) {
+    text-decoration-color: #0A6987;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      #0A6987 50%
+    );
+  }
+  blockquote {
+    border-left: 8px solid #0A6987;
+  }
+  .nanobar .bar {
+    background: #0A6987;
+  }
+  .button.button-primary:hover,
+  button.button-primary:hover,
+  input[type="submit"].button-primary:hover,
+  input[type="reset"].button-primary:hover,
+  input[type="button"].button-primary:hover,
+  .button.button-primary:focus,
+  button.button-primary:focus,
+  input[type="submit"].button-primary:focus,
+  input[type="reset"].button-primary:focus,
+  input[type="button"].button-primary:focus {
+    background-color: #0A6987;
+    border-color: #0A6987;
+  }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border: 1px solid #0A6987;
+  }
+</style>
+
+  <!-- Google Analytics (With Privacy Settings On)
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+
+  
+  <script src="/blog/js/pic.min.js" defer></script>
+  
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/blog/atom.xml" title="Takashi Unuma's Blog" type="application/atom+xml">
+<link rel="alternate" href="/blog/rss2.xml" title="Takashi Unuma's Blog" type="application/rss+xml">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div>
+
+        <div class="row">
+  <div class="ten columns ml-1">
+    <h1 class="mt-2">
+      Takashi Unuma&#39;s blog.
+    </h1>
+  </div>
+
+  <div class="twelve columns">
+    <div class="row">
+      <div class="nine columns left">
+        <a href="/blog/">Home</a>
+        
+          
+          <a href="/blog/about" class="ml">About</a>
+          
+        
+          
+          <a href="/blog/archives" class="ml">Archive</a>
+          
+        
+      </div>
+    </div>
+    <hr style="margin-bottom: 2.6rem">
+  </div>
+</div>
+
+        <div class="trans">
+            <h1>雨滴粒径分布の解析・可視化</h1>
+
+  <h1>はじめに</h1>
+<p>雨滴粒径分布は、雲・降水過程を特徴づける基礎的かつ重要なものである。その形には複数のピークを持つこと(<a href="/blog/2024/01/27/">Multi-peak drop size distribution</a>) や、数値モデルでの取り扱い (<a href="/blog/2024/01/19/">Spectral Bin Microphysics Model</a>)、レーダー変数との関係 (<a href="/blog/2021/09/04/">Self-consistency Principle</a>、<a href="/blog/2021/10/01/">粒径分布とレーダー変数</a>、<a href="/blog/2022/11/19/">粒径分布パラメータのレーダー変数による推定</a>) からも分かる通り、幅広く利用・応用されている。雨滴粒径分布の観測は主として地上で行われてきており、最近ではレーザーシートによるメンテナンスフリーな観測も可能となってきている。そこで、本稿では地上で観測された雨滴粒径分布の解析とその可視化について述べる。</p>
+<h1>データ</h1>
+<p>下記のようなフォーマットでデータを用意する。今回は、下記の内容を <code>testdata.mis</code> という名前で保存し、利用する。</p>
+<pre class="line-numbers language-none"><code class="language-none">01:89.691
+11:3693
+20:09:20:10
+21:11.18.2024
+90:0.00000000e+00;0.00000000e+00;2.06854339e+02;2.13144060e+03;4.62869760e+03;4.57738882e+03;3.27162570e+03;2.64969391e+03;2.00687436e+03;1.21636766e+03;1.04742980e+03;7.53899922e+02;6.04884905e+02;4.23819184e+02;3.03061391e+02;1.49220270e+02;4.49463544e+01;1.14963409e+01;1.54904461e+00;0.00000000e+00;0.00000000e+00;0.00000000e+00;0.00000000e+00;0.00000000e+00;0.00000000e+00;0.00000000e+00;0.00000000e+00;0.00000000e+00;0.00000000e+00;0.00000000e+00;0.00000000e+00;0.00000000e+00;
+93:0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;0;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;4;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;3;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;2;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;3;2;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;2;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;2;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;2;4;2;1;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;2;12;9;3;2;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;4;11;6;3;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;10;24;14;6;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;2;14;27;16;6;4;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;2;14;40;12;2;3;2;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;22;95;78;19;4;1;1;0;2;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;18;84;107;54;12;4;0;3;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;8;59;113;94;40;15;7;5;2;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;22;62;87;87;42;16;6;1;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;55;71;100;61;37;37;6;4;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;51;112;174;118;215;90;10;2;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;5;3;5;16;88;152;111;29;5;4;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;6;23;104;120;53;14;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;2;18;34;74;66;6;2;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;3;13;59;32;3;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;10;9;8;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1>ソースコード</h1>
+<p>上記のデータを読み込み、可視化するソースコードを以下に示す。最低限、Python 組み込みライブラリの <code>os</code>, <code>io</code>, <code>datetime</code>, <code>dateutil</code>、外部ライブラリとして <code>pandas</code>, <code>numpy</code>, <code>matplotlib</code> があれば良い。ソースコードの一部は、<a target="_blank" rel="noopener" href="https://github.com/josephhardinee/PyDSD/blob/master/pydsd/io/ParsivelReader.py">PyDSD</a> を参考にした。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
+<span class="token keyword">import</span> io
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime<span class="token punctuation">,</span> timedelta
+<span class="token keyword">from</span> dateutil <span class="token keyword">import</span> parser<span class="token punctuation">,</span> relativedelta
+<span class="token keyword">import</span> matplotlib
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>dates <span class="token keyword">as</span> mdates
+<span class="token keyword">import</span> warnings
+warnings<span class="token punctuation">.</span>filterwarnings<span class="token punctuation">(</span><span class="token string">'ignore'</span><span class="token punctuation">)</span>
+<span class="token operator">%</span>matplotlib inline
+
+
+<span class="token comment"># Pre-process for reading original data</span>
+rain_rate <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+num_particles <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+_base_time <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+nd <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+vd <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+raw <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">with</span> io<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'testdata.mis'</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> line <span class="token keyword">in</span> f<span class="token punctuation">:</span>
+        line <span class="token operator">=</span> line<span class="token punctuation">.</span>rstrip<span class="token punctuation">(</span><span class="token string">"\n\r;"</span><span class="token punctuation">)</span>
+        code <span class="token operator">=</span> line<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">":"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        <span class="token keyword">if</span> code <span class="token operator">==</span> <span class="token string">"01"</span><span class="token punctuation">:</span>    <span class="token comment"># Rain Rate</span>
+            rain_rate<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token builtin">float</span><span class="token punctuation">(</span>line<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">":"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> code <span class="token operator">==</span> <span class="token string">"11"</span><span class="token punctuation">:</span>  <span class="token comment"># Num Particles</span>
+            num_particles<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>line<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">":"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> code <span class="token operator">==</span> <span class="token string">"21"</span><span class="token punctuation">:</span>  <span class="token comment"># Date string</span>
+            date_tuple <span class="token operator">=</span> line<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">":"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"."</span><span class="token punctuation">)</span>
+            _base_time<span class="token punctuation">.</span>append<span class="token punctuation">(</span>
+                datetime<span class="token punctuation">(</span>
+                    year<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span>date_tuple<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    month<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span>date_tuple<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    day<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span>date_tuple<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token punctuation">)</span>
+            <span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> code <span class="token operator">==</span> <span class="token string">"90"</span><span class="token punctuation">:</span>  <span class="token comment"># Nd</span>
+            nd<span class="token punctuation">.</span>append<span class="token punctuation">(</span>np<span class="token punctuation">.</span>power<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">float</span><span class="token punctuation">,</span> line<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">":"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">";"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> code <span class="token operator">==</span> <span class="token string">"93"</span><span class="token punctuation">:</span>  <span class="token comment"># md</span>
+            raw<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> line<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">":"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">";"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Constants</span>
+diameter <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.06</span><span class="token punctuation">,</span><span class="token number">0.19</span><span class="token punctuation">,</span><span class="token number">0.32</span><span class="token punctuation">,</span><span class="token number">0.45</span><span class="token punctuation">,</span><span class="token number">0.58</span><span class="token punctuation">,</span>
+                     <span class="token number">0.71</span><span class="token punctuation">,</span><span class="token number">0.84</span><span class="token punctuation">,</span><span class="token number">0.96</span><span class="token punctuation">,</span><span class="token number">1.09</span><span class="token punctuation">,</span><span class="token number">1.22</span><span class="token punctuation">,</span>
+                     <span class="token number">1.42</span><span class="token punctuation">,</span><span class="token number">1.67</span><span class="token punctuation">,</span><span class="token number">1.93</span><span class="token punctuation">,</span><span class="token number">2.19</span><span class="token punctuation">,</span><span class="token number">2.45</span><span class="token punctuation">,</span>
+                     <span class="token number">2.83</span><span class="token punctuation">,</span><span class="token number">3.35</span><span class="token punctuation">,</span><span class="token number">3.86</span><span class="token punctuation">,</span><span class="token number">4.38</span><span class="token punctuation">,</span><span class="token number">4.89</span><span class="token punctuation">,</span>
+                     <span class="token number">5.66</span><span class="token punctuation">,</span><span class="token number">6.7</span><span class="token punctuation">,</span><span class="token number">7.72</span><span class="token punctuation">,</span><span class="token number">8.76</span><span class="token punctuation">,</span><span class="token number">9.78</span><span class="token punctuation">,</span>
+                     <span class="token number">11.33</span><span class="token punctuation">,</span><span class="token number">13.39</span><span class="token punctuation">,</span><span class="token number">15.45</span><span class="token punctuation">,</span><span class="token number">17.51</span><span class="token punctuation">,</span><span class="token number">19.57</span><span class="token punctuation">,</span>
+                     <span class="token number">22.15</span><span class="token punctuation">,</span><span class="token number">25.24</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+vel    <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.050</span><span class="token punctuation">,</span><span class="token number">0.150</span><span class="token punctuation">,</span><span class="token number">0.250</span><span class="token punctuation">,</span><span class="token number">0.350</span><span class="token punctuation">,</span><span class="token number">0.450</span><span class="token punctuation">,</span>
+                   <span class="token number">0.550</span><span class="token punctuation">,</span><span class="token number">0.650</span><span class="token punctuation">,</span><span class="token number">0.750</span><span class="token punctuation">,</span><span class="token number">0.850</span><span class="token punctuation">,</span><span class="token number">0.950</span><span class="token punctuation">,</span>
+                   <span class="token number">1.100</span><span class="token punctuation">,</span><span class="token number">1.300</span><span class="token punctuation">,</span><span class="token number">1.500</span><span class="token punctuation">,</span><span class="token number">1.700</span><span class="token punctuation">,</span><span class="token number">1.900</span><span class="token punctuation">,</span>
+                   <span class="token number">2.200</span><span class="token punctuation">,</span><span class="token number">2.600</span><span class="token punctuation">,</span><span class="token number">3.000</span><span class="token punctuation">,</span><span class="token number">3.400</span><span class="token punctuation">,</span><span class="token number">3.800</span><span class="token punctuation">,</span>
+                   <span class="token number">4.400</span><span class="token punctuation">,</span><span class="token number">5.200</span><span class="token punctuation">,</span><span class="token number">6.000</span><span class="token punctuation">,</span><span class="token number">6.800</span><span class="token punctuation">,</span><span class="token number">7.600</span><span class="token punctuation">,</span>
+                   <span class="token number">8.800</span><span class="token punctuation">,</span><span class="token number">10.400</span><span class="token punctuation">,</span><span class="token number">12.000</span><span class="token punctuation">,</span><span class="token number">13.600</span><span class="token punctuation">,</span><span class="token number">15.200</span><span class="token punctuation">,</span>
+                   <span class="token number">17.600</span><span class="token punctuation">,</span><span class="token number">20.800</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+spread <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.129</span><span class="token punctuation">,</span><span class="token number">0.129</span><span class="token punctuation">,</span><span class="token number">0.129</span><span class="token punctuation">,</span><span class="token number">0.129</span><span class="token punctuation">,</span><span class="token number">0.129</span><span class="token punctuation">,</span><span class="token number">0.129</span><span class="token punctuation">,</span>
+                   <span class="token number">0.129</span><span class="token punctuation">,</span><span class="token number">0.129</span><span class="token punctuation">,</span><span class="token number">0.129</span><span class="token punctuation">,</span><span class="token number">0.129</span><span class="token punctuation">,</span><span class="token number">0.257</span><span class="token punctuation">,</span><span class="token number">0.257</span><span class="token punctuation">,</span>
+                   <span class="token number">0.257</span><span class="token punctuation">,</span><span class="token number">0.257</span><span class="token punctuation">,</span><span class="token number">0.257</span><span class="token punctuation">,</span><span class="token number">0.515</span><span class="token punctuation">,</span><span class="token number">0.515</span><span class="token punctuation">,</span><span class="token number">0.515</span><span class="token punctuation">,</span>
+                   <span class="token number">0.515</span><span class="token punctuation">,</span><span class="token number">0.515</span><span class="token punctuation">,</span><span class="token number">1.030</span><span class="token punctuation">,</span><span class="token number">1.030</span><span class="token punctuation">,</span><span class="token number">1.030</span><span class="token punctuation">,</span><span class="token number">1.030</span><span class="token punctuation">,</span>
+                   <span class="token number">1.030</span><span class="token punctuation">,</span><span class="token number">2.060</span><span class="token punctuation">,</span><span class="token number">2.060</span><span class="token punctuation">,</span><span class="token number">2.060</span><span class="token punctuation">,</span><span class="token number">2.060</span><span class="token punctuation">,</span><span class="token number">2.060</span><span class="token punctuation">,</span>
+                   <span class="token number">3.090</span><span class="token punctuation">,</span><span class="token number">3.090</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+
+<span class="token comment"># Plot V-D histogram</span>
+plt<span class="token punctuation">.</span>pcolormesh<span class="token punctuation">(</span>np<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span>raw<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">,</span><span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> cmap<span class="token operator">=</span><span class="token string">'Blues'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">'Diameter-Fall velocity'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">'Diameter in laser sheet pixels (mm)'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">'Fall velocity in laser sheet pixels (m s$^&#123;-1&#125;$)'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xticks<span class="token punctuation">(</span>np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">32</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">,</span> diameter<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>yticks<span class="token punctuation">(</span>np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">32</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">,</span> vel<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>colorbar<span class="token punctuation">(</span>extend<span class="token operator">=</span><span class="token string">'both'</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">'Number of counts'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+
+<span class="token comment"># Plot drop size distribution</span>
+<span class="token keyword">for</span> k <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>raw<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    raw_data <span class="token operator">=</span> np<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span>raw<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">,</span><span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    ND <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># V loop</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># D loop</span>
+            ND<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">+=</span> raw_data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">/</span> <span class="token punctuation">(</span>vel<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">0.18</span> <span class="token operator">*</span> <span class="token number">0.03</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">60.0</span><span class="token punctuation">)</span>  <span class="token comment"># md / (Vi * sheet area * sampling time)</span>
+        ND<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">/=</span> spread<span class="token punctuation">[</span>j<span class="token punctuation">]</span>  <span class="token comment"># md / (Vi * sheet area * sampling time * delta Di)</span>
+    plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>diameter<span class="token punctuation">,</span> np<span class="token punctuation">.</span>ma<span class="token punctuation">.</span>masked_where<span class="token punctuation">(</span>ND <span class="token operator">&lt;</span> <span class="token number">0.1</span><span class="token punctuation">,</span> ND<span class="token punctuation">)</span><span class="token punctuation">,</span> linestyle<span class="token operator">=</span><span class="token string">':'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">'Diameter (mm)'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">'$N(D)$ (mm$^&#123;-1&#125;$ m$^&#123;-3&#125;$)'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>yscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylim<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">10000</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlim<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>grid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1>結果</h1>
+<p>上記ソースコードで出力されたものが下記。一枚目は横軸に粒径・縦軸に落下速度とした場合の二次元ヒストグラム、二枚目は横軸に粒径・縦軸に粒径毎の頻度としたいわゆる粒径分布である。</p>
+<img src="/blog/2024/11/22/hist_vd.png" class="">
+<p>頻度の高い部分は Atlas et al. (1973) で調べられた粒径と落下速度の曲線に概ね沿うため、今回の事例では雨滴が観測されていると判断することが出来る。</p>
+<img src="/blog/2024/11/22/dsd.png" class="">
+<p>雨滴粒径分布は、0.7 mm 付近にピークを持ち、McFarquhar (2004) 或いは Straub (2010) で得られた stationary distribution に近い形をしていることが分かる。</p>
+<p>降水強度を粒径分布から算出する場合には、一枚目の図で示したように、観測されたデータの種類を特定しておく必要がある。同様に、粒径分布の描画・解析時にも、どの粒子が観測されており、その粒子のどのような特徴が得られているかを確認する必要がある。より発展的な解析は、<a target="_blank" rel="noopener" href="https://github.com/josephhardinee/PyDSD/blob/master/Notebooks/PyDSDExamples.ipynb">こちら</a> を参考にされたい。</p>
+<h1>おわりに</h1>
+<p>今回は雨滴粒径分布の解析と可視化について、具体例を示しつつ紹介した。</p>
+<h1>参考文献</h1>
+<ul>
+<li>Atlas, D., R. C. Srivastava, and R. S. Sekhon, 1973: Doppler radar characteristics of precipitation at vertical incidence. Rev. Geophys., 11, 1–35.</li>
+<li>McFarquhar, G. M., 2004: A new representation of collision-induced breakup of raindrops and its implications for the shapes of raindrop size distributions. J. Atmos. Sci., 61, 777–794.</li>
+<li>Straub, W., K. D. Beheng, A. Seifert, J. Schlottke, and B. Weigand, 2010: Numerical investigation of collisioninduced breakup of raindrops. Part II: Parameterizations of coalescence efficiencies and fragment size distributions, J. Atmos. Sci., 67, 576–588.</li>
+</ul>
+<h1>更新履歴</h1>
+<ul>
+<li>2024-11-22: 初稿</li>
+</ul>
+
+  <p><a class="classtest-link" href="/blog/tags/Miscellaneous/" rel="tag">Miscellaneous</a> — Nov 22, 2024</p>
+  
+  <hr>
+<section id="comments" class="mt-2 mb-3">
+
+  <div id="disqus_thread">
+    <a href="#" class="button button-primary" onclick="loadDisqus();return false;">View / Make Comments</a>
+  </div>
+
+  <script>
+    var disqus_config = function() {
+      this.page.url = 'https://takashiunuma.github.io/blog/2024/11/22/index.html';
+      this.page.identifier = '2024/11/22/index.html';
+      this.page.title = '雨滴粒径分布の解析・可視化';
+    };
+
+    var is_disqus_loaded = false;
+
+    function loadDisqus() {
+      if (!is_disqus_loaded) {
+        is_disqus_loaded = true;
+
+        var d = document,
+          s = d.createElement('script');
+        s.src = 'https://unusblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+    }
+
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+        </div>
+        <div class="row mt-2">
+  
+    <div class="eight columns">
+      <p id="madewith">Made with ❤ and
+        <a class="footer-link icon" href="https://hexo.io" target="_blank" style="text-decoration: none;" rel="noreferrer" aria-label="Hexo.io">
+        <svg class="hexo svg-hov" width="14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hexo.js</title><path d="M12 .007L1.57 6.056V18.05L12 23.995l10.43-6.049V5.952L12 .007zm4.798 17.105l-.939.521-.939-.521V12.94H9.08v4.172l-.94.521-.938-.521V6.89l.939-.521.939.521v4.172h5.84V6.89l.94-.521.938.521v10.222z"/></svg>
+        </a>
+        
+        at <a href="https://scholar.google.co.jp/citations?user=8PamjYsAAAAJ" target="_blank" rel="noreferrer">Japan</a>.</p>
+        
+    </div>
+
+    <!-- Sepcial thanks to https://simpleicons.org/ for the icons -->
+    <div class="four columns mb-3 posisi" >
+      
+      <a class="ml-0 footer-link icon" href="https://github.com/TakashiUNUMA" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="GitHub">
+        <svg class="github svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://www.linkedin.com/in/takashiunuma/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="LinkedIn">
+        <svg class="linkedin svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>LinkedIn</title><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://twitter.com/UNUSB" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Twitter">
+        <svg class="twitter svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Twitter</title><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://www.instagram.com/unusb/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Instagram">
+        <svg class="instagram svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+      </a>
+      
+
+      
+
+    </div>
+  
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <script src="/blog/js/nanobar.min.js"></script>
+
+  <script>
+    var options = {
+      classname: 'nanobar',
+      id: 'myNanobar'
+    };
+    var nanobar = new Nanobar(options);
+    nanobar.go(30);
+    nanobar.go(76);
+    nanobar.go(100);
+  </script>
+
+</body>
+
+</html>
